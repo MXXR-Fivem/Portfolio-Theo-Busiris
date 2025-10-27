@@ -2,7 +2,7 @@
 
 My first Epitech project is a responsive website made in 2 days. 
 Think of it as a mix between a CV, digital resume & portfolio
-Made in React with Next.js ! 
+Made in React with Next.js !  
 
 ## 🧾 License
 This code is published for demonstration purposes only.  
@@ -71,6 +71,7 @@ Below are screenshots showing the site on different device sizes.
     <img src="./src/images/pc4.png" alt="phone-3" width="480" height="300" />
 
 </p>
+
 
 
 
