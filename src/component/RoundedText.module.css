@@ -1,0 +1,45 @@
+@media (max-width: 767px) {
+    .roundedText {
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        border-radius: 10px;
+        height: 4vh;
+        padding: 1.25vh 2.25vh;
+        margin: 0 1% 2vh 1%;
+        width: 90%;
+        background-color: rgb(235, 235, 235);
+        box-shadow: 0 0 2.5px 2.5px rgb(222, 222, 222);
+    }
+
+    .icon {
+        margin-right: 2vw;
+    }
+
+    .roundedText > p {
+        font-size: large;
+    }
+}
+
+@media (min-width: 768px) {
+    .roundedText {
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        border-radius: 10px;
+        height: 4vh;
+        padding: 0vh 2vh;
+        margin: 0 1% 2vh 1%;
+        width: auto;
+        background-color: rgb(235, 235, 235);
+        box-shadow: 0 0 2.5px 2.5px rgb(222, 222, 222);
+    }
+
+    .icon {
+        margin-right: 0.5vw;
+    }
+
+    .roundedText > p {
+        font-size: large;
+    }
+}

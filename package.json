@@ -1,0 +1,20 @@
+{
+  "name": "my-digital-resume",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@formspree/react": "^3.0.0",
+    "@react-icons/all-files": "^4.1.0",
+    "flowbite-react": "^0.12.9",
+    "next": "15.5.5",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-favicon": "^2.0.7",
+    "react-icons": "^5.5.0"
+  }
+}

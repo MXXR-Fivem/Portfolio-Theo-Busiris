@@ -1,0 +1,54 @@
+@media (max-width: 767px) {
+    .iconTextButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        height: 4vh;
+        padding: 0 2.5vh;
+        margin: 1vh 1%;
+        width: 95%;
+        box-shadow: 0 0 2.5px 2.5px rgb(222, 222, 222);
+        transition: 0.2s;
+    }
+
+    .iconTextButton:hover {
+        transform: scale(1.025);
+    }
+
+    .iconButton {
+        margin-right: 10px;
+    }
+
+    .iconTextButton > p {
+        font-size: 95%;
+    }
+}
+
+@media (min-width: 768px) {
+    .iconTextButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        height: 5vh;
+        padding: 0 2.5vh;
+        margin: 0 0 1vh 1%;
+        width: auto;
+        box-shadow: 0 0 2.5px 2.5px rgb(222, 222, 222);
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .iconTextButton:hover {
+        transform: scale(1.025);
+    }
+
+    .iconButton {
+        margin-right: 10px;
+    }
+
+    .iconTextButton > p {
+        font-size: 95%;
+    }
+}
