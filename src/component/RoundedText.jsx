@@ -1,4 +1,4 @@
-import styles from "./components.module.css";
+import styles from "./RoundedText.module.css";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineLocalPhone } from "react-icons/md";
 import { MdMailOutline } from "react-icons/md";

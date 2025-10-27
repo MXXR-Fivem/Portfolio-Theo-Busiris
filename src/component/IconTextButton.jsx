@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./components.module.css";
+import styles from "./IconTextButton.module.css";
 import { AiOutlineGithub, AiOutlineLinkedin } from "react-icons/ai";
 
 export default function IconTextButton ({data}) {
