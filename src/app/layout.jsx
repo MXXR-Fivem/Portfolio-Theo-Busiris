@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "My Digital Resume",
-  description: "Théo Busiris Digital Resume Epitech",
+  title: "My Portfolio",
+  description: "Portfolio by Théo Busiris",
   icons: {
     icon: "/photo.png",
   }
