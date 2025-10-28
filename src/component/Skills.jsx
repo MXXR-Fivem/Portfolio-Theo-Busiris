@@ -21,7 +21,7 @@ function SkillCard({icon, color, title, skills}) {
                     <div key={index} style={{"width":"92.75%"}}>
                         <div className={styles.skillsPercentage}>
                             <p className={styles.percentageText}>{skill.name}</p>
-                            <p className={styles.percentageText}>{skill.percent}</p>
+                            <p className={styles.percentageText}>{skill.percent}%</p>
                         </div>
                         <div className={styles.parentPercentagebar}>
                             <div
@@ -87,7 +87,7 @@ export default function Skills () {
                         title={category.title}
                         skills={category.skills}
                     />
-                ))};
+                ))}
             </div>
         </>
     )

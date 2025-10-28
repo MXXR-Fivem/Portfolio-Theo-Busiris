@@ -16,7 +16,9 @@
 
     .profileIcon {
         transform: scale(1.75);
-        margin-right: 4%;
+        margin-right: 3.5%;
+        position: relative;
+        top: 0.15rem;
     }
 
     .skills {
@@ -74,12 +76,14 @@
         display: flex;
         justify-content: flex-start;
         align-items:center;
-        margin: 5% 5% 0 5%;
+        margin: 5% 5% 0 4.5%;
     }
 
     .profileIcon {
         transform: scale(1.75);
-        margin-right: 4%;
+        margin-right: 3.5%;
+        position: relative;
+        top: 0.2rem;
     }
 
     .skills {
