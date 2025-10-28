@@ -9,7 +9,7 @@ export default function () {
         <div className={styles.body}>
             <h2 style={{"alignSelf":"center"}}>Main Projects</h2>
             <div className={styles.box}>
-                <div style={{"background-color": "#3b82f6"}} className={styles.topBox}>
+                <div style={{"backgroundColor": "#3b82f6"}} className={styles.topBox}>
                     <SiFivem style={{"transform":"scale(2)", "color":"white"}}/>
                 </div>
                 <h4 className={styles.topTitle}>

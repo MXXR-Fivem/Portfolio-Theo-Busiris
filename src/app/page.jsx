@@ -8,6 +8,7 @@ import Form from "../component/Form";
 import Testimonials from "../component/Testimonials";
 import Skills from "../component/Skills";
 import Portfolio from "../component/Portfolio";
+import {Analytics} from "@vercel/analytics/next"
 
 export default function Home() {
   const title = "First-year student at Epitech";
@@ -41,10 +42,10 @@ export default function Home() {
         </div>
       </header>
       <main className={styles.main}>
+        <Analytics/>
         <AboutMe/>
         <Portfolio/>
         <Testimonials/>
-        <h2 style={{"alignSelf":"center", "margin":"-1.5vh 0 -3.5vh 0"}}>Skills & Expertise</h2>
         <Skills/>
         <Form/>
       </main>
