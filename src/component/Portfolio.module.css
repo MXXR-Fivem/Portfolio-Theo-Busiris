@@ -42,11 +42,23 @@
         color: gray;
     }
 
-    .tagContainer {
-        display: flex;
-        justify-content: flex-start;
-        gap: 5%;
-        margin-left: 5%;
+    @media (max-width: 465px) {
+        .tagContainer {
+            display: flex;
+            justify-content: center;
+            align-self: center;
+            gap: 5%;
+            max-width: 100%;
+        }
+    }
+
+    @media (min-width: 465px) {
+        .tagContainer {
+            display: flex;
+            justify-content: flex-start;
+            gap: 5%;
+            margin-left: 5%;
+        }
     }
 
     .tag {

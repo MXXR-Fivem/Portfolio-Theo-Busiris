@@ -45,8 +45,8 @@ export default function Testimonials() {
 
     return (
         <div className={styles.body}>
-            <h2 style={{ alignSelf: "center", margin: "-1vh 0" }}>
-                Some Customer Testimonials
+            <h2 style={{ alignSelf: "center", margin: "-1vh 0"}}>
+                Customer Testimonials
             </h2>
 
             {testimonials.map((testimonal, index) => (

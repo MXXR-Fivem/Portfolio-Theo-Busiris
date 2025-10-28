@@ -9,6 +9,7 @@ import Testimonials from "../component/Testimonials";
 import Skills from "../component/Skills";
 import Portfolio from "../component/Portfolio";
 import {Analytics} from "@vercel/analytics/next"
+import {SpeedInsights} from "@vercel/speed-insights/next"
 
 export default function Home() {
   const title = "First-year student at Epitech";
@@ -43,6 +44,7 @@ export default function Home() {
       </header>
       <main className={styles.main}>
         <Analytics/>
+        <SpeedInsights/>
         <AboutMe/>
         <Portfolio/>
         <Testimonials/>

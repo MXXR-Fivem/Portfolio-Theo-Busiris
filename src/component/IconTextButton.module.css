@@ -21,7 +21,9 @@
     }
 
     .iconTextButton > p {
-        font-size: 95%;
+        font-size: 105%;
+        position: relative;
+        top: 0.075rem;
     }
 }
 
