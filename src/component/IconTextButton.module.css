@@ -25,7 +25,7 @@
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
     .iconTextButton {
         display: flex;
         justify-content: center;

@@ -59,7 +59,7 @@
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
     .body {
         width: 90%;
         height: auto;

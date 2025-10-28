@@ -21,7 +21,7 @@
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
     .roundedText {
         display: flex;
         justify-content: center;

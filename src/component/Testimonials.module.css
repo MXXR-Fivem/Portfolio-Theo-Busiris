@@ -50,7 +50,7 @@
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
     .body {
         width: 70%;
         min-height: 5vh;

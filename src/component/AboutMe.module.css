@@ -116,7 +116,7 @@
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 767px) {
     .body {
         width: 70%;
         box-shadow: 0 0 2px 2px rgb(232, 232, 232);
