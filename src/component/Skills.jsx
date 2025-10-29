@@ -46,9 +46,9 @@ export default function Skills () {
             color: "#0f172a",
             title: "Technical skills",
             skills: [
-                {name: "Lua", percent: 82},
-                {name: "SQL", percent: 73},
-                {name: "Web", percent: 45},
+                {name: "Lua", percent: 80},
+                {name: "Python", percent: 75},
+                {name: "WEB Stack (HTML/CSS/JavaScript/SQL)", percent: 68},
             ],
         },
         {

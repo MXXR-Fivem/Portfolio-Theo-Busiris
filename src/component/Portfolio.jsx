@@ -16,8 +16,8 @@ export default function () {
                     FiveM script store
                 </h4>
                 <p className={styles.text}>
-                    Since 3 years, I have my own FiveM store to sell Lua scripts.
-                    There are 450+ customers and 1000+ sells.
+                    Since 4 years, I have my own FiveM store to sell Lua scripts.
+                    There are 450+ customers and 1600+ sells.
                 </p>
                 <div className={styles.tagContainer}>
                     <div className={styles.tag}>
