@@ -15,7 +15,7 @@ export const metadata = {
   title: "My Portfolio",
   description: "Portfolio by Théo Busiris",
   icons: {
-    icon: "/cv.png",
+    icon: "/cv.jpeg",
   }
 };
 
