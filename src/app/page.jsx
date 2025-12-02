@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <div className={styles.bodyDiv}>
       <header className={styles.header}>
-        <img className={styles.photo} src="./photo.png" alt="photo" />
+        <img className={styles.photo} src="./cv.jpg" alt="photo" />
         <h1>BUSIRIS THÉO</h1>
         <h3 className={styles.title}>
             {[...title].map((char, index) => (
