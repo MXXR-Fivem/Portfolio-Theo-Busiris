@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./Portfolio.module.css"
-import { AiOutlineHdd, AiOutlineExport } from "react-icons/ai";
+import { AiOutlineExport } from "react-icons/ai";
 import { SiFivem } from "react-icons/si";
 import { IoShareSocialOutline } from "react-icons/io5";
 
@@ -18,7 +18,8 @@ export default function () {
                 </h4>
                 <p className={styles.text}>
                     Since 4 years, I have my own FiveM store to sell Lua scripts.
-                    There are 450+ customers and 1600+ sells.
+                    <br/>
+                    There are more than 450 customers and 1600 sells.
                 </p>
                 <div className={styles.tagContainer}>
                     <div className={styles.tag}>
@@ -37,7 +38,7 @@ export default function () {
                 </a>
             </div>
             <div className={styles.box}>
-                <div style={{"backgroundColor": "#3b82f6"}} className={styles.topBox}>
+                <div style={{"background": "linear-gradient(135deg,rgb(156, 0, 255) 0%,rgb(42, 79, 226) 50%,rgb(0, 255, 255) 100%)"}} className={styles.topBox}>
                     <IoShareSocialOutline style={{"transform":"scale(2)", "color":"white"}}/>
                 </div>
                 <h4 className={styles.topTitle}>

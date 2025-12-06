@@ -2,7 +2,8 @@
     .body {
         width: 90%;
         box-shadow: 0 0 2px 2px rgb(232, 232, 232);
-        border-radius: 5px;
+        border-radius: 7.5px;
+        padding: 1.5%;
         min-height: 5vh;
         height: auto;
         display: flex;
@@ -37,7 +38,7 @@
         width: 45%;
         min-height: 12.5vh;
         height: auto;
-        border-radius: 5px;
+        border-radius: 10px;
         margin-bottom: 2%;
         perspective: 1000px;
         cursor: pointer;
@@ -75,7 +76,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        border-radius: 5px;
+        border-radius: 10px;
         backface-visibility: hidden;
         display: flex;
         align-items: center;
@@ -120,7 +121,7 @@
     .body {
         width: 70%;
         box-shadow: 0 0 2px 2px rgb(232, 232, 232);
-        border-radius: 5px;
+        border-radius: 7.5px;
         min-height: 5vh;
         height: auto;
         display: flex;
@@ -131,16 +132,16 @@
         display: flex;
         justify-content: flex-start;
         align-items: baseline;
-        margin: 5% 5% 0 4%;
+        margin: 5% 5% 0 3.6%;
     }
 
     .profileIcon {
         transform: scale(1.75);
-        margin-right: 2%;
+        margin-right: 1.45%;
     }
 
     .aboutMeParagraph {
-        margin: 3% 4%;
+        margin: 3% 3.25%;
         font-size: large;
     }
 
@@ -157,7 +158,7 @@
         width: 45%;
         min-height: 12.5vh;
         height: auto;
-        border-radius: 5px;
+        border-radius: 10px;
         margin-bottom: 2%;
         perspective: 1000px;
         cursor: pointer;
@@ -195,7 +196,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        border-radius: 5px;
+        border-radius: 10px;
         backface-visibility: hidden;
         display: flex;
         align-items: center;

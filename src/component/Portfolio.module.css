@@ -9,7 +9,8 @@
 
     .box {
         box-shadow: 0 0 2px 2px rgb(232, 232, 232);
-        border-radius: 5px;
+        border-radius: 7.5px;
+        padding: 1.5%;
         min-height: 5vh;
         width: 100%;
         padding-bottom: 2.5%;
@@ -23,7 +24,7 @@
         height: auto;
         padding: 2vh 2vh;
         margin: 5% 5% 0 5%;
-        border-radius: 5px;
+        border-radius: 8px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -115,7 +116,7 @@
 
     .box {
         box-shadow: 0 0 2px 2px rgb(232, 232, 232);
-        border-radius: 5px;
+        border-radius: 7.5px;
         min-height: 5vh;
         width: 100%;
         padding-bottom: 2.5%;
@@ -129,7 +130,7 @@
         height: auto;
         padding: 2vh 2vh;
         margin: 5% 5% 0 5%;
-        border-radius: 5px;
+        border-radius: 8px;
         display: flex;
         justify-content: center;
         align-items: center;

@@ -14,9 +14,10 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
+        padding: 1.75%;
         min-height: 5vh;
         box-shadow: 0 0 2px 2px rgb(232, 232, 232);
-        border-radius: 5px;
+        border-radius: 7.5px;
         transition: 0.2s;
     }
 
@@ -70,7 +71,7 @@
         width: 100%;
         min-height: 5vh;
         box-shadow: 0 0 2px 2px rgb(232, 232, 232);
-        border-radius: 5px;
+        border-radius: 7.5px;
         transition: 0.2s;
     }
 

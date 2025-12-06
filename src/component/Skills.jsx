@@ -75,7 +75,7 @@ export default function Skills () {
 
     return (
         <>
-            <h2 style={{"textAlign": "center", "margin": "-1.5vh 0 -3.5vh 0"}}>
+            <h2 style={{"textAlign": "center", "margin": "0 0 -3.5vh 0"}}>
                 Skills & Expertise
             </h2>
             <div className={styles.body}>

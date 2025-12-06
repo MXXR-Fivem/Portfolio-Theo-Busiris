@@ -42,10 +42,11 @@ export default function AboutMe() {
             </div>
             <p className={styles.aboutMeParagraph}>
                 I have been passionate about computers and development since I was 11 years old,
-                and I have always had this curiosity for new technologies.
-                <br />
-                <br />
-                Even today I challenge myself on new projects in order to acquire new skills.
+                and I have always been curious about new technologies.  
+                <br/>
+                <br/>
+                Top of the class during the intensive coding bootcamp, I enjoy constantly challenging myself with new projects to acquire skills and push my limits.
+                I also love attending tech keynotes and events, sharing ideas, and staying inspired by the latest innovations in the industry.
             </p>
             <div className={styles.container}>
                 {boxColors.map((color, index) => (
