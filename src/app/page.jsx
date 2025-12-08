@@ -9,8 +9,8 @@ import Form from "@/component/Form";
 import Testimonials from "@/component/Testimonials";
 import Skills from "@/component/Skills";
 import Portfolio from "@/component/Portfolio";
-import {Analytics} from "@vercel/analytics/next"
-import {SpeedInsights} from "@vercel/speed-insights/next"
+import {Analytics} from "@vercel/analytics/next";
+import {SpeedInsights} from "@vercel/speed-insights/next";
 
 export default function Home() {
     const [showInterview, setShowInterview] = useState(false);

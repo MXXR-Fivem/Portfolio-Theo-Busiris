@@ -62,7 +62,7 @@ export default function () {
                         <p className={styles.tagText}>DevOps</p>
                     </div>
                 </div>
-                <a href="https://mxxr.tebex.io" target="_blank" className={styles.lowButton}>
+                <a href="https://inspir.busiristheo.com/" target="_blank" className={styles.lowButton}>
                     <AiOutlineExport className={styles.lowIcon}/>
                     <p className={styles.lowButtonText}>Learn More</p>
                 </a>
