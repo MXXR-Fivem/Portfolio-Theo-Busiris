@@ -1,3 +1,7 @@
+.body {
+    background-color: white;
+}
+
 @media (max-width: 767px) {
     .header {
         display: flex;

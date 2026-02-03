@@ -1,3 +1,7 @@
+.testimonial {
+    background-color: white;
+}
+
 @media (max-width: 767px) {
     .body {
         width: 90%;
@@ -16,7 +20,7 @@
         width: 100%;
         padding: 1.75%;
         min-height: 5vh;
-        box-shadow: 0 0 2px 2px rgb(232, 232, 232);
+        box-shadow: 0 0 5px 2px rgb(212, 212, 212);
         border-radius: 7.5px;
         transition: 0.2s;
     }
@@ -70,7 +74,7 @@
         align-items: flex-start;
         width: 100%;
         min-height: 5vh;
-        box-shadow: 0 0 2px 2px rgb(232, 232, 232);
+        box-shadow: 0 0 5px 2px rgb(212, 212, 212);
         border-radius: 7.5px;
         transition: 0.2s;
     }

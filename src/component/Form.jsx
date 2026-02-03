@@ -105,7 +105,7 @@ export default function Form () {
                     />
                 </div>
 
-                <div className={styles.formContent}>
+                {/* <div className={styles.formContent}>
                     <label className={styles.label} htmlFor="phone">
                         Phone number :
                     </label>
@@ -120,7 +120,7 @@ export default function Form () {
                         className={styles.input}
                         required
                     />
-                </div>
+                </div> */}
 
                 <div className={styles.formContent}>
                     <label className={styles.label} htmlFor="reason">

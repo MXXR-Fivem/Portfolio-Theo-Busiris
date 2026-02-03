@@ -46,9 +46,23 @@ export default function Skills () {
             color: "#0f172a",
             title: "Technical skills",
             skills: [
-                {name: "Lua", percent: 80},
-                {name: "Python", percent: 71},
-                {name: "WEB Stack (HTML/CSS/JavaScript/SQL)", percent: 74},
+                {name: "Rust", percent: 35},
+                {name: "Web (NextJs / React) & TypeScript", percent: 80},
+                {name: "Mobile (React Native / Expo)", percent: 72},
+                {name: "Python", percent: 75},
+                {name: "Lua", percent: 81},
+            ],
+        },
+        {
+            icon: <BiWorld />,
+            color: "#3b82f6",
+            title: "Project management",
+            skills: [
+                {name: "Communication", percent: 87},
+                {name: "Team Collaboration", percent: 85},
+                {name: "Problem Solving", percent: 91},
+                {name: "Notion", percent: 72},
+                {name: "Git", percent: 70},
             ],
         },
         {
@@ -56,19 +70,9 @@ export default function Skills () {
             color: "#10b981",
             title: "Creative skills",
             skills: [
-                {name: "Photoshop", percent: 51},
-                {name: "Première Pro", percent: 45},
-                {name: "Figma", percent: 68},
-            ],
-        },
-        {
-            icon: <BiWorld />,
-            color: "#3b82f6",
-            title: "Soft skills",
-            skills: [
-                {name: "Communication", percent: 87},
-                {name: "Team Collaboration", percent: 85},
-                {name: "Problem Solving", percent: 91},
+                {name: "Figma", percent: 80},
+                {name: "Photoshop", percent: 60},
+                {name: "Première Pro", percent: 55},
             ],
         },
     ];
