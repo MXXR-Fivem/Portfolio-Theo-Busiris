@@ -8,13 +8,7 @@
         padding: 0 2.5vh;
         margin: .6vh 1%;
         width: 95%;
-        box-shadow: 0 0 2.5px 2.5px rgb(222, 222, 222);
         transition: 0.2s;
-    }
-
-    .iconTextButton:hover {
-        transform: scale(1.025);
-        transform: translateY(-5);
     }
 
     .iconButton {
@@ -38,7 +32,6 @@
         padding: 0 2.5vh;
         margin: 0 0 1vh 1%;
         width: auto;
-        box-shadow: 0 0 3.5px 3.5px rgb(216, 216, 216);
         cursor: pointer;
         transition: 0.2s;
     }

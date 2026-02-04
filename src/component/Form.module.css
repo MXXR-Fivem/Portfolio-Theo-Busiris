@@ -45,6 +45,7 @@
         width: 92.5%;
         border-width: 0;
         box-shadow: 0 0 2.5px 2.5px rgb(222, 222, 222);
+        min-height: 1.5rem;
         border-radius: 4px;
         resize: none;
     }
@@ -60,7 +61,7 @@
 
     .button {
         width: 92.5%;
-        height: 3.5vh;
+        height: 4.5vh;
         background-color: #0f172a;
         color: white;
         border: none;
