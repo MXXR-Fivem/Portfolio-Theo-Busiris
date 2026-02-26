@@ -25,7 +25,7 @@ export default function () {
             icon: <BiTennisBall style={{"transform":"scale(1.9)", "color":"white"}}/>,
             background: "#6cd45a",
             title: "Padel Hub mobile app",
-            description: "Padel.hub is a padel-first social web app that centralizes everything players need in one place: A padel-only feed (short posts, clips, links), community features (DMs and groups to organize games), and a booking hub to find courts and coaches.\nIt also includes an activity-style recap (Strava-like) and a knowledge space for rules and simple strategies.\nThe goal is to keep users engaged with focused, high-signal padel content while making it easy to turn scrolling into real sessions on court.",
+            description: "Padel.hub is a padel-first social web app that centralizes everything players need in one place: A padel-only feed (short posts, clips, links), community features (DMs and groups to organize games), and a booking hub to find courts and coaches. It also includes an activity-style recap (Strava-like) and a knowledge space for rules and simple strategies. The goal is to keep users engaged with focused, high-signal padel content while making it easy to turn scrolling into real sessions on court.",
             tags: ["React Native", "Docker", "Expo"],
             link: "https://github.com/MXXR-Fivem/Padel-hub",
             image: "./padel_hub.png",
