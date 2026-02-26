@@ -3,6 +3,7 @@
 import styles from "./Portfolio.module.css"
 import { AiOutlineExport } from "react-icons/ai";
 import { SiFivem } from "react-icons/si";
+import { BiTennisBall } from "react-icons/bi";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { FaFolderOpen } from "react-icons/fa6";
 import { LuTrees } from "react-icons/lu";
@@ -21,8 +22,18 @@ export default function () {
         },
         {
             id: 2,
+            icon: <BiTennisBall style={{"transform":"scale(1.9)", "color":"white"}}/>,
+            background: "#6cd45a",
+            title: "Padel Hub mobile app",
+            description: "Padel.hub is a padel-first social web app that centralizes everything players need in one place: A padel-only feed (short posts, clips, links), community features (DMs and groups to organize games), and a booking hub to find courts and coaches.\nIt also includes an activity-style recap (Strava-like) and a knowledge space for rules and simple strategies.\nThe goal is to keep users engaged with focused, high-signal padel content while making it easy to turn scrolling into real sessions on court.",
+            tags: ["React Native", "Docker", "Expo"],
+            link: "https://github.com/MXXR-Fivem/Padel-hub",
+            image: "./padel_hub.png",
+        },
+        {
+            id: 3,
             icon: <LuTrees style={{"transform":"scale(1.9)", "color":"white"}}/>,
-            background: "linear-gradient(135deg,rgb(144, 219, 126) 0%,rgb(98, 184, 64) 50%,rgb(32, 134, 40) 100%)",
+            background: "linear-gradient(135deg,rgb(157, 237, 136) 0%,rgb(117, 203, 83) 50%,rgb(43, 173, 54) 100%)",
             title: "Eco-Go — Environmental Action Comparator for Municipalities",
             description: "This project was created for the Data & Climate hackathon (Epitech × The Shifters) ahead of the 2026 municipal elections. Goal: measure, visualize, and compare environmental actions of French municipalities (mobility, energy, sobriety, biodiversity, waste, etc.) using public data, and make them easy to understand for citizens through a clear and accessible interface.",
             tags: ["React Native", "Expo", "Docker"],
@@ -30,7 +41,7 @@ export default function () {
             image: "./ecogo.png",
         },
         {
-            id: 3,
+            id: 4,
             icon: <IoShareSocialOutline style={{"transform":"scale(1.9)", "color":"white"}}/>,
             background: "linear-gradient(135deg,rgb(156, 0, 255) 0%,rgb(42, 79, 226) 50%,rgb(0, 255, 255) 100%)",
             title: "To-do list Social Network",
