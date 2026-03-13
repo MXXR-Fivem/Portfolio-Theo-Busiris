@@ -42,6 +42,17 @@ export default function () {
         },
         {
             id: 4,
+            icon: <LuTrees style={{"transform":"scale(1.9)", "color":"white"}}/>,
+            background: "linear-gradient(135deg,rgb(96, 80, 234) 0%,rgb(60, 44, 233) 50%,rgb(29, 2, 162) 100%)",
+            title: "Tardis - Visualisation of expected delay for SNCF trains",
+            description: "Visualization of the expected train delay for SNCF using the TARDIS project, highlighting delay patterns and trends through exploratory data analysis and modeling.",
+            tags: ["Data/IA", "Python", "Machine Learning"],
+            link: "https://sncf-train-delay-epitech.streamlit.app/",
+            repository: "https://github.com/MXXR-Fivem/SNCF-train-delay-prediction",
+            image: "./tardis.png",
+        },
+        {
+            id: 5,
             icon: <IoShareSocialOutline style={{"transform":"scale(1.9)", "color":"white"}}/>,
             background: "linear-gradient(135deg,rgb(156, 0, 255) 0%,rgb(42, 79, 226) 50%,rgb(0, 255, 255) 100%)",
             title: "To-do list Social Network",

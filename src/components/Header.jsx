@@ -1,8 +1,8 @@
 "use client";
 
 import styles from "./Header.module.css";
-import RoundedText from "@/component/RoundedText";
-import IconTextButton from "@/component/IconTextButton";
+import RoundedText from "@/components/RoundedText";
+import IconTextButton from "@/components/IconTextButton";
 
 export default function Home({onClick}) {
     const title = "First-year student at Epitech";
