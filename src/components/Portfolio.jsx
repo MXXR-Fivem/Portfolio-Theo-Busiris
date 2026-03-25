@@ -4,6 +4,7 @@ import styles from "./Portfolio.module.css"
 import { AiOutlineExport } from "react-icons/ai";
 import { SiFivem } from "react-icons/si";
 import { BiTennisBall } from "react-icons/bi";
+import { TiShoppingCart } from "react-icons/ti";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { FaFolderOpen } from "react-icons/fa6";
 import { LuTrees } from "react-icons/lu";
@@ -53,6 +54,17 @@ export default function () {
         },
         {
             id: 5,
+            icon: <TiShoppingCart style={{"transform":"scale(1.9)", "color":"white"}}/>,
+            background: "linear-gradient(135deg,rgb(221, 74, 226) 0%,rgb(252, 244, 87) 100%,rgb(255, 228, 120) 100%)",
+            title: "NextBuy - From raw data to smart decisions",
+            description: "NextBuy is the result of a business research analysing the habits and tendencies in the data of a supermarket. Using data analysis and machine learning, it present some meaningful insight on the state of the market and some ways to optimize marketing and promotion.",
+            tags: ["Data/IA", "Python", "Business analyse"],
+            link: "https://shop-business-analyses-epitech.streamlit.app/",
+            repository: "https://github.com/MXXR-Fivem/Shop-business-analyses",
+            image: "./nextbuy.png",
+        },
+        {
+            id: 6,
             icon: <IoShareSocialOutline style={{"transform":"scale(1.9)", "color":"white"}}/>,
             background: "linear-gradient(135deg,rgb(156, 0, 255) 0%,rgb(42, 79, 226) 50%,rgb(0, 255, 255) 100%)",
             title: "To-do list Social Network",
