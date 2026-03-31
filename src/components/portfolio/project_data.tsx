@@ -1,0 +1,96 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { SiFivem } from "react-icons/si";
+import { BiTennisBall } from "react-icons/bi";
+import { TiShoppingCart } from "react-icons/ti";
+import { IoShareSocialOutline } from "react-icons/io5";
+import { LuTrees } from "react-icons/lu";
+
+export type Project = {
+    id: number;
+    icon: ReactNode;
+    background: string;
+    title: string;
+    description: string;
+    tags: string[];
+    link: string;
+    image: string;
+    repository?: string;
+};
+
+export const PROJECTS_INITIAL: Project[] = [
+    {
+        id: 1,
+        icon: <SiFivem style={{ transform: "scale(1.9)", color: "white" }} />,
+        background: "#ffa600",
+        title: "FiveM script store",
+        description:
+        "Since 4 years, I have my own FiveM store to sell Lua scripts.\nThere are more than 450 customers and 1,600 sells.\n-Shop : Tebex\n-Communication : Youtube / Discord (+1700 members)\n-Scripts : Lua / Ts / SQL",
+        tags: ["Scripting", "Own Business", "Support"],
+        link: "https://mxxr.tebex.io",
+        image: "./mxxrshop.png",
+    },
+    {
+        id: 2,
+        icon: <BiTennisBall style={{ transform: "scale(1.9)", color: "white" }} />,
+        background: "#6cd45a",
+        title: "Padel Hub mobile app",
+        description:
+        "Padel.hub is a padel-first social web app that centralizes everything players need in one place: A padel-only feed (short posts, clips, links), community features (DMs and groups to organize games), and a booking hub to find courts and coaches. It also includes an activity-style recap (Strava-like) and a knowledge space for rules and simple strategies. The goal is to keep users engaged with focused, high-signal padel content while making it easy to turn scrolling into real sessions on court.",
+        tags: ["React Native", "Docker", "Expo"],
+        link: "https://github.com/MXXR-Fivem/Padel-hub",
+        image: "./padel_hub.png",
+    },
+    {
+        id: 3,
+        icon: <LuTrees style={{ transform: "scale(1.9)", color: "white" }} />,
+        background:
+        "linear-gradient(135deg,rgb(157, 237, 136) 0%,rgb(117, 203, 83) 50%,rgb(43, 173, 54) 100%)",
+        title: "Eco-Go — Environmental Action Comparator for Municipalities",
+        description:
+        "This project was created for the Data & Climate hackathon (Epitech × The Shifters) ahead of the 2026 municipal elections. Goal: measure, visualize, and compare environmental actions of French municipalities (mobility, energy, sobriety, biodiversity, waste, etc.) using public data, and make them easy to understand for citizens through a clear and accessible interface.",
+        tags: ["React Native", "Expo", "Docker"],
+        link: "https://github.com/MXXR-Fivem/Hackathon-Data-Climate-TheShifters-Epitech",
+        image: "./ecogo.png",
+    },
+    {
+        id: 4,
+        icon: <LuTrees style={{ transform: "scale(1.9)", color: "white" }} />,
+        background:
+        "linear-gradient(135deg,rgb(96, 80, 234) 0%,rgb(60, 44, 233) 50%,rgb(29, 2, 162) 100%)",
+        title: "Tardis - Visualisation of expected delay for SNCF trains",
+        description:
+        "Visualization of the expected train delay for SNCF using the TARDIS project, highlighting delay patterns and trends through exploratory data analysis and modeling.",
+        tags: ["Data/IA", "Python", "Machine Learning"],
+        link: "https://sncf-train-delay-epitech.streamlit.app/",
+        repository: "https://github.com/MXXR-Fivem/SNCF-train-delay-prediction",
+        image: "./tardis.png",
+    },
+    {
+        id: 5,
+        icon: <TiShoppingCart style={{ transform: "scale(1.9)", color: "white" }} />,
+        background:
+        "linear-gradient(135deg,rgb(221, 74, 226) 0%,rgb(252, 244, 87) 100%,rgb(255, 228, 120) 100%)",
+        title: "NextBuy - From raw data to smart decisions",
+        description:
+        "NextBuy is the result of a business research analysing the habits and tendencies in the data of a supermarket. Using data analysis and machine learning, it present some meaningful insight on the state of the market and some ways to optimize marketing and promotion.",
+        tags: ["Data/IA", "Python", "Business analyse"],
+        link: "https://shop-business-analyses-epitech.streamlit.app/",
+        repository: "https://github.com/MXXR-Fivem/Shop-business-analyses",
+        image: "./nextbuy.png",
+    },
+    {
+        id: 6,
+        icon: <IoShareSocialOutline style={{ transform: "scale(1.9)", color: "white" }} />,
+        background:
+        "linear-gradient(135deg,rgb(156, 0, 255) 0%,rgb(42, 79, 226) 50%,rgb(0, 255, 255) 100%)",
+        title: "To-do list Social Network",
+        description:
+        "My first fullstack website, made in 3 weeks as part of a school project. \n- Frontend : Next js with React \n- Backend : Express js \n- Database : Mysql \n- Deployement : VM with Docker configuration",
+        tags: ["React / NextJs", "Express Js", "Docker"],
+        link: "https://inspir.busiristheo.com/",
+        image: "./inspir.png",
+        repository: "https://github.com/MXXR-Fivem/Inspir-Social-to-do-list-website",
+    },
+];

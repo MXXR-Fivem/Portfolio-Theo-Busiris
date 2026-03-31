@@ -47,10 +47,10 @@ export default function Skills () {
             title: "Technical skills",
             skills: [
                 {name: "Rust", percent: 35},
-                {name: "Web (NextJs / React) & TypeScript", percent: 80},
+                {name: "Web (NextJs / React) & TypeScript", percent: 75},
                 {name: "Mobile (React Native / Expo)", percent: 72},
-                {name: "Python", percent: 75},
-                {name: "Lua", percent: 81},
+                {name: "Python", percent: 80},
+                {name: "Lua", percent: 85},
             ],
         },
         {
@@ -71,7 +71,7 @@ export default function Skills () {
             title: "Creative skills",
             skills: [
                 {name: "Figma", percent: 80},
-                {name: "Photoshop", percent: 60},
+                {name: "Photoshop", percent: 50},
                 {name: "Première Pro", percent: 55},
             ],
         },

@@ -26,8 +26,8 @@ export default function AboutMe() {
     };
 
     const boxContents = [
-        {icon: 1, text: "Major Projects", number: "2"},
-        {icon: 2, text: "Years experience", number: "3"},
+        {icon: 1, text: "Major Projects", number: "3"},
+        {icon: 2, text: "Years experience", number: "4"},
         {icon: 3, text: "Customer satisfaction", number: "94%"},
         {icon: 4, text: "Can of redbull", number: "∞"},
     ];
@@ -47,6 +47,9 @@ export default function AboutMe() {
                 <br/>
                 Top of the class during the intensive coding bootcamp, I enjoy constantly challenging myself with new projects to acquire skills and push my limits.
                 I also love attending tech keynotes and events, sharing ideas, and staying inspired by the latest innovations in the industry.
+                <br/>
+                <br/>
+                My curiosity pushes me to constantly surpass myself, discover new horizons to innovate.
             </p>
             <div className={styles.container}>
                 {boxColors.map((color, index) => (
