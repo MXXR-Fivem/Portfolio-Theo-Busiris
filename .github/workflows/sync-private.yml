@@ -1,0 +1,29 @@
+name: Sync public portfolio repo to private Epitech repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout public repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to private repo
+        env:
+          TARGET_REPO: github.com/EpitechBachelorPromo2028/B-POR-200-PAR-1-1-portfolio-20
+          TARGET_TOKEN: ${{ secrets.PRIVATE_REPO_SYNC_TOKEN }}
+        run: |
+          git config user.name "Theo Busiris"
+          git config user.email "theo.busiris@epitech.eu"
+
+          git remote add private "https://x-access-token:${TARGET_TOKEN}@${TARGET_REPO}"
+
+          git push private main --force
+          git push private --tags --force
