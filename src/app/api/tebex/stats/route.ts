@@ -102,8 +102,7 @@ export async function GET() {
             },
         });
     } catch (error) {
-        const message =
-        error instanceof Error ? error.message : "Unknown Tebex error";
+        const message = error instanceof Error ? error.message : "Unknown Tebex error";
 
         return NextResponse.json({ error: message }, { status: 500 });
     }
