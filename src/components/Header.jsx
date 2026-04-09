@@ -31,9 +31,10 @@ export default function Home({onClick}) {
                 <RoundedText data={{icon: 1, text: "Paris, France"}}/>
             </div>
             <div className={styles.iconTextButtons}>
-                <IconTextButton data={{icon: 1, text: "LinkedIn", iconColor: "white", backgroundColor: "#0A66C2", border: "none", link: "https://linkedin.com/in/theobusiris"}}/>
-                <IconTextButton data={{icon: 2, text: "Github", iconColor: "black", backgroundColor: "white", border: "1px solid black", link: "https://github.com/MXXR-Fivem"}}/>
-                <IconTextButton data={{icon: 3, text: "Interview", iconColor: "white", backgroundColor: "#0f172a", border: "none"}} onClick={onClick}/>
+                <IconTextButton data={{icon: 1, text: "LinkedIn", iconColor: "white", backgroundColor: "#0A66C2", border: "none", href: "https://linkedin.com/in/theobusiris"}}/>
+                <IconTextButton data={{icon: 2, text: "Github", iconColor: "black", backgroundColor: "white", border: "1px solid black", href: "https://github.com/MXXR-Fivem"}}/>
+                <IconTextButton data={{icon: 3, text: "CV", iconColor: "black", backgroundColor: "white", border: "1px solid black", href: "./cv_no_stage_no_num.pdf"}}/>
+                <IconTextButton data={{icon: 4, text: "Interview", iconColor: "white", backgroundColor: "#0f172a", border: "none"}} onClick={onClick}/>
             </div>
         </div>
     );

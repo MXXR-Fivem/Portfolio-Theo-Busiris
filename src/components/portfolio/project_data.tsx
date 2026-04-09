@@ -6,6 +6,7 @@ import { BiTennisBall } from "react-icons/bi";
 import { TiShoppingCart } from "react-icons/ti";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { LuTrees } from "react-icons/lu";
+import { FaBookBookmark } from "react-icons/fa6";
 
 export type Project = {
     id: number;
@@ -92,5 +93,18 @@ export const PROJECTS_INITIAL: Project[] = [
         link: "https://inspir.busiristheo.com/",
         image: "./inspir.png",
         repository: "https://github.com/MXXR-Fivem/Inspir-Social-to-do-list-website",
+    },
+    {
+        id: 7,
+        icon: <FaBookBookmark style={{ transform: "scale(1.9)", color: "white" }} />,
+        background:
+        "linear-gradient(135deg, #c6269e 0%,rgb(181, 4, 160) 50%,rgb(203, 0, 61) 100%)",
+        title: "NLP - Book classification",
+        description:
+        "For this project, we 'joined' Through the Looking-Glass — a startup building a lightweight tool that creates ”book cards” to help publishers and editors quickly make sense of Wonderland's endless library, without having to read the books entirely.. The challenge is to develop a prototype NLP engine performing operations on books from Project Gutenberg through dedicated CLI commands.",
+        tags: ["NLP", "Python", "IA"],
+        link: "https://nlp-book-classification-epitech.streamlit.app/",
+        image: "./alice.png",
+        repository: "https://github.com/MXXR-Fivem/NLP-Book-classification",
     },
 ];
