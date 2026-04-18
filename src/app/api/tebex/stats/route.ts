@@ -8,6 +8,7 @@ type TebexPayment = {
     player?: {
         id?: string | number;
     };
+    status?: string | { description?: string };
 };
 
 type TebexPaymentsResponse = {
@@ -20,6 +21,19 @@ type TebexStatsResponse = {
     totalSales: number;
     totalCustomers: number;
 };
+
+function getPaymentStatus(payment: TebexPayment): string {
+    const rawStatus =
+        typeof payment.status === "string"
+            ? payment.status
+            : payment.status?.description;
+
+    return rawStatus?.trim().toLowerCase() || "";
+}
+
+function isCompletedPayment(payment: TebexPayment): boolean {
+    return getPaymentStatus(payment) === "complete";
+}
 
 async function fetchPaymentsPage(page: number): Promise<TebexPaymentsResponse> {
     const response = await fetch(`${TEBEX_BASE_URL}${page}`, {
@@ -47,6 +61,10 @@ function addUniqueCustomers(
     }
 
     for (const payment of payments) {
+        if (!isCompletedPayment(payment)) {
+            continue;
+        }
+
         const playerId = payment.player?.id;
         const email = payment.email?.trim().toLowerCase();
 
@@ -71,9 +89,8 @@ export async function GET() {
 
     try {
         const firstPage = await fetchPaymentsPage(1);
-
-        const totalSales = Number(firstPage.total || 0);
         const lastPage = Number(firstPage.last_page || 1);
+        let totalSales = (firstPage.data || []).filter(isCompletedPayment).length;
 
         const uniqueCustomers = new Set<string>();
         addUniqueCustomers(firstPage.data, uniqueCustomers);
@@ -86,6 +103,7 @@ export async function GET() {
             );
 
             for (const page of remainingPages) {
+                totalSales += (page.data || []).filter(isCompletedPayment).length;
                 addUniqueCustomers(page.data, uniqueCustomers);
             }
         }

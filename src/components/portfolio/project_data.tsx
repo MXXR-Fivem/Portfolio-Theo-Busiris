@@ -27,7 +27,7 @@ export const PROJECTS_INITIAL: Project[] = [
         background: "#ffa600",
         title: "FiveM script store",
         description:
-        "Since 4 years, I have my own FiveM store to sell Lua scripts.\nThere are more than 450 customers and 1,600 sells.\n-Shop : Tebex\n-Communication : Youtube / Discord (+1700 members)\n-Scripts : Lua / Ts / SQL",
+        "Since 4 years, I have my own FiveM store to sell Lua scripts.\nThere are more than 700 customers and 1,400 sells.\n-Shop : Tebex\n-Communication : Youtube / Discord (+1700 members)\n-Scripts : Lua / Ts / SQL",
         tags: ["Scripting", "Own Business", "Support"],
         link: "https://mxxr.tebex.io",
         image: "./mxxrshop.png",
