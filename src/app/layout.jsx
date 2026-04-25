@@ -1,28 +1,73 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
+const montserrat = localFont({
+    variable: "--font-heading",
+    src: [
+        {
+            path: "./fonts/Montserrat-Regular.otf",
+            weight: "400",
+            style: "normal",
+        },
+        {
+            path: "./fonts/Montserrat-Medium.otf",
+            weight: "500",
+            style: "normal",
+        },
+        {
+            path: "./fonts/Montserrat-SemiBold.otf",
+            weight: "600",
+            style: "normal",
+        },
+        {
+            path: "./fonts/Montserrat-Bold.otf",
+            weight: "700",
+            style: "normal",
+        },
+    ],
 });
 
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
+const sourceCodePro = localFont({
+    variable: "--font-code",
+    src: [
+        {
+            path: "./fonts/SourceCodePro-Regular.otf",
+            weight: "400",
+            style: "normal",
+        },
+        {
+            path: "./fonts/SourceCodePro-Medium.otf",
+            weight: "500",
+            style: "normal",
+        },
+        {
+            path: "./fonts/SourceCodePro-Bold.otf",
+            weight: "700",
+            style: "normal",
+        },
+    ],
 });
 
 export const metadata = {
-    title: "My Portfolio",
-    description: "Portfolio by Théo Busiris",
-    icons: {
-        icon: "/cv.jpeg",
-    }
+    title: "Théo Busiris | Fullstack & Mobile Developer",
+    description:
+        "Portfolio of Théo Busiris, Epitech Paris student building fullstack, mobile and backend products with a strong product mindset.",
+    metadataBase: new URL("https://www.busiristheo.com"),
+    openGraph: {
+        title: "Théo Busiris | Fullstack & Mobile Developer",
+        description:
+            "Fullstack, mobile and backend developer at Epitech Paris. Projects, skills, live business stats and contact.",
+        url: "https://www.busiristheo.com",
+        siteName: "Théo Busiris Portfolio",
+        locale: "en_US",
+        type: "website",
+    },
 };
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <html lang="en" className="scroll-smooth">
+            <body className={`${montserrat.variable} ${sourceCodePro.variable}`}>
                 {children}
             </body>
         </html>
