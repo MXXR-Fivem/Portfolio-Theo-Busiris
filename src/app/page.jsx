@@ -18,7 +18,7 @@ export default function Home() {
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:72px_72px] opacity-20" />
                 <SectionScrollController />
                 <Navbar />
-                <main className="relative z-10 pb-12">
+                <main className="relative z-10">
                     <Hero />
                     <About />
                     <Stats />

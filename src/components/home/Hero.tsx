@@ -146,33 +146,33 @@ export default function Hero() {
                     <div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:justify-center lg:justify-start lg:gap-4">
                         <Link
                             href="#projects"
-                            className="inline-flex items-center justify-center gap-2 rounded-full border border-cyan-300/35 bg-cyan-300/12 px-3 py-2 text-xs font-semibold text-cyan-50 transition hover:border-cyan-200/60 hover:bg-cyan-300/18 lg:px-6 lg:py-3 lg:text-sm"
+                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-cyan-300/35 bg-cyan-300/12 px-3 text-center text-xs font-semibold text-cyan-50 transition hover:border-cyan-200/60 hover:bg-cyan-300/18 sm:w-auto lg:h-auto lg:px-6 lg:py-3 lg:text-sm"
                         >
-                            View projects
-                            <FaArrowRight />
+                            <span className="truncate">View projects</span>
+                            <FaArrowRight className="shrink-0" />
                         </Link>
                         <Link
                             href="#contact"
-                            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/14 bg-white/5 px-3 py-2 text-xs font-semibold text-white transition hover:border-white/25 hover:bg-white/8 lg:px-6 lg:py-3 lg:text-sm"
+                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-white/14 bg-white/5 px-3 text-center text-xs font-semibold text-white transition hover:border-white/25 hover:bg-white/8 sm:w-auto lg:h-auto lg:px-6 lg:py-3 lg:text-sm"
                         >
-                            Contact me
-                            <LuMessageSquareCode />
+                            <span className="truncate">Contact me</span>
+                            <LuMessageSquareCode className="shrink-0" />
                         </Link>
                         <button
                             type="button"
                             onClick={() => setShowInterview(true)}
-                            className="inline-flex items-center justify-center gap-2 rounded-full border border-lime-300/30 bg-lime-300/10 px-3 py-2 text-xs font-semibold text-lime-100 transition hover:border-lime-200/50 hover:bg-lime-300/15 lg:px-6 lg:py-3 lg:text-sm"
+                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-lime-300/30 bg-lime-300/10 px-3 text-center text-xs font-semibold text-lime-100 transition hover:border-lime-200/50 hover:bg-lime-300/15 sm:w-auto lg:h-auto lg:px-6 lg:py-3 lg:text-sm"
                         >
-                            Interview
-                            <HiOutlinePlayCircle className="text-lg" />
+                            <span className="truncate">Interview</span>
+                            <HiOutlinePlayCircle className="shrink-0 text-lg" />
                         </button>
                         <Link
                             href={profile.cv}
                             target="_blank"
-                            className="inline-flex items-center justify-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-3 py-2 text-xs font-semibold text-sky-100 transition hover:border-sky-200/40 hover:bg-sky-300/15 lg:px-6 lg:py-3 lg:text-sm"
+                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-3 text-center text-xs font-semibold text-sky-100 transition hover:border-sky-200/40 hover:bg-sky-300/15 sm:w-auto lg:h-auto lg:px-6 lg:py-3 lg:text-sm"
                         >
-                            Download CV
-                            <HiOutlineArrowDownTray />
+                            <span className="truncate">Download CV</span>
+                            <HiOutlineArrowDownTray className="shrink-0" />
                         </Link>
                     </div>
 

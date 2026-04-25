@@ -65,9 +65,7 @@ export default function SectionScrollController() {
                 sections.length - 1
             );
 
-            if (nextIndex !== currentIndex) {
-                scrollToSection(nextIndex);
-            }
+            scrollToSection(nextIndex);
         }
 
         function onWheel(event: WheelEvent) {

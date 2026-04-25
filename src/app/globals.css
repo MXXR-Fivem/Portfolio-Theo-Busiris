@@ -36,6 +36,12 @@
     radial-gradient(ellipse at 21% 68%, rgba(112, 239, 22, 0.116), transparent 38rem),
     radial-gradient(ellipse at 75% 82%, rgba(54, 174, 221, 0.144), transparent 40rem),
     linear-gradient(180deg, #071217 0%, #0b1c22 34%, #08151b 68%, #0a1e25 100%);
+  --identity-mesh-mobile:
+    radial-gradient(ellipse at 10% 5%, rgba(45, 212, 191, 0.14), transparent 24rem),
+    radial-gradient(ellipse at 88% 18%, rgba(56, 189, 248, 0.12), transparent 22rem),
+    radial-gradient(ellipse at 18% 70%, rgba(163, 230, 53, 0.045), transparent 20rem),
+    radial-gradient(ellipse at 85% 86%, rgba(245, 158, 11, 0.07), transparent 20rem),
+    linear-gradient(180deg, #061116 0%, #0a1920 38%, #07141a 72%, #081a20 100%);
 }
 
 @theme {
@@ -111,7 +117,7 @@ textarea {
 
   main > section {
     display: flex;
-    min-height: 100svh;
+    min-height: 100dvh;
     flex-direction: column;
     justify-content: center;
     padding-block: clamp(0.95rem, 2.42svh, 1.5rem);
@@ -196,6 +202,13 @@ textarea {
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+@media (max-width: 767px) {
+  .site-backdrop {
+    background-image: var(--identity-mesh-mobile);
+    background-attachment: scroll;
+  }
 }
 
 @keyframes float-bubble-a {
