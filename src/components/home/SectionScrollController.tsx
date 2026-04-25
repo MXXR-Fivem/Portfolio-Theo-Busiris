@@ -6,6 +6,8 @@ const SCROLL_COOLDOWN_MS = 800;
 const MIN_WHEEL_DELTA = 36;
 const MIN_TOUCH_DELTA = 42;
 const WHEEL_GESTURE_RESET_MS = 140;
+const MOBILE_VIEWPORT_QUERY = "(max-width: 767px)";
+const WIDTH_RESET_THRESHOLD = 24;
 
 function isInteractiveTarget(target: EventTarget | null) {
     return target instanceof Element && Boolean(target.closest("input, textarea, select"));
@@ -15,12 +17,18 @@ function getSections() {
     return Array.from(document.querySelectorAll<HTMLElement>("main > section"));
 }
 
-function getViewportHeight() {
-    return window.visualViewport?.height ?? window.innerHeight;
+function measureViewportHeight() {
+    return Math.round(
+        Math.max(
+            window.innerHeight,
+            window.visualViewport?.height ?? 0,
+            document.documentElement.clientHeight
+        )
+    );
 }
 
 function getCurrentSectionIndex(sections: HTMLElement[]) {
-    const viewportAnchor = window.scrollY + getViewportHeight() * 0.42;
+    const viewportAnchor = window.scrollY + measureViewportHeight() * 0.42;
 
     let closestIndex = 0;
     let closestDistance = Number.POSITIVE_INFINITY;
@@ -44,15 +52,59 @@ export default function SectionScrollController() {
     const snapTimeoutRef = useRef<number | null>(null);
     const wheelDeltaRef = useRef(0);
     const wheelResetTimeoutRef = useRef<number | null>(null);
+    const resizeSnapFrameRef = useRef<number | null>(null);
+    const stableViewportHeightRef = useRef(0);
+    const viewportWidthRef = useRef(0);
     const touchStartYRef = useRef<number | null>(null);
     const touchTargetIsInteractiveRef = useRef(false);
 
     useEffect(() => {
-        function updateSectionHeight() {
+        const mobileViewport = window.matchMedia(MOBILE_VIEWPORT_QUERY);
+
+        function snapToActiveSection() {
+            const sections = getSections();
+            const target = sections[activeIndexRef.current];
+
+            if (!target) {
+                return;
+            }
+
+            if (resizeSnapFrameRef.current !== null) {
+                window.cancelAnimationFrame(resizeSnapFrameRef.current);
+            }
+
+            resizeSnapFrameRef.current = window.requestAnimationFrame(() => {
+                window.scrollTo({
+                    top: target.offsetTop,
+                    behavior: "auto",
+                });
+            });
+        }
+
+        function updateSectionHeight({ preserveSection = false } = {}) {
+            const measuredHeight = measureViewportHeight();
+            const measuredWidth = window.innerWidth;
+            const widthChanged =
+                Math.abs(measuredWidth - viewportWidthRef.current) > WIDTH_RESET_THRESHOLD;
+
+            if (!stableViewportHeightRef.current || widthChanged || !mobileViewport.matches) {
+                stableViewportHeightRef.current = measuredHeight;
+                viewportWidthRef.current = measuredWidth;
+            } else {
+                stableViewportHeightRef.current = Math.max(
+                    stableViewportHeightRef.current,
+                    measuredHeight
+                );
+            }
+
             document.documentElement.style.setProperty(
                 "--section-height",
-                `${Math.round(getViewportHeight())}px`
+                `${stableViewportHeightRef.current}px`
             );
+
+            if (preserveSection) {
+                snapToActiveSection();
+            }
         }
 
         function scrollToSection(index: number) {
@@ -217,12 +269,16 @@ export default function SectionScrollController() {
             activeIndexRef.current = getCurrentSectionIndex(sections);
         }
 
+        function onViewportResize() {
+            updateSectionHeight({ preserveSection: true });
+        }
+
         updateSectionHeight();
         window.addEventListener("wheel", onWheel, { passive: false });
         window.addEventListener("keydown", onKeyDown);
         window.addEventListener("scroll", onScroll, { passive: true });
-        window.addEventListener("resize", updateSectionHeight);
-        window.visualViewport?.addEventListener("resize", updateSectionHeight);
+        window.addEventListener("resize", onViewportResize);
+        window.visualViewport?.addEventListener("resize", onViewportResize);
         document.addEventListener("touchstart", onTouchStart, { passive: true, capture: true });
         document.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
         document.addEventListener("touchend", onTouchEnd, { capture: true });
@@ -231,8 +287,8 @@ export default function SectionScrollController() {
             window.removeEventListener("wheel", onWheel);
             window.removeEventListener("keydown", onKeyDown);
             window.removeEventListener("scroll", onScroll);
-            window.removeEventListener("resize", updateSectionHeight);
-            window.visualViewport?.removeEventListener("resize", updateSectionHeight);
+            window.removeEventListener("resize", onViewportResize);
+            window.visualViewport?.removeEventListener("resize", onViewportResize);
             document.removeEventListener("touchstart", onTouchStart, true);
             document.removeEventListener("touchmove", onTouchMove, true);
             document.removeEventListener("touchend", onTouchEnd, true);
@@ -241,6 +297,9 @@ export default function SectionScrollController() {
             }
             if (wheelResetTimeoutRef.current !== null) {
                 window.clearTimeout(wheelResetTimeoutRef.current);
+            }
+            if (resizeSnapFrameRef.current !== null) {
+                window.cancelAnimationFrame(resizeSnapFrameRef.current);
             }
         };
     }, []);
