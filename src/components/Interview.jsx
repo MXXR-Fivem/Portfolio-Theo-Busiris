@@ -1,9 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+
 export default function Interview({ onClick }) {
-    return (
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const dialog = (
         <div
-            className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-950/80 p-4"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/80 p-4"
             onClick={onClick}
             role="presentation"
         >
@@ -36,4 +45,10 @@ export default function Interview({ onClick }) {
             </div>
         </div>
     );
+
+    if (!mounted) {
+        return null;
+    }
+
+    return createPortal(dialog, document.body);
 }

@@ -99,6 +99,7 @@ function ProjectCard({ project }: { project: Project }) {
                                 src={project.image}
                                 alt={`${project.title} preview`}
                                 fill
+                                loading="eager"
                                 className="object-contain p-2 transition duration-500 group-hover:scale-[1.025] sm:p-3 lg:p-4"
                                 sizes="(max-width: 1023px) 100vw, 46vw"
                             />
@@ -155,6 +156,23 @@ export default function Projects() {
                         <div className={`project-swipe-card ${swipeState}`}>
                             <ProjectCard project={project} />
                         </div>
+                    </div>
+
+                    <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0"
+                    >
+                        {projects.map((preloadedProject) => (
+                            <Image
+                                key={preloadedProject.slug}
+                                src={preloadedProject.image}
+                                alt=""
+                                width={900}
+                                height={560}
+                                loading="eager"
+                                sizes="(max-width: 1023px) 100vw, 46vw"
+                            />
+                        ))}
                     </div>
 
                     <div className="mt-3 flex items-center justify-center gap-4 lg:mt-4 lg:gap-5">
