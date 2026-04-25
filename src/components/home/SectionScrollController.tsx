@@ -3,8 +3,9 @@
 import { useEffect, useRef } from "react";
 
 const SCROLL_COOLDOWN_MS = 800;
-const MIN_WHEEL_DELTA = 18;
+const MIN_WHEEL_DELTA = 36;
 const MIN_TOUCH_DELTA = 42;
+const WHEEL_GESTURE_RESET_MS = 140;
 
 function isInteractiveTarget(target: EventTarget | null) {
     return target instanceof Element && Boolean(target.closest("input, textarea, select"));
@@ -14,8 +15,12 @@ function getSections() {
     return Array.from(document.querySelectorAll<HTMLElement>("main > section"));
 }
 
+function getViewportHeight() {
+    return window.visualViewport?.height ?? window.innerHeight;
+}
+
 function getCurrentSectionIndex(sections: HTMLElement[]) {
-    const viewportAnchor = window.scrollY + window.innerHeight * 0.38;
+    const viewportAnchor = window.scrollY + getViewportHeight() * 0.42;
 
     let closestIndex = 0;
     let closestDistance = Number.POSITIVE_INFINITY;
@@ -34,22 +39,49 @@ function getCurrentSectionIndex(sections: HTMLElement[]) {
 
 export default function SectionScrollController() {
     const lockedUntilRef = useRef(0);
+    const activeIndexRef = useRef(0);
+    const isAnimatingRef = useRef(false);
+    const snapTimeoutRef = useRef<number | null>(null);
+    const wheelDeltaRef = useRef(0);
+    const wheelResetTimeoutRef = useRef<number | null>(null);
     const touchStartYRef = useRef<number | null>(null);
     const touchTargetIsInteractiveRef = useRef(false);
 
     useEffect(() => {
+        function updateSectionHeight() {
+            document.documentElement.style.setProperty(
+                "--section-height",
+                `${Math.round(getViewportHeight())}px`
+            );
+        }
+
         function scrollToSection(index: number) {
             const sections = getSections();
-            const target = sections[index];
+            const safeIndex = Math.min(Math.max(index, 0), sections.length - 1);
+            const target = sections[safeIndex];
 
             if (!target) {
                 return;
             }
 
+            activeIndexRef.current = safeIndex;
+            isAnimatingRef.current = true;
             window.scrollTo({
                 top: target.offsetTop,
                 behavior: "smooth",
             });
+
+            if (snapTimeoutRef.current !== null) {
+                window.clearTimeout(snapTimeoutRef.current);
+            }
+
+            snapTimeoutRef.current = window.setTimeout(() => {
+                window.scrollTo({
+                    top: target.offsetTop,
+                    behavior: "auto",
+                });
+                isAnimatingRef.current = false;
+            }, SCROLL_COOLDOWN_MS);
         }
 
         function goToSection(direction: 1 | -1) {
@@ -60,6 +92,7 @@ export default function SectionScrollController() {
             }
 
             const currentIndex = getCurrentSectionIndex(sections);
+            activeIndexRef.current = currentIndex;
             const nextIndex = Math.min(
                 Math.max(currentIndex + direction, 0),
                 sections.length - 1
@@ -77,16 +110,28 @@ export default function SectionScrollController() {
 
             event.preventDefault();
 
-            if (Math.abs(event.deltaY) < MIN_WHEEL_DELTA) {
-                return;
-            }
-
             if (now < lockedUntilRef.current) {
                 return;
             }
 
+            wheelDeltaRef.current += event.deltaY;
+
+            if (wheelResetTimeoutRef.current !== null) {
+                window.clearTimeout(wheelResetTimeoutRef.current);
+            }
+
+            wheelResetTimeoutRef.current = window.setTimeout(() => {
+                wheelDeltaRef.current = 0;
+            }, WHEEL_GESTURE_RESET_MS);
+
+            if (Math.abs(wheelDeltaRef.current) < MIN_WHEEL_DELTA) {
+                return;
+            }
+
+            const direction = wheelDeltaRef.current > 0 ? 1 : -1;
+            wheelDeltaRef.current = 0;
             lockedUntilRef.current = now + SCROLL_COOLDOWN_MS;
-            goToSection(event.deltaY > 0 ? 1 : -1);
+            goToSection(direction);
         }
 
         function onKeyDown(event: KeyboardEvent) {
@@ -158,18 +203,45 @@ export default function SectionScrollController() {
             goToSection(deltaY > 0 ? 1 : -1);
         }
 
+        function onScroll() {
+            const sections = getSections();
+
+            if (!sections.length) {
+                return;
+            }
+
+            if (isAnimatingRef.current) {
+                return;
+            }
+
+            activeIndexRef.current = getCurrentSectionIndex(sections);
+        }
+
+        updateSectionHeight();
         window.addEventListener("wheel", onWheel, { passive: false });
         window.addEventListener("keydown", onKeyDown);
-        window.addEventListener("touchstart", onTouchStart, { passive: true });
-        window.addEventListener("touchmove", onTouchMove, { passive: false });
-        window.addEventListener("touchend", onTouchEnd);
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", updateSectionHeight);
+        window.visualViewport?.addEventListener("resize", updateSectionHeight);
+        document.addEventListener("touchstart", onTouchStart, { passive: true, capture: true });
+        document.addEventListener("touchmove", onTouchMove, { passive: false, capture: true });
+        document.addEventListener("touchend", onTouchEnd, { capture: true });
 
         return () => {
             window.removeEventListener("wheel", onWheel);
             window.removeEventListener("keydown", onKeyDown);
-            window.removeEventListener("touchstart", onTouchStart);
-            window.removeEventListener("touchmove", onTouchMove);
-            window.removeEventListener("touchend", onTouchEnd);
+            window.removeEventListener("scroll", onScroll);
+            window.removeEventListener("resize", updateSectionHeight);
+            window.visualViewport?.removeEventListener("resize", updateSectionHeight);
+            document.removeEventListener("touchstart", onTouchStart, true);
+            document.removeEventListener("touchmove", onTouchMove, true);
+            document.removeEventListener("touchend", onTouchEnd, true);
+            if (snapTimeoutRef.current !== null) {
+                window.clearTimeout(snapTimeoutRef.current);
+            }
+            if (wheelResetTimeoutRef.current !== null) {
+                window.clearTimeout(wheelResetTimeoutRef.current);
+            }
         };
     }, []);
 

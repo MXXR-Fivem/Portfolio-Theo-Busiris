@@ -10,6 +10,7 @@
 # misc
 .DS_Store
 *.pem
+.codex
 
 # env files (can opt-in for committing if needed)
 .env*

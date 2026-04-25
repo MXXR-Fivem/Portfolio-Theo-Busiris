@@ -64,6 +64,11 @@ export const metadata = {
     },
 };
 
+export const viewport = {
+    colorScheme: "dark",
+    themeColor: "#061116",
+};
+
 export default function RootLayout({ children }) {
     return (
         <html lang="en" className="scroll-smooth">

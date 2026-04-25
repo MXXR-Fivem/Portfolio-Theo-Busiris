@@ -42,6 +42,7 @@
     radial-gradient(ellipse at 18% 70%, rgba(163, 230, 53, 0.045), transparent 20rem),
     radial-gradient(ellipse at 85% 86%, rgba(245, 158, 11, 0.07), transparent 20rem),
     linear-gradient(180deg, #061116 0%, #0a1920 38%, #07141a 72%, #081a20 100%);
+  --section-height: 100dvh;
 }
 
 @theme {
@@ -117,7 +118,7 @@ textarea {
 
   main > section {
     display: flex;
-    min-height: 100dvh;
+    min-height: var(--section-height);
     flex-direction: column;
     justify-content: center;
     padding-block: clamp(0.95rem, 2.42svh, 1.5rem);
@@ -205,6 +206,20 @@ textarea {
 }
 
 @media (max-width: 767px) {
+  html,
+  body {
+    scroll-snap-type: none;
+  }
+
+  main > section {
+    min-height: var(--section-height);
+    height: var(--section-height);
+  }
+
+  #projects {
+    overflow: hidden;
+  }
+
   .site-backdrop {
     background-image: var(--identity-mesh-mobile);
     background-attachment: scroll;
