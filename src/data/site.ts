@@ -102,7 +102,7 @@ export const projects: Project[] = [
     {
         slug: "padel-hub",
         title: "Padel Hub",
-        tagline: "A mobile product designed around a focused sports community.",
+        tagline: "A mobile product designed around padel community.",
         summary:
             "A padel-first social and booking experience bringing together posts, direct messages, groups, coaching discovery and match organization in one product.",
         problem:
