@@ -151,7 +151,7 @@ export default function Projects() {
                     align="center"
                 />
 
-                <div className="mx-auto max-w-6xl lg:max-w-[79rem]">
+                <div className="mx-auto max-w-6xl lg:max-w-[86.9rem]">
                     <div className="relative overflow-hidden px-0 py-1 sm:px-2 lg:px-3 lg:py-2">
                         <div className={`project-swipe-card ${swipeState}`}>
                             <ProjectCard project={project} />

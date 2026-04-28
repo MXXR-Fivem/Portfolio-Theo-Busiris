@@ -68,10 +68,10 @@ function FloatingBubble({
 
 function HeroScene() {
     return (
-        <div className="relative mx-auto min-h-[18.25rem] w-full max-w-[28rem] overflow-hidden rounded-[var(--identity-radius-panel)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-2.5 shadow-[var(--shadow-float)] sm:min-h-[15rem] md:min-h-[22rem] lg:min-h-[33rem] lg:max-w-[35rem] lg:p-5">
+        <div className="relative mx-auto min-h-[20rem] w-full max-w-[28rem] overflow-hidden rounded-[var(--identity-radius-panel)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-2.5 shadow-[var(--shadow-float)] sm:min-h-[15rem] md:min-h-[22rem] lg:min-h-[33rem] lg:max-w-[35rem] lg:p-5">
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.055)_1px,transparent_1px)] bg-[size:42px_42px] opacity-70" />
 
-            <div className="absolute left-1/2 top-1/2 z-10 w-[76%] max-w-[18rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[#091821] shadow-[var(--shadow-float)] lg:max-w-[22rem]">
+            <div className="absolute left-1/2 top-1/2 z-10 w-[76%] max-w-[19rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[#091821] shadow-[var(--shadow-float)] lg:max-w-[22rem]">
                 <div className="flex items-center gap-1.5 border-b border-white/10 px-3 py-2 lg:gap-2 lg:px-4 lg:py-3">
                     <span className="h-2 w-2 rounded-full bg-rose-400 lg:h-2.5 lg:w-2.5" />
                     <span className="h-2 w-2 rounded-full bg-amber-300 lg:h-2.5 lg:w-2.5" />
@@ -143,17 +143,17 @@ export default function Hero() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:justify-center lg:justify-start lg:gap-4">
+                    <div className="grid grid-cols-2 gap-1.5 md:flex md:flex-nowrap md:justify-center lg:flex-wrap lg:justify-start lg:gap-4">
                         <Link
                             href="#projects"
-                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-cyan-300/35 bg-cyan-300/12 px-3 text-center text-xs font-semibold text-cyan-50 transition hover:border-cyan-200/60 hover:bg-cyan-300/18 sm:w-auto lg:h-auto lg:px-6 lg:py-3 lg:text-sm"
+                            className="hidden lg:inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-cyan-300/35 bg-cyan-300/12 px-3 text-center text-xs font-semibold text-cyan-50 transition hover:border-cyan-200/60 hover:bg-cyan-300/18 sm:w-auto lg:h-auto lg:px-6 lg:py-3 lg:text-sm"
                         >
                             <span className="truncate">View projects</span>
                             <FaArrowRight className="shrink-0" />
                         </Link>
                         <Link
                             href="#contact"
-                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-white/14 bg-white/5 px-3 text-center text-xs font-semibold text-white transition hover:border-white/25 hover:bg-white/8 sm:w-auto lg:h-auto lg:px-6 lg:py-3 lg:text-sm"
+                            className="hidden lg:inline-flex  h-11 w-full items-center justify-center gap-2 rounded-full border border-white/14 bg-white/5 px-3 text-center text-xs font-semibold text-white transition hover:border-white/25 hover:bg-white/8 sm:w-auto lg:h-auto lg:px-6 lg:py-3 lg:text-sm"
                         >
                             <span className="truncate">Contact me</span>
                             <LuMessageSquareCode className="shrink-0" />
@@ -174,9 +174,25 @@ export default function Hero() {
                             <span className="truncate">Download CV</span>
                             <HiOutlineArrowDownTray className="shrink-0" />
                         </Link>
+                        <Link
+                            href={profile.github}
+                            target="_blank"
+                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 text-center text-xs font-semibold text-slate-200 transition hover:border-white/20 hover:bg-white/[0.07] sm:w-auto lg:hidden"
+                        >
+                            <FaGithub className="shrink-0 text-base" />
+                            <span className="truncate">GitHub</span>
+                        </Link>
+                        <Link
+                            href={profile.linkedin}
+                            target="_blank"
+                            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 text-center text-xs font-semibold text-slate-200 transition hover:border-white/20 hover:bg-white/[0.07] sm:w-auto lg:hidden"
+                        >
+                            <FaLinkedinIn className="shrink-0 text-base" />
+                            <span className="truncate">LinkedIn</span>
+                        </Link>
                     </div>
 
-                    <div className="hidden flex-wrap items-center gap-3 lg:flex">
+                    <div className="hidden flex-wrap items-center justify-center gap-3 lg:flex">
                         <Link
                             href={profile.github}
                             target="_blank"
@@ -195,7 +211,7 @@ export default function Hero() {
                         </Link>
                         <Link
                             href={`mailto:${profile.email}`}
-                            className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-200 transition hover:border-white/20 hover:bg-white/[0.07]"
+                            className="hidden lg:inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-200 transition hover:border-white/20 hover:bg-white/[0.07]"
                         >
                             {profile.email}
                         </Link>
