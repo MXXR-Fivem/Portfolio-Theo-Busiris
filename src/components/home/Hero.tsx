@@ -192,7 +192,7 @@ export default function Hero() {
                         </Link>
                     </div>
 
-                    <div className="hidden flex-wrap items-center justify-center gap-3 lg:flex">
+                    <div className="hidden flex-wrap items-center justify-center gap-3 lg:flex lg:justify-start">
                         <Link
                             href={profile.github}
                             target="_blank"
