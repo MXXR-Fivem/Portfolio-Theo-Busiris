@@ -190,6 +190,10 @@ export default function SectionScrollController() {
             const nextKeys = ["ArrowDown", "PageDown", " "];
             const prevKeys = ["ArrowUp", "PageUp"];
 
+            if (isInteractiveTarget(event.target)) {
+                return;
+            }
+
             if (![...nextKeys, ...prevKeys].includes(event.key)) {
                 return;
             }
