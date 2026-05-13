@@ -3,11 +3,13 @@
 import { useEffect, useRef } from "react";
 
 const SCROLL_COOLDOWN_MS = 800;
+const SCROLL_ANIMATION_MS = 640;
 const MIN_WHEEL_DELTA = 36;
 const MIN_TOUCH_DELTA = 42;
 const WHEEL_GESTURE_RESET_MS = 140;
 const MOBILE_VIEWPORT_QUERY = "(max-width: 767px)";
 const WIDTH_RESET_THRESHOLD = 24;
+const LINE_DELTA_PX = 16;
 
 function isInteractiveTarget(target: EventTarget | null) {
     return target instanceof Element && Boolean(target.closest("input, textarea, select"));
@@ -25,6 +27,18 @@ function measureViewportHeight() {
             document.documentElement.clientHeight
         )
     );
+}
+
+function normalizeWheelDelta(event: WheelEvent) {
+    if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
+        return event.deltaY * LINE_DELTA_PX;
+    }
+
+    if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
+        return event.deltaY * measureViewportHeight();
+    }
+
+    return event.deltaY;
 }
 
 function getCurrentSectionIndex(sections: HTMLElement[]) {
@@ -45,11 +59,18 @@ function getCurrentSectionIndex(sections: HTMLElement[]) {
     return closestIndex;
 }
 
+function easeInOutCubic(progress: number) {
+    return progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+}
+
 export default function SectionScrollController() {
     const lockedUntilRef = useRef(0);
     const activeIndexRef = useRef(0);
     const isAnimatingRef = useRef(false);
     const snapTimeoutRef = useRef<number | null>(null);
+    const scrollAnimationFrameRef = useRef<number | null>(null);
     const wheelDeltaRef = useRef(0);
     const wheelResetTimeoutRef = useRef<number | null>(null);
     const resizeSnapFrameRef = useRef<number | null>(null);
@@ -60,6 +81,7 @@ export default function SectionScrollController() {
 
     useEffect(() => {
         const mobileViewport = window.matchMedia(MOBILE_VIEWPORT_QUERY);
+        document.documentElement.classList.add("section-scroll-controlled");
 
         function snapToActiveSection() {
             const sections = getSections();
@@ -118,18 +140,54 @@ export default function SectionScrollController() {
 
             activeIndexRef.current = safeIndex;
             isAnimatingRef.current = true;
-            window.scrollTo({
-                top: target.offsetTop,
-                behavior: "smooth",
-            });
+            const startY = window.scrollY;
+            const targetY = target.offsetTop;
+            const distance = targetY - startY;
+            const startedAt = performance.now();
+
+            if (scrollAnimationFrameRef.current !== null) {
+                window.cancelAnimationFrame(scrollAnimationFrameRef.current);
+            }
 
             if (snapTimeoutRef.current !== null) {
                 window.clearTimeout(snapTimeoutRef.current);
             }
 
-            snapTimeoutRef.current = window.setTimeout(() => {
+            function animateScroll(now: number) {
+                const progress = Math.min((now - startedAt) / SCROLL_ANIMATION_MS, 1);
+                const easedProgress = easeInOutCubic(progress);
+
                 window.scrollTo({
-                    top: target.offsetTop,
+                    top: startY + distance * easedProgress,
+                    behavior: "auto",
+                });
+
+                if (progress < 1) {
+                    scrollAnimationFrameRef.current = window.requestAnimationFrame(animateScroll);
+                    return;
+                }
+
+                window.scrollTo({
+                    top: targetY,
+                    behavior: "auto",
+                });
+                scrollAnimationFrameRef.current = null;
+                isAnimatingRef.current = false;
+                if (snapTimeoutRef.current !== null) {
+                    window.clearTimeout(snapTimeoutRef.current);
+                    snapTimeoutRef.current = null;
+                }
+            }
+
+            scrollAnimationFrameRef.current = window.requestAnimationFrame(animateScroll);
+            snapTimeoutRef.current = window.setTimeout(() => {
+                if (scrollAnimationFrameRef.current !== null) {
+                    window.cancelAnimationFrame(scrollAnimationFrameRef.current);
+                    scrollAnimationFrameRef.current = null;
+                }
+
+                window.scrollTo({
+                    top: targetY,
                     behavior: "auto",
                 });
                 isAnimatingRef.current = false;
@@ -166,7 +224,7 @@ export default function SectionScrollController() {
                 return;
             }
 
-            wheelDeltaRef.current += event.deltaY;
+            wheelDeltaRef.current += normalizeWheelDelta(event);
 
             if (wheelResetTimeoutRef.current !== null) {
                 window.clearTimeout(wheelResetTimeoutRef.current);
@@ -305,6 +363,10 @@ export default function SectionScrollController() {
             if (resizeSnapFrameRef.current !== null) {
                 window.cancelAnimationFrame(resizeSnapFrameRef.current);
             }
+            if (scrollAnimationFrameRef.current !== null) {
+                window.cancelAnimationFrame(scrollAnimationFrameRef.current);
+            }
+            document.documentElement.classList.remove("section-scroll-controlled");
         };
     }, []);
 

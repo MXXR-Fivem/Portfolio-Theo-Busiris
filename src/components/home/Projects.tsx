@@ -16,9 +16,9 @@ type SwipeState =
 
 function ProjectCard({ project }: { project: Project }) {
     return (
-        <article className="group overflow-hidden rounded-[var(--identity-radius-panel)] border border-[var(--color-line)] bg-[var(--color-card)] p-3.5 shadow-[var(--shadow-glow)] sm:p-[1.1rem] lg:p-8">
-            <div className="grid gap-3 md:grid-cols-[minmax(0,0.95fr)_minmax(18rem,1fr)] md:items-center lg:grid-cols-[minmax(0,0.92fr)_minmax(26rem,1fr)] lg:gap-6">
-                <div className="flex min-w-0 flex-col gap-2.5 lg:gap-4">
+        <article className="project-card group overflow-hidden rounded-[var(--identity-radius-panel)] border border-[var(--color-line)] bg-[var(--color-card)] p-3.5 shadow-[var(--shadow-glow)] sm:p-[1.1rem] lg:p-8">
+            <div className="project-card-grid grid gap-3 md:grid-cols-[minmax(0,0.95fr)_minmax(18rem,1fr)] md:items-center lg:grid-cols-[minmax(0,0.92fr)_minmax(26rem,1fr)] lg:gap-6">
+                <div className="project-card-copy flex min-w-0 flex-col gap-2.5 lg:gap-4">
                     <div className="flex flex-wrap items-center gap-2 lg:gap-3">
                         <span
                             className="inline-flex rounded-[var(--identity-radius-control)] bg-[var(--identity-accent-primary)] px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-950 lg:px-3 lg:text-[0.72rem] lg:tracking-[0.28em]"
@@ -37,7 +37,7 @@ function ProjectCard({ project }: { project: Project }) {
                         </p>
                     </div>
 
-                    <div className="hidden gap-2.5 md:grid md:grid-cols-2 lg:gap-3">
+                    <div className="project-card-details hidden gap-2.5 md:grid md:grid-cols-2 lg:gap-3">
                         <div className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3 lg:p-3.5">
                             <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-slate-400 lg:text-xs lg:tracking-[0.28em]">
                                 Objective
@@ -91,10 +91,10 @@ function ProjectCard({ project }: { project: Project }) {
                     </div>
                 </div>
 
-                <div className="relative overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-mesh">
+                <div className="project-card-media relative overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-mesh">
                     <div className="absolute inset-x-6 top-6 h-px bg-[var(--identity-accent-primary)] opacity-70" />
                     <div className="relative p-2.5 lg:p-3">
-                        <div className="relative aspect-[16/8] overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[#091821] md:aspect-[16/9] lg:aspect-[16/10]">
+                        <div className="project-card-image-frame relative aspect-[16/8] overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[#091821] md:aspect-[16/9] lg:aspect-[16/10]">
                             <Image
                                 src={project.image}
                                 alt={`${project.title} preview`}
@@ -143,7 +143,7 @@ export default function Projects() {
 
     return (
         <section id="projects" className="section-shell snap-section">
-            <div className="space-y-3 lg:space-y-7">
+            <div className="projects-content space-y-3 lg:space-y-7">
                 <SectionIntro
                     eyebrow="Projects"
                     title="A selection of products, experiments and systems that reflect how I like to build."
@@ -175,7 +175,7 @@ export default function Projects() {
                         ))}
                     </div>
 
-                    <div className="mt-3 flex items-center justify-center gap-4 lg:mt-4 lg:gap-5">
+                    <div className="project-controls mt-3 flex items-center justify-center gap-4 lg:mt-4 lg:gap-5">
                         <button
                             type="button"
                             onClick={() => navigate("prev")}
