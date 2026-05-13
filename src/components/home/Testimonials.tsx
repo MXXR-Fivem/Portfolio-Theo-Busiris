@@ -217,7 +217,7 @@ export default function Testimonials() {
                 <div className="space-y-3 lg:space-y-10">
                     <SectionIntro
                         eyebrow="Reviews"
-                        title="Automatic customer feedback, redesigned to feel more credible and polished."
+                        title="Customer feedbacks"
                         description=""
                         align="center"
                     />
