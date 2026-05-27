@@ -117,6 +117,32 @@ export const projects: Project[] = [
         featured: true,
     },
     {
+        slug: "starz",
+        title: "Starz.work",
+        tagline: "A web-based job aggregator for tech talents.",
+        summary:
+            "A fullstack job and internship aggregator designed to centralize offers, help candidates find relevant opportunities and support recruiters with candidate management, analytics and CV matching.",
+        problem:
+            "Students and young developers often search across fragmented platforms, with limited visibility on offer relevance, salary, required skills...",
+        outcome:
+            "Built a complete end-to-end platform with candidate, recruiter and admin spaces, offer aggregation, dashboards, CI/CD and an AI-powered CV-to-offer compatibility score.",
+        stack:
+        [
+            "React",
+            "Express",
+            "FastAPI",
+            "MySQL",
+            "Docker",
+            "Nginx",
+            "CI/CD",
+        ],
+        image: "/Starz.jpg",
+        accent: "from-violet-400 via-purple-500 to-fuchsia-600",
+        liveUrl: "https://starz.work",
+        githubUrl: "https://github.com/MXXR-Fivem/starz.work",
+        featured: true,
+    },
+    {
         slug: "eco-go",
         title: "Eco-Go",
         tagline: "Turning public climate data into a readable civic product.",
