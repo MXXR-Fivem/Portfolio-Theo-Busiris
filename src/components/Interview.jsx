@@ -12,7 +12,7 @@ export default function Interview({ onClick }) {
 
     const dialog = (
         <div
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/80 p-4"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-[rgba(43,46,42,0.55)] p-4 backdrop-blur-sm"
             onClick={onClick}
             role="presentation"
         >
@@ -25,7 +25,7 @@ export default function Interview({ onClick }) {
             >
                 <button
                     type="button"
-                    className="absolute right-3 top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-[var(--identity-radius-control)] border border-[var(--color-line)] bg-[var(--color-card-strong)] text-lg text-white transition hover:border-[var(--identity-border-strong)] focus:outline-none focus:ring-2 focus:ring-cyan-300/60"
+                    className="absolute right-3 top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-[var(--identity-radius-control)] border border-[var(--color-line)] bg-[var(--color-card-strong)] text-lg text-[var(--color-ink)] transition hover:border-[var(--identity-border-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--identity-accent-line)]"
                     onClick={onClick}
                     aria-label="Fermer"
                 >

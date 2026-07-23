@@ -3,7 +3,7 @@ import { ambitions } from "@/data/site";
 
 export default function Ambitions() {
     return (
-        <section className="section-shell snap-section">
+        <section className="section-shell">
             <div className="section-panel p-3.5 sm:p-[1.1rem] lg:p-12">
                 <div className="space-y-3 lg:space-y-10">
                     <SectionIntro
@@ -19,9 +19,9 @@ export default function Ambitions() {
                                 key={item.title}
                                 className="relative overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 lg:p-6"
                             >
-                                <div className={`absolute inset-x-0 top-0 h-1 ${index === 0 ? "bg-[var(--identity-accent-primary)]" : index === 1 ? "bg-[var(--identity-accent-sport)]" : "bg-[var(--identity-accent-secondary)]"}`} />
-                                <h3 className="text-base font-semibold text-white lg:text-2xl">{item.title}</h3>
-                                <p className="mt-1.5 text-xs leading-5 text-slate-300 sm:text-sm lg:mt-4 lg:text-base lg:leading-7">
+                                <div className="absolute inset-x-0 top-0 h-px bg-[var(--identity-accent-line)]" />
+                                <h3 className="text-base font-semibold text-[var(--color-ink)] lg:text-2xl">{item.title}</h3>
+                                <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink-soft)] sm:text-sm lg:mt-4 lg:text-base lg:leading-7">
                                     {item.text}
                                 </p>
                             </div>

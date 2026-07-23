@@ -14,8 +14,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 export default function Home() {
     return (
         <>
-            <div className="site-backdrop relative min-h-screen overflow-x-clip text-white">
-                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:72px_72px] opacity-20" />
+            <div className="site-backdrop relative min-h-screen overflow-x-clip text-[var(--color-ink)]">
                 <SmoothScroll />
                 <Navbar />
                 <main className="relative z-10">

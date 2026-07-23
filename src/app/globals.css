@@ -3,45 +3,36 @@
 /* Visual identity preset.
    Change this block to switch the global art direction without hunting through components. */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  --identity-bg: #071217;
-  --identity-bg-soft: #0b1c22;
-  --identity-bg-muted: #0d2027;
-  --identity-surface: #102630;
-  --identity-surface-strong: #142d38;
-  --identity-surface-subtle: #17323e9f;
-  --identity-border: rgba(163, 185, 196, 0.2);
-  --identity-border-strong: rgba(203, 213, 225, 0.32);
-  --identity-text-muted: #9fb2bd;
-  --identity-text-soft: #d5e0e5;
+  /* --identity-bg is also the 3D fog colour: the scenes fade into this exact
+     value, so the page background behind a canvas must stay flat. */
+  --identity-bg: #f5f2ec;
+  --identity-bg-soft: #f0ece3;
+  --identity-bg-muted: #eae5d9;
+  --identity-surface: #fbfaf6;
+  --identity-surface-strong: #ffffff;
+  --identity-surface-subtle: rgba(255, 255, 255, 0.55);
+  --identity-border: rgba(43, 46, 42, 0.07);
+  --identity-border-strong: rgba(43, 46, 42, 0.14);
+  --identity-text: #2b2e2a;
+  --identity-text-soft: #4c5049;
+  --identity-text-muted: #7a7e74;
 
-  --identity-accent-primary: #2dd4bf;
-  --identity-accent-secondary: #38bdf8;
-  --identity-accent-sport: #a3e635;
-  --identity-accent-depth: #f59e0b;
-  --identity-accent-quiet: rgba(45, 212, 191, 0.12);
+  /* One accent only. The pale sage is for fills and 3D details; the ink
+     variant is the same hue pushed down to a readable contrast on beige. */
+  --identity-accent: #9caf88;
+  --identity-accent-ink: #5f7350;
+  --identity-accent-quiet: rgba(156, 175, 136, 0.16);
+  --identity-accent-line: rgba(156, 175, 136, 0.42);
 
-  --identity-shadow-panel: 0 18px 48px rgba(0, 0, 0, 0.28);
-  --identity-shadow-float: 0 10px 26px rgba(0, 0, 0, 0.22);
-  --identity-shadow-nav: 0 12px 30px rgba(0, 0, 0, 0.24);
+  --identity-shadow-panel: 0 1px 2px rgba(43, 46, 42, 0.04), 0 18px 44px -24px rgba(43, 46, 42, 0.22);
+  --identity-shadow-float: 0 10px 28px -18px rgba(43, 46, 42, 0.26);
+  --identity-shadow-nav: 0 12px 32px -22px rgba(43, 46, 42, 0.3);
 
-  --identity-radius-panel: 1.15rem;
-  --identity-radius-card: 0.85rem;
+  --identity-radius-panel: 1.25rem;
+  --identity-radius-card: 0.9rem;
   --identity-radius-control: 999px;
-
-  --identity-mesh:
-    radial-gradient(ellipse at 14% 8%, rgba(45, 212, 191, 0.2), transparent 38rem),
-    radial-gradient(ellipse at 82% 20%, rgba(248, 202, 38, 0.12), transparent 42rem),
-    radial-gradient(ellipse at 21% 68%, rgba(112, 239, 22, 0.116), transparent 38rem),
-    radial-gradient(ellipse at 75% 82%, rgba(54, 174, 221, 0.144), transparent 40rem),
-    linear-gradient(180deg, #071217 0%, #0b1c22 34%, #08151b 68%, #0a1e25 100%);
-  --identity-mesh-mobile:
-    radial-gradient(ellipse at 10% 5%, rgba(45, 212, 191, 0.14), transparent 24rem),
-    radial-gradient(ellipse at 88% 18%, rgba(56, 189, 248, 0.12), transparent 22rem),
-    radial-gradient(ellipse at 18% 70%, rgba(163, 230, 53, 0.045), transparent 20rem),
-    radial-gradient(ellipse at 85% 86%, rgba(245, 158, 11, 0.07), transparent 20rem),
-    linear-gradient(180deg, #061116 0%, #0a1920 38%, #07141a 72%, #081a20 100%);
 }
 
 @theme {
@@ -53,11 +44,11 @@
   --color-card-strong: var(--identity-surface-strong);
   --color-card-subtle: var(--identity-surface-subtle);
   --color-line: var(--identity-border);
+  --color-ink: var(--identity-text);
+  --color-ink-soft: var(--identity-text-soft);
   --color-text-soft: var(--identity-text-muted);
-  --color-cyan-accent: var(--identity-accent-primary);
-  --color-sky-accent: var(--identity-accent-secondary);
-  --color-lime-accent: var(--identity-accent-sport);
-  --color-violet-accent: var(--identity-accent-depth);
+  --color-accent: var(--identity-accent);
+  --color-accent-ink: var(--identity-accent-ink);
   --shadow-glow: var(--identity-shadow-panel);
   --shadow-float: var(--identity-shadow-float);
   --shadow-nav: var(--identity-shadow-nav);
@@ -76,7 +67,7 @@ body {
      container and break every position: sticky in the page. */
   overflow-x: clip;
   background: var(--color-surface);
-  color: white;
+  color: var(--color-ink);
   overscroll-behavior: none;
   /* Lenis drives the scroll; a native smooth behaviour would fight it. */
   scroll-behavior: auto;
@@ -100,8 +91,8 @@ textarea {
 }
 
 ::selection {
-  background: rgba(56, 189, 248, 0.28);
-  color: white;
+  background: var(--identity-accent-quiet);
+  color: var(--color-ink);
 }
 
 @layer base {
@@ -109,7 +100,7 @@ textarea {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-block: clamp(3rem, 8vh, 4.5rem);
+    padding-block: clamp(3.5rem, 9vh, 5.5rem);
     scroll-margin-top: 0;
   }
 
@@ -121,7 +112,7 @@ textarea {
 
   @media (min-width: 1024px) {
     main > section {
-      padding-block: clamp(5rem, 10vh, 7rem);
+      padding-block: clamp(6rem, 12vh, 9rem);
     }
 
     main > section > * {
@@ -137,13 +128,14 @@ textarea {
   h2,
   h3,
   h4 {
-    letter-spacing: 0;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
   }
 }
 
 @layer components {
   .section-shell {
-    @apply mx-auto w-full max-w-7xl px-3.5 sm:px-[1.1rem] lg:max-w-[88rem] lg:px-8;
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:max-w-[84rem] lg:px-8;
   }
 
   @media (min-width: 768px) and (max-width: 1023px) {
@@ -152,34 +144,34 @@ textarea {
     }
   }
 
-  .snap-section {
-    @apply scroll-mt-0;
-  }
-
-  .hero-section {
-    padding-top: clamp(0.95rem, 2.42svh, 1.5rem);
-  }
-
-  @media (min-width: 1024px) {
-    .hero-section {
-      padding-top: clamp(6rem, 9svh, 8rem);
-    }
-  }
-
+  /* A panel is a quiet change of paper, not a framed box. */
   .section-panel {
-    @apply rounded-[var(--identity-radius-panel)] border border-[var(--color-line)] bg-[var(--color-card)] shadow-[var(--shadow-glow)];
+    @apply rounded-[var(--identity-radius-panel)] bg-[var(--color-card)] shadow-[var(--shadow-glow)];
   }
 
   .section-label {
-    @apply inline-flex items-center gap-2 rounded-[var(--identity-radius-control)] border border-[var(--identity-border-strong)] bg-[var(--identity-accent-quiet)] px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-[0.22em] text-[var(--color-cyan-accent)] lg:px-3 lg:text-[0.7rem] lg:tracking-[0.32em];
+    @apply inline-flex items-center gap-2 rounded-[var(--identity-radius-control)] bg-[var(--identity-accent-quiet)] px-3 py-1 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-[var(--color-accent-ink)] lg:text-[0.7rem] lg:tracking-[0.28em];
   }
 
   .body-copy {
-    @apply text-xs leading-5 text-[var(--color-text-soft)] sm:text-sm sm:leading-6 lg:text-lg lg:leading-7;
+    @apply text-sm leading-6 text-[var(--color-ink-soft)] lg:text-lg lg:leading-8;
   }
 
   .grid-outline {
-    @apply border border-[var(--color-line)] bg-[var(--color-card-subtle)];
+    @apply border border-[var(--color-line)] bg-[var(--color-card)];
+  }
+
+  .quiet-pill {
+    @apply inline-flex items-center rounded-[var(--identity-radius-control)] border border-[var(--color-line)] bg-[var(--color-card)] px-3 py-1 text-xs text-[var(--color-text-soft)];
+  }
+
+  /* Shared shape for every link that behaves like a button. */
+  .soft-button {
+    @apply inline-flex items-center justify-center gap-2 rounded-[var(--identity-radius-control)] border border-[var(--color-line)] bg-[var(--color-card)] px-5 py-3 text-sm font-medium text-[var(--color-ink)] transition-colors duration-300 hover:border-[var(--identity-accent-line)] hover:text-[var(--color-accent-ink)];
+  }
+
+  .soft-button-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-[var(--identity-radius-control)] bg-[var(--identity-accent-quiet)] px-5 py-3 text-sm font-medium text-[var(--color-accent-ink)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[#f7f9f4];
   }
 }
 
@@ -190,57 +182,12 @@ textarea {
 
   .bg-mesh {
     background-image:
-      linear-gradient(180deg, var(--color-card-strong), var(--color-card));
+      linear-gradient(180deg, var(--color-card-strong), var(--color-surface-elevated));
   }
 }
 
 .site-backdrop {
-  background: var(--identity-mesh);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-@media (max-width: 767px) {
-  #projects {
-    overflow: hidden;
-  }
-
-  .site-backdrop {
-    background-image: var(--identity-mesh-mobile);
-    background-attachment: scroll;
-  }
-}
-
-@keyframes float-bubble-a {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  35% { transform: translate3d(18px, -16px, 0); }
-  70% { transform: translate3d(-12px, 12px, 0); }
-}
-
-@keyframes float-bubble-b {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  40% { transform: translate3d(-18px, 14px, 0); }
-  75% { transform: translate3d(14px, -12px, 0); }
-}
-
-@keyframes float-bubble-c {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  45% { transform: translate3d(14px, 18px, 0); }
-  80% { transform: translate3d(-16px, -10px, 0); }
-}
-
-@keyframes float-bubble-d {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  30% { transform: translate3d(-12px, -18px, 0); }
-  70% { transform: translate3d(18px, 10px, 0); }
-}
-
-@keyframes code-scan {
-  0% { transform: translateY(-100%); opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { transform: translateY(260%); opacity: 0; }
+  background: var(--color-surface);
 }
 
 @keyframes project-swipe-out-next {
@@ -281,11 +228,6 @@ textarea {
   }
 }
 
-.bubble-a { animation: float-bubble-a 9s ease-in-out infinite; }
-.bubble-b { animation: float-bubble-b 10.5s ease-in-out infinite; }
-.bubble-c { animation: float-bubble-c 11s ease-in-out infinite; }
-.bubble-d { animation: float-bubble-d 9.8s ease-in-out infinite; }
-.code-scan { animation: code-scan 4.8s ease-in-out infinite; }
 .project-swipe-card {
   transform-origin: center bottom;
   will-change: transform, opacity;
@@ -311,11 +253,21 @@ textarea {
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
 }
 
 @media (min-width: 1024px) {
   .review-copy {
     -webkit-line-clamp: 6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

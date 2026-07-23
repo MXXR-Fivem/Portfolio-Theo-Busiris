@@ -24,27 +24,21 @@ function formatNumber(value?: number) {
 }
 
 function StatusPill({ state }: { state: StatsState }) {
+    // A single accent means the states read through wording and weight, not hue.
+    const quiet =
+        "inline-flex w-fit rounded-full border border-[var(--color-line)] px-3 py-1 text-[0.65rem] uppercase tracking-[0.18em] text-[var(--color-text-soft)] lg:text-xs lg:tracking-[0.24em]";
+    const live =
+        "inline-flex w-fit rounded-full bg-[var(--identity-accent-quiet)] px-3 py-1 text-[0.65rem] uppercase tracking-[0.18em] text-[var(--color-accent-ink)] lg:text-xs lg:tracking-[0.24em]";
+
     if (state.loading) {
-        return (
-            <span className="inline-flex w-fit rounded-full border border-amber-300/20 bg-amber-300/10 px-2.5 py-1 text-[0.65rem] uppercase tracking-[0.18em] text-amber-200 lg:px-3 lg:text-xs lg:tracking-[0.24em]">
-                Loading live data
-            </span>
-        );
+        return <span className={quiet}>Loading live data</span>;
     }
 
     if (state.error) {
-        return (
-            <span className="inline-flex w-fit rounded-full border border-rose-300/20 bg-rose-300/10 px-2.5 py-1 text-[0.65rem] uppercase tracking-[0.18em] text-rose-200 lg:px-3 lg:text-xs lg:tracking-[0.24em]">
-                Live API unavailable
-            </span>
-        );
+        return <span className={quiet}>Live API unavailable</span>;
     }
 
-    return (
-        <span className="inline-flex w-fit rounded-full border border-emerald-300/20 bg-emerald-300/10 px-2.5 py-1 text-[0.65rem] uppercase tracking-[0.18em] text-emerald-200 lg:px-3 lg:text-xs lg:tracking-[0.24em]">
-            Updated automatically
-        </span>
-    );
+    return <span className={live}>Updated automatically</span>;
 }
 
 export default function Stats() {
@@ -113,7 +107,7 @@ export default function Stats() {
     ];
 
     return (
-        <section id="proof" className="section-shell snap-section">
+        <section id="proof" className="section-shell">
             <div className="section-panel grid gap-3 p-3.5 sm:p-[1.1rem] md:grid-cols-[1.05fr_0.75fr] lg:grid-cols-[0.5fr_0.5fr] lg:gap-8 lg:p-10">
                 <div className="space-y-3">
                     <SectionIntro
@@ -132,14 +126,14 @@ export default function Stats() {
                             key={item.label}
                             className="relative flex min-h-[5.5rem] flex-col justify-center overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 pt-[1.1rem] lg:min-h-[8.5rem] lg:p-5 lg:pt-6"
                         >
-                            <div className={`absolute inset-x-0 top-0 h-1 ${index === 0 ? "bg-[var(--identity-accent-primary)]" : "bg-[var(--identity-accent-sport)]"}`} />
-                            <p className="text-[0.62rem] uppercase tracking-[0.14em] text-slate-400 lg:text-xs lg:tracking-[0.24em]">
+                            <div className="absolute inset-x-0 top-0 h-px bg-[var(--identity-accent-line)]" />
+                            <p className="text-[0.62rem] uppercase tracking-[0.14em] text-[var(--color-text-soft)] lg:text-xs lg:tracking-[0.24em]">
                                 {item.label}
                             </p>
-                            <p className="mt-2 font-mono text-2xl font-semibold text-white lg:mt-4 lg:text-5xl">
+                            <p className="mt-2 font-mono text-2xl font-semibold text-[var(--color-ink)] lg:mt-4 lg:text-5xl">
                                 {item.value}
                             </p>
-                            <p className="mt-1 hidden text-xs leading-5 text-slate-300 sm:block lg:mt-3 lg:text-sm lg:leading-6">
+                            <p className="mt-1 text-xs leading-5 text-[var(--color-ink-soft)] lg:mt-3 lg:text-sm lg:leading-6">
                                 {state.error
                                     ? "The API is preserved, but the data is temporarily unavailable."
                                     : item.helper}
@@ -154,13 +148,13 @@ export default function Stats() {
                             key={point.title}
                             className={`rounded-[var(--identity-radius-card)] border p-3.5 lg:p-5 ${index === 0 ? "border-[var(--identity-border-strong)] bg-[var(--identity-accent-quiet)]" : "border-[var(--color-line)] bg-[var(--color-card-subtle)]"}`}
                         >
-                            <p className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-cyan-300 lg:text-xs lg:tracking-[0.28em]">
+                            <p className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-[var(--color-accent-ink)] lg:text-xs lg:tracking-[0.28em]">
                                 {point.eyebrow}
                             </p>
-                            <h3 className="mt-1.5 text-sm font-semibold text-white lg:mt-3 lg:text-xl">
+                            <h3 className="mt-1.5 text-sm font-semibold text-[var(--color-ink)] lg:mt-3 lg:text-xl">
                                 {point.title}
                             </h3>
-                            <p className="mt-1.5 text-xs leading-5 text-slate-300 lg:mt-3 lg:text-sm lg:leading-7">
+                            <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink-soft)] lg:mt-3 lg:text-sm lg:leading-7">
                                 {point.description}
                             </p>
                         </div>

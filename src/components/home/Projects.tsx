@@ -21,36 +21,36 @@ function ProjectCard({ project }: { project: Project }) {
                 <div className="project-card-copy flex min-w-0 flex-col gap-2.5 lg:gap-4">
                     <div className="flex flex-wrap items-center gap-2 lg:gap-3">
                         <span
-                            className="inline-flex rounded-[var(--identity-radius-control)] bg-[var(--identity-accent-primary)] px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-950 lg:px-3 lg:text-[0.72rem] lg:tracking-[0.28em]"
+                            className="inline-flex rounded-[var(--identity-radius-control)] bg-[var(--identity-accent-quiet)] px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-[var(--color-accent-ink)] lg:px-3 lg:text-[0.72rem] lg:tracking-[0.28em]"
                         >
                             {project.featured ? "Featured project" : "Project"}
                         </span>
-                        <span className="hidden text-xs text-slate-400 sm:inline sm:text-sm">{project.tagline}</span>
+                        <span className="text-xs text-[var(--color-text-soft)] sm:text-sm">{project.tagline}</span>
                     </div>
 
                     <div>
-                        <h3 className="text-xl font-semibold text-white sm:text-2xl lg:text-3xl">
+                        <h3 className="text-xl font-semibold text-[var(--color-ink)] sm:text-2xl lg:text-3xl">
                             {project.title}
                         </h3>
-                        <p className="mt-1.5 text-xs leading-5 text-slate-300 sm:text-sm lg:mt-3 lg:text-base lg:leading-6">
+                        <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink-soft)] sm:text-sm lg:mt-3 lg:text-base lg:leading-6">
                             {project.summary}
                         </p>
                     </div>
 
-                    <div className="project-card-details hidden gap-2.5 md:grid md:grid-cols-2 lg:gap-3">
+                    <div className="project-card-details grid gap-2.5 md:grid-cols-2 lg:gap-3">
                         <div className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3 lg:p-3.5">
-                            <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-slate-400 lg:text-xs lg:tracking-[0.28em]">
+                            <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-[var(--color-text-soft)] lg:text-xs lg:tracking-[0.28em]">
                                 Objective
                             </p>
-                            <p className="mt-1.5 text-xs leading-5 text-slate-300 lg:mt-2 lg:text-sm lg:leading-6">
+                            <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink-soft)] lg:mt-2 lg:text-sm lg:leading-6">
                                 {project.problem}
                             </p>
                         </div>
                         <div className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3 lg:p-3.5">
-                            <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-slate-400 lg:text-xs lg:tracking-[0.28em]">
+                            <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-[var(--color-text-soft)] lg:text-xs lg:tracking-[0.28em]">
                                 Result / learning
                             </p>
-                            <p className="mt-1.5 text-xs leading-5 text-slate-300 lg:mt-2 lg:text-sm lg:leading-6">
+                            <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink-soft)] lg:mt-2 lg:text-sm lg:leading-6">
                                 {project.outcome}
                             </p>
                         </div>
@@ -60,7 +60,7 @@ function ProjectCard({ project }: { project: Project }) {
                         {project.stack.map((item) => (
                             <span
                                 key={item}
-                                className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-xs text-slate-200 lg:px-3 lg:py-1.5 lg:text-sm"
+                                className="rounded-full border border-[var(--color-line)] bg-[var(--color-card)] px-2.5 py-1 text-xs text-[var(--color-ink)] lg:px-3 lg:py-1.5 lg:text-sm"
                             >
                                 {item}
                             </span>
@@ -72,7 +72,7 @@ function ProjectCard({ project }: { project: Project }) {
                             <Link
                                 href={project.liveUrl}
                                 target="_blank"
-                                className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3.5 py-2 text-xs font-semibold text-cyan-50 transition hover:border-cyan-200/50 hover:bg-cyan-300/16 lg:px-4 lg:py-2.5 lg:text-sm"
+                                className="inline-flex items-center gap-2 rounded-full border border-[var(--identity-accent-line)] bg-[var(--identity-accent-quiet)] px-3.5 py-2 text-xs font-semibold text-[var(--color-accent-ink)] transition hover:border-[var(--identity-accent-line)] hover:bg-[var(--identity-accent-quiet)] lg:px-4 lg:py-2.5 lg:text-sm"
                             >
                                 Live demo / details
                                 <FaArrowRight />
@@ -82,7 +82,7 @@ function ProjectCard({ project }: { project: Project }) {
                             <Link
                                 href={project.githubUrl}
                                 target="_blank"
-                                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-2 text-xs font-semibold text-white transition hover:border-white/20 hover:bg-white/[0.08] lg:px-4 lg:py-2.5 lg:text-sm"
+                                className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-card)] px-3.5 py-2 text-xs font-semibold text-[var(--color-ink)] transition hover:border-[var(--color-line)] hover:bg-[var(--color-card)] lg:px-4 lg:py-2.5 lg:text-sm"
                             >
                                 GitHub
                                 <FaGithub />
@@ -92,9 +92,9 @@ function ProjectCard({ project }: { project: Project }) {
                 </div>
 
                 <div className="project-card-media relative overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-mesh">
-                    <div className="absolute inset-x-6 top-6 h-px bg-[var(--identity-accent-primary)] opacity-70" />
+                    <div className="absolute inset-x-6 top-6 h-px bg-[var(--identity-accent-line)]" />
                     <div className="relative p-2.5 lg:p-3">
-                        <div className="project-card-image-frame relative aspect-[16/8] overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[#091821] md:aspect-[16/9] lg:aspect-[16/10]">
+                        <div className="project-card-image-frame relative aspect-[16/8] overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--identity-bg-soft)] md:aspect-[16/9] lg:aspect-[16/10]">
                             <Image
                                 src={project.image}
                                 alt={`${project.title} preview`}
@@ -142,7 +142,7 @@ export default function Projects() {
     }
 
     return (
-        <section id="projects" className="section-shell snap-section">
+        <section id="projects" className="section-shell">
             <div className="projects-content space-y-3 lg:space-y-7">
                 <SectionIntro
                     eyebrow="Projects"
@@ -181,12 +181,12 @@ export default function Projects() {
                             onClick={() => navigate("prev")}
                             disabled={isAnimating}
                             aria-label="Previous project"
-                            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] text-base text-slate-100 shadow-[var(--identity-shadow-float)] transition hover:border-white/25 hover:bg-white/[0.08] disabled:cursor-not-allowed disabled:opacity-60 lg:h-14 lg:w-14 lg:text-lg"
+                            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-card)] text-base text-[var(--color-ink)] shadow-[var(--identity-shadow-float)] transition hover:border-[var(--color-line)] hover:bg-[var(--color-card)] disabled:cursor-not-allowed disabled:opacity-60 lg:h-14 lg:w-14 lg:text-lg"
                         >
                             <FaArrowLeft />
                         </button>
 
-                        <div className="min-w-20 rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-center font-mono text-[0.68rem] uppercase tracking-[0.18em] text-slate-400 lg:min-w-24 lg:px-4 lg:text-xs lg:tracking-[0.22em]">
+                        <div className="min-w-20 rounded-full border border-[var(--color-line)] bg-[var(--color-card)] px-3 py-2 text-center font-mono text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-text-soft)] lg:min-w-24 lg:px-4 lg:text-xs lg:tracking-[0.22em]">
                             {currentIndex + 1} / {projects.length}
                         </div>
 
@@ -195,7 +195,7 @@ export default function Projects() {
                             onClick={() => navigate("next")}
                             disabled={isAnimating}
                             aria-label="Next project"
-                            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-rose-300/25 bg-rose-500/12 text-xl text-rose-300 shadow-[0_18px_45px_rgba(244,63,94,0.18)] transition hover:border-rose-200/50 hover:bg-rose-500/18 disabled:cursor-not-allowed disabled:opacity-60 lg:h-16 lg:w-16 lg:text-2xl"
+                            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--identity-accent-line)] bg-[var(--identity-accent-quiet)] text-xl text-[var(--color-accent-ink)] shadow-[var(--shadow-float)] transition hover:border-[var(--identity-accent-line)] hover:bg-[var(--identity-accent-quiet)] disabled:cursor-not-allowed disabled:opacity-60 lg:h-16 lg:w-16 lg:text-2xl"
                         >
                             <FaHeart />
                         </button>

@@ -212,7 +212,7 @@ export default function Testimonials() {
     }, [reviews]);
 
     return (
-        <section id="reviews" className="section-shell snap-section">
+        <section id="reviews" className="section-shell">
             <div className="section-panel p-3.5 sm:p-[1.1rem] lg:p-12">
                 <div className="space-y-3 lg:space-y-10">
                     <SectionIntro
@@ -222,11 +222,11 @@ export default function Testimonials() {
                         align="center"
                     />
 
-                    <div className="hidden flex-wrap items-center justify-center gap-1.5 text-[0.62rem] uppercase tracking-[0.14em] text-slate-400 sm:flex lg:gap-3 lg:text-xs lg:tracking-[0.24em]">
-                        <span className="rounded-full border border-white/10 px-2.5 py-1.5 lg:px-3 lg:py-2">
+                    <div className="flex flex-wrap items-center justify-center gap-1.5 text-[0.62rem] uppercase tracking-[0.14em] text-[var(--color-text-soft)] lg:gap-3 lg:text-xs lg:tracking-[0.24em]">
+                        <span className="rounded-full border border-[var(--color-line)] px-2.5 py-1.5 lg:px-3 lg:py-2">
                             {loading ? "Loading reviews" : "Live review integration"}
                         </span>
-                        <span className="rounded-full border border-white/10 px-2.5 py-1.5 lg:px-3 lg:py-2">
+                        <span className="rounded-full border border-[var(--color-line)] px-2.5 py-1.5 lg:px-3 lg:py-2">
                             {error ? "Fallback content displayed" : "Automatic rotation"}
                         </span>
                     </div>
@@ -239,13 +239,13 @@ export default function Testimonials() {
                                     className="animate-pulse rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-4 transition duration-300 lg:p-6"
                                 >
                                     <div className="space-y-4">
-                                        <div className="h-5 w-10 rounded-full bg-white/10" />
+                                        <div className="h-5 w-10 rounded-full bg-[var(--identity-bg-muted)]" />
                                         <div className="space-y-2">
-                                            <div className="h-4 w-full rounded bg-white/10" />
-                                            <div className="h-4 w-11/12 rounded bg-white/10" />
-                                            <div className="h-4 w-9/12 rounded bg-white/10" />
+                                            <div className="h-4 w-full rounded bg-[var(--identity-bg-muted)]" />
+                                            <div className="h-4 w-11/12 rounded bg-[var(--identity-bg-muted)]" />
+                                            <div className="h-4 w-9/12 rounded bg-[var(--identity-bg-muted)]" />
                                         </div>
-                                        <div className="h-4 w-32 rounded bg-white/10" />
+                                        <div className="h-4 w-32 rounded bg-[var(--identity-bg-muted)]" />
                                     </div>
                                 </article>
                               ))
@@ -259,8 +259,8 @@ export default function Testimonials() {
                                         isDeckFading
                                             ? "translate-y-2 opacity-[0.35]"
                                             : isActive
-                                              ? "translate-y-0 scale-[1.008] border-cyan-300/30 opacity-100 shadow-[0_18px_50px_rgba(56,189,248,0.12)]"
-                                              : "translate-y-1 scale-[0.992] border-white/10 opacity-[0.66]"
+                                              ? "translate-y-0 scale-[1.008] border-[var(--identity-accent-line)] opacity-100 shadow-[var(--shadow-float)]"
+                                              : "translate-y-1 scale-[0.992] border-[var(--color-line)] opacity-[0.66]"
                                     }`}
                                 >
                                     <div
@@ -270,25 +270,25 @@ export default function Testimonials() {
                                     />
                                     <div className="relative z-10">
                                         <div className="flex items-center justify-between">
-                                            <FaQuoteLeft className="text-sm text-cyan-300 lg:text-xl" />
-                                            <div className="flex items-center gap-1 text-amber-300">
+                                            <FaQuoteLeft className="text-sm text-[var(--color-accent-ink)] lg:text-xl" />
+                                            <div className="flex items-center gap-1 text-[var(--color-accent-ink)]">
                                                 {Array.from({ length: 5 }).map((_, starIndex) => (
                                                     <FaStar key={starIndex} className="text-[0.58rem] sm:text-[0.65rem] lg:text-xs" />
                                                 ))}
                                             </div>
                                         </div>
-                                        <p className="review-copy mt-2 text-[0.68rem] leading-4 text-slate-200 sm:mt-3 sm:text-xs sm:leading-5 lg:mt-6 lg:text-base lg:leading-7">
+                                        <p className="review-copy mt-2 text-[0.68rem] leading-4 text-[var(--color-ink)] sm:mt-3 sm:text-xs sm:leading-5 lg:mt-6 lg:text-base lg:leading-7">
                                             {truncateReviewText(review.text)}
                                         </p>
-                                        <div className="mt-2 border-t border-white/10 pt-2 lg:mt-8 lg:pt-4">
-                                            <p className="text-[0.68rem] font-medium text-white sm:text-xs lg:text-sm">
+                                        <div className="mt-2 border-t border-[var(--color-line)] pt-2 lg:mt-8 lg:pt-4">
+                                            <p className="text-[0.68rem] font-medium text-[var(--color-ink)] sm:text-xs lg:text-sm">
                                                 {review.author}
                                             </p>
                                             <a
                                                 href={review.link}
                                                 target="_blank"
                                                 rel="noreferrer"
-                                                className="mt-0.5 inline-flex text-[0.68rem] text-slate-400 transition hover:text-cyan-200 sm:text-xs lg:mt-1 lg:text-sm"
+                                                className="mt-0.5 inline-flex text-[0.68rem] text-[var(--color-text-soft)] transition hover:text-[var(--color-accent-ink)] sm:text-xs lg:mt-1 lg:text-sm"
                                             >
                                                 View source
                                             </a>

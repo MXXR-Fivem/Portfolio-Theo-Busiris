@@ -29,12 +29,12 @@ export default function Navbar() {
                         onClick={(event) => scrollToAnchor(event, "#top")}
                         className="flex items-center gap-3"
                     >
-                        {/* <span className="inline-flex h-10 w-10 items-center justify-center rounded-[0.75rem] bg-[var(--identity-accent-primary)] text-sm font-semibold text-slate-950">
+                        {/* <span className="inline-flex h-10 w-10 items-center justify-center rounded-[0.75rem] bg-[var(--identity-accent-primary)] text-sm font-semibold text-[var(--color-surface)]">
                             TB
                         </span> */}
                         <div className="hidden sm:block">
-                            <p className="text-sm font-medium text-white">{profile.name}</p>
-                            <p className="text-xs uppercase tracking-[0.28em] text-slate-400">
+                            <p className="text-sm font-medium text-[var(--color-ink)]">{profile.name}</p>
+                            <p className="text-xs uppercase tracking-[0.28em] text-[var(--color-text-soft)]">
                                 Fullstack Developer
                             </p>
                         </div>
@@ -46,7 +46,7 @@ export default function Navbar() {
                                 key={item.href}
                                 href={item.href}
                                 onClick={(event) => scrollToAnchor(event, item.href)}
-                                className="text-sm text-slate-300 transition hover:text-white"
+                                className="text-sm text-[var(--color-ink-soft)] transition hover:text-[var(--color-ink)]"
                             >
                                 {item.label}
                             </Link>
@@ -56,7 +56,7 @@ export default function Navbar() {
                     <Link
                         href="#contact"
                         onClick={(event) => scrollToAnchor(event, "#contact")}
-                        className="rounded-[var(--identity-radius-control)] border border-[var(--identity-border-strong)] bg-[var(--identity-accent-quiet)] px-4 py-2 text-sm font-medium text-white transition hover:border-[var(--identity-accent-primary)]"
+                        className="rounded-[var(--identity-radius-control)] bg-[var(--identity-accent-quiet)] px-4 py-2 text-sm font-medium text-[var(--color-accent-ink)] transition-colors duration-300 hover:bg-[var(--color-accent)] hover:text-[#f7f9f4]"
                     >
                         Contact
                     </Link>

@@ -47,7 +47,7 @@ export default function Contact() {
     }
 
     return (
-        <section id="contact" className="section-shell snap-section">
+        <section id="contact" className="section-shell">
             <div className="section-panel grid gap-3 p-3.5 sm:p-[1.1rem] lg:grid-cols-[0.9fr_1.1fr] lg:gap-8 lg:p-12">
                 <div className="space-y-3 lg:space-y-6">
                     <SectionIntro
@@ -56,21 +56,21 @@ export default function Contact() {
                         description="The form stays connected to Formspree. Direct links to email, GitHub, LinkedIn and the CV remain available."
                     />
 
-                    <div className="hidden gap-2 md:grid lg:gap-4">
+                    <div className="grid gap-2 lg:gap-4">
                         <Link
                             href={`mailto:${profile.email}`}
                             className="flex items-center justify-between rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] px-3 py-2.5 transition hover:border-[var(--identity-border-strong)] lg:px-5 lg:py-4"
                         >
                             <div className="flex items-center gap-3">
-                                <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.06] text-cyan-300 lg:h-11 lg:w-11 lg:rounded-2xl">
+                                <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-card)] text-[var(--color-accent-ink)] lg:h-11 lg:w-11 lg:rounded-2xl">
                                     <HiOutlineEnvelope />
                                 </span>
                                 <div>
-                                    <p className="text-xs text-slate-400 lg:text-sm">Email</p>
-                                    <p className="text-sm text-white lg:text-base">{profile.email}</p>
+                                    <p className="text-xs text-[var(--color-text-soft)] lg:text-sm">Email</p>
+                                    <p className="text-sm text-[var(--color-ink)] lg:text-base">{profile.email}</p>
                                 </div>
                             </div>
-                            <HiOutlineArrowTopRightOnSquare className="text-slate-400" />
+                            <HiOutlineArrowTopRightOnSquare className="text-[var(--color-text-soft)]" />
                         </Link>
 
                         <div className="grid gap-2 sm:grid-cols-2 lg:gap-4">
@@ -79,9 +79,9 @@ export default function Contact() {
                                 target="_blank"
                                 className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 transition hover:border-[var(--identity-border-strong)] lg:p-5"
                             >
-                                <FaGithub className="text-base text-white lg:text-xl" />
-                                <p className="mt-2 text-sm font-semibold text-white lg:mt-4 lg:text-lg">GitHub</p>
-                                <p className="mt-1 text-xs text-slate-400 lg:text-sm">
+                                <FaGithub className="text-base text-[var(--color-ink)] lg:text-xl" />
+                                <p className="mt-2 text-sm font-semibold text-[var(--color-ink)] lg:mt-4 lg:text-lg">GitHub</p>
+                                <p className="mt-1 text-xs text-[var(--color-text-soft)] lg:text-sm">
                                     Repositories and project history
                                 </p>
                             </Link>
@@ -90,9 +90,9 @@ export default function Contact() {
                                 target="_blank"
                                 className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 transition hover:border-[var(--identity-border-strong)] lg:p-5"
                             >
-                                <FaLinkedinIn className="text-base text-white lg:text-xl" />
-                                <p className="mt-2 text-sm font-semibold text-white lg:mt-4 lg:text-lg">LinkedIn</p>
-                                <p className="mt-1 text-xs text-slate-400 lg:text-sm">
+                                <FaLinkedinIn className="text-base text-[var(--color-ink)] lg:text-xl" />
+                                <p className="mt-2 text-sm font-semibold text-[var(--color-ink)] lg:mt-4 lg:text-lg">LinkedIn</p>
+                                <p className="mt-1 text-xs text-[var(--color-text-soft)] lg:text-sm">
                                     Profile and professional background
                                 </p>
                             </Link>
@@ -101,7 +101,7 @@ export default function Contact() {
                         {/* <Link
                             href={profile.cv}
                             target="_blank"
-                            className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-5 py-3 text-sm font-semibold text-sky-100 transition hover:border-sky-200/40 hover:bg-sky-300/15"
+                            className="inline-flex w-fit items-center gap-2 rounded-full border border-[var(--identity-accent-line)] bg-[var(--identity-accent-quiet)] px-5 py-3 text-sm font-semibold text-[var(--color-accent-ink)] transition hover:border-[var(--identity-accent-line)] hover:bg-[var(--identity-accent-quiet)]"
                         >
                             Download CV
                             <HiOutlineArrowTopRightOnSquare />
@@ -115,7 +115,7 @@ export default function Contact() {
                 >
                     <div className="grid gap-2 sm:grid-cols-2 lg:gap-4">
                         <label className="space-y-1 lg:space-y-2">
-                            <span className="text-xs text-slate-300 lg:text-sm">First name</span>
+                            <span className="text-xs text-[var(--color-ink-soft)] lg:text-sm">First name</span>
                             <input
                                 type="text"
                                 name="firstname"
@@ -123,11 +123,11 @@ export default function Contact() {
                                 onChange={onChange}
                                 required
                                 maxLength={30}
-                                className="w-full rounded-xl border border-white/10 bg-slate-950/40 px-3 py-2 text-sm text-white outline-none transition focus:border-cyan-300/40 lg:rounded-2xl lg:px-4 lg:py-3 lg:text-base"
+                                className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-card)] px-3 py-2 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--identity-accent-line)] lg:rounded-2xl lg:px-4 lg:py-3 lg:text-base"
                             />
                         </label>
                         <label className="space-y-1 lg:space-y-2">
-                            <span className="text-xs text-slate-300 lg:text-sm">Last name</span>
+                            <span className="text-xs text-[var(--color-ink-soft)] lg:text-sm">Last name</span>
                             <input
                                 type="text"
                                 name="lastname"
@@ -135,13 +135,13 @@ export default function Contact() {
                                 onChange={onChange}
                                 required
                                 maxLength={30}
-                                className="w-full rounded-xl border border-white/10 bg-slate-950/40 px-3 py-2 text-sm text-white outline-none transition focus:border-cyan-300/40 lg:rounded-2xl lg:px-4 lg:py-3 lg:text-base"
+                                className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-card)] px-3 py-2 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--identity-accent-line)] lg:rounded-2xl lg:px-4 lg:py-3 lg:text-base"
                             />
                         </label>
                     </div>
 
                     <label className="mt-2 block space-y-1 lg:mt-4 lg:space-y-2">
-                        <span className="text-xs text-slate-300 lg:text-sm">Email</span>
+                        <span className="text-xs text-[var(--color-ink-soft)] lg:text-sm">Email</span>
                         <input
                             type="email"
                             name="email"
@@ -149,19 +149,19 @@ export default function Contact() {
                             onChange={onChange}
                             required
                             maxLength={60}
-                            className="w-full rounded-xl border border-white/10 bg-slate-950/40 px-3 py-2 text-sm text-white outline-none transition focus:border-cyan-300/40 lg:rounded-2xl lg:px-4 lg:py-3 lg:text-base"
+                            className="w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-card)] px-3 py-2 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--identity-accent-line)] lg:rounded-2xl lg:px-4 lg:py-3 lg:text-base"
                         />
                     </label>
 
                     <label className="mt-2 block space-y-1 lg:mt-4 lg:flex lg:flex-1 lg:flex-col lg:space-y-2">
-                        <span className="text-xs text-slate-300 lg:text-sm">Message</span>
+                        <span className="text-xs text-[var(--color-ink-soft)] lg:text-sm">Message</span>
                         <textarea
                             name="message"
                             value={formData.message}
                             onChange={onChange}
                             required
                             rows={7}
-                            className="min-h-[6.5rem] w-full rounded-xl border border-white/10 bg-slate-950/40 px-3 py-2 text-sm text-white outline-none transition focus:border-cyan-300/40 sm:min-h-[8rem] lg:min-h-[15rem] lg:rounded-3xl lg:px-4 lg:py-3 lg:text-base"
+                            className="min-h-[6.5rem] w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-card)] px-3 py-2 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--identity-accent-line)] sm:min-h-[8rem] lg:min-h-[15rem] lg:rounded-3xl lg:px-4 lg:py-3 lg:text-base"
                         />
                     </label>
 
@@ -169,12 +169,12 @@ export default function Contact() {
                         <button
                             type="submit"
                             disabled={state.submitting}
-                            className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-xs font-semibold text-slate-950 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-70 lg:mt-2 lg:px-5 lg:py-3 lg:text-sm"
+                            className="soft-button-accent text-xs disabled:cursor-not-allowed disabled:opacity-60 lg:mt-2 lg:text-sm"
                         >
                             {state.submitting ? "Sending..." : "Send message"}
                         </button>
 
-                        <div className="text-xs text-slate-400 mt-2 lg:text-sm">
+                        <div className="text-xs text-[var(--color-text-soft)] mt-2 lg:text-sm">
                             {state.succeeded
                                 ? "Message sent successfully."
                                 : state.errors
