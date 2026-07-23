@@ -18,6 +18,8 @@ type ShadowSettings = {
 type StageProps = {
     children: ReactNode;
     camera: { position: [number, number, number]; fov: number };
+    /** Aim point; the default camera would otherwise stare at the origin. */
+    lookAt?: [number, number, number];
     capability: DeviceCapability;
     /** Scroll-driven scenes redraw on demand; looping ones need every frame. */
     animated?: boolean;
@@ -62,6 +64,7 @@ function ShadowBlob({
 export default function Stage({
     children,
     camera,
+    lookAt,
     capability,
     animated = false,
     progress,
@@ -87,6 +90,11 @@ export default function Stage({
             }}
             resize={{ scroll: false }}
             style={{ pointerEvents: "none" }}
+            onCreated={({ camera: created }) => {
+                if (lookAt) {
+                    created.lookAt(lookAt[0], lookAt[1], lookAt[2]);
+                }
+            }}
         >
             <fog attach="fog" args={[PAPER, fog[0], fog[1]]} />
 

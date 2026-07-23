@@ -112,7 +112,9 @@ export default function SceneMount({
         <div className={`relative ${className ?? ""}`}>
             <div
                 aria-hidden={canRender}
-                className={`transition-opacity duration-700 ${
+                // Fades out faster than the canvas fades in, so the two
+                // never sit on top of each other as a double exposure.
+                className={`transition-opacity duration-300 ${
                     isRevealed ? "opacity-0" : "opacity-100"
                 }`}
             >
@@ -121,7 +123,7 @@ export default function SceneMount({
 
             {canRender ? (
                 <div
-                    className={`absolute inset-0 transition-opacity duration-700 ${
+                    className={`absolute inset-0 transition-opacity duration-700 delay-150 ${
                         isRevealed ? "opacity-100" : "opacity-0"
                     }`}
                 >
