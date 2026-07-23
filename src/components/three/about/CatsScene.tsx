@@ -56,7 +56,7 @@ export default function CatsScene({
 }) {
     return (
         <Stage
-            camera={{ position: [0, 0.7, 3.9], fov: 22 }}
+            camera={{ position: [0, 0.72, 4.6], fov: 22 }}
             lookAt={[0, 0.45, 0]}
             capability={capability}
             progress={progress}

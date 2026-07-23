@@ -20,22 +20,22 @@ export default function Skills() {
         <section
             ref={sectionRef}
             id="skills"
-            className="pinned-section relative py-16 lg:h-[240vh] lg:py-0"
+            className="relative py-16 lg:min-h-[165vh] lg:py-28"
         >
-            <div className="lg:sticky lg:top-0 lg:flex lg:h-[100svh] lg:items-center lg:overflow-hidden">
-                <div className="section-shell relative grid w-full items-center gap-6 lg:grid-cols-[1.06fr_0.94fr] lg:gap-10">
-                    <div className="relative z-10 space-y-4 lg:space-y-6">
+            <div className="section-shell relative grid w-full items-start gap-6 lg:grid-cols-[1.06fr_0.94fr] lg:gap-10">
+                    <div className="relative z-10 space-y-4 lg:space-y-5">
                         <SectionIntro
                             eyebrow="Skills"
                             title="A practical stack, grouped by how I use it."
                             description=""
+                            size="compact"
                         />
 
-                        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-2 lg:gap-3">
+                        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-2 lg:gap-2.5">
                             {skillGroups.map((group) => (
                                 <div
                                     key={group.title}
-                                    className={`rounded-[var(--identity-radius-card)] border bg-[var(--color-card)] p-3 transition duration-300 hover:-translate-y-1 hover:border-[var(--identity-accent-line)] ${
+                                    className={`rounded-[var(--identity-radius-card)] border bg-[var(--color-card)] p-3 transition duration-300 hover:-translate-y-1 hover:border-[var(--identity-accent-line)] lg:p-2.5 ${
                                         group.status === "learning"
                                             ? "border-dashed border-[var(--identity-accent-line)]"
                                             : "border-[var(--color-line)]"
@@ -44,10 +44,10 @@ export default function Skills() {
                                     <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-[var(--color-accent-ink)] lg:tracking-[0.24em]">
                                         {group.title}
                                     </p>
-                                    <p className="mt-2 text-xs leading-5 text-[var(--color-ink-soft)]">
+                                    <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-[var(--color-ink-soft)]">
                                         {group.description}
                                     </p>
-                                    <div className="mt-2 flex flex-wrap gap-1 lg:mt-3">
+                                    <div className="mt-2 flex flex-wrap gap-1 lg:mt-2">
                                         {group.items.map((item) => (
                                             <span
                                                 key={item}
@@ -62,11 +62,11 @@ export default function Skills() {
                                         ))}
                                     </div>
                                     {group.status === "learning" ? (
-                                        <p className="mt-2 text-[0.66rem] font-medium uppercase tracking-[0.16em] text-[var(--color-accent-ink)] lg:mt-3">
+                                        <p className="mt-2 text-[0.66rem] font-medium uppercase tracking-[0.16em] text-[var(--color-accent-ink)] lg:mt-2">
                                             Currently learning
                                         </p>
                                     ) : group.projectLink && (
-                                        <p className="mt-2 text-[0.68rem] text-[var(--color-text-soft)] lg:mt-3">
+                                        <p className="mt-2 text-[0.68rem] text-[var(--color-text-soft)] lg:mt-2">
                                             Linked to:{" "}
                                             <span className="text-[var(--color-ink)]">{group.projectLink}</span>
                                         </p>
@@ -76,8 +76,10 @@ export default function Skills() {
                         </div>
                     </div>
 
-                    {/* Mobile keeps the desk behind the cards; desktop gives it the right column. */}
-                    <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.18] lg:relative lg:inset-auto lg:z-auto lg:h-[62vh] lg:opacity-100">
+                    {/* Mobile keeps the desk behind the cards. On desktop it holds
+                        the right column while the cards scroll past, which gives the
+                        light its travel without pinning content that may not fit. */}
+                    <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.18] lg:sticky lg:top-[16vh] lg:inset-auto lg:z-auto lg:h-[64vh] lg:opacity-100">
                         <SceneMount
                             sectionRef={sectionRef}
                             fallback={<DeskStill />}
@@ -88,7 +90,6 @@ export default function Skills() {
                             )}
                         </SceneMount>
                     </div>
-                </div>
             </div>
         </section>
     );
