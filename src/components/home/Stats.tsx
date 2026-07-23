@@ -130,7 +130,7 @@ export default function Stats() {
                             <p className="text-[0.62rem] uppercase tracking-[0.14em] text-[var(--color-text-soft)] lg:text-xs lg:tracking-[0.24em]">
                                 {item.label}
                             </p>
-                            <p className="mt-2 font-mono text-2xl font-semibold text-[var(--color-ink)] lg:mt-4 lg:text-5xl">
+                            <p className="mt-2 font-mono text-2xl font-medium text-[var(--color-ink)] lg:mt-4 lg:text-5xl">
                                 {item.value}
                             </p>
                             <p className="mt-1 text-xs leading-5 text-[var(--color-ink-soft)] lg:mt-3 lg:text-sm lg:leading-6">

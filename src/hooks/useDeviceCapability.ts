@@ -38,13 +38,20 @@ function detect(): DeviceCapability {
 /**
  * "low" still renders, with contact shadows and antialiasing dropped.
  * "none" means the section must show its static fallback instead.
+ *
+ * Probing costs a throwaway WebGL context, which is far from free on a phone,
+ * so callers only enable this once they are otherwise ready to mount a scene.
  */
-export default function useDeviceCapability() {
+export default function useDeviceCapability(enabled: boolean) {
     const [capability, setCapability] = useState<DeviceCapability>("unknown");
 
     useEffect(() => {
+        if (!enabled) {
+            return;
+        }
+
         setCapability(detect());
-    }, []);
+    }, [enabled]);
 
     return capability;
 }

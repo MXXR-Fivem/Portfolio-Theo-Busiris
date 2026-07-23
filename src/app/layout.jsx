@@ -3,25 +3,21 @@ import "./globals.css";
 
 const montserrat = localFont({
     variable: "--font-heading",
+    display: "swap",
     src: [
         {
-            path: "./fonts/Montserrat-Regular.otf",
+            path: "./fonts/Montserrat-Regular.woff2",
             weight: "400",
             style: "normal",
         },
         {
-            path: "./fonts/Montserrat-Medium.otf",
+            path: "./fonts/Montserrat-Medium.woff2",
             weight: "500",
             style: "normal",
         },
         {
-            path: "./fonts/Montserrat-SemiBold.otf",
+            path: "./fonts/Montserrat-SemiBold.woff2",
             weight: "600",
-            style: "normal",
-        },
-        {
-            path: "./fonts/Montserrat-Bold.otf",
-            weight: "700",
             style: "normal",
         },
     ],
@@ -29,20 +25,16 @@ const montserrat = localFont({
 
 const sourceCodePro = localFont({
     variable: "--font-code",
+    display: "swap",
     src: [
         {
-            path: "./fonts/SourceCodePro-Regular.otf",
+            path: "./fonts/SourceCodePro-Regular.woff2",
             weight: "400",
             style: "normal",
         },
         {
-            path: "./fonts/SourceCodePro-Medium.otf",
+            path: "./fonts/SourceCodePro-Medium.woff2",
             weight: "500",
-            style: "normal",
-        },
-        {
-            path: "./fonts/SourceCodePro-Bold.otf",
-            weight: "700",
             style: "normal",
         },
     ],

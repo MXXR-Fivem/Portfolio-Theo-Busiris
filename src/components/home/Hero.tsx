@@ -99,6 +99,7 @@ export default function Hero() {
                             <Link
                                 href={profile.cv}
                                 target="_blank"
+                                prefetch={false}
                                 className="soft-button px-4 py-2.5 text-xs lg:px-5 lg:py-3 lg:text-sm"
                             >
                                 <span className="truncate">Download CV</span>

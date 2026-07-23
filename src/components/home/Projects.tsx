@@ -99,7 +99,6 @@ function ProjectCard({ project }: { project: Project }) {
                                 src={project.image}
                                 alt={`${project.title} preview`}
                                 fill
-                                loading="eager"
                                 className="object-contain p-2 transition duration-500 group-hover:scale-[1.025] sm:p-3 lg:p-4"
                                 sizes="(max-width: 1023px) 100vw, 46vw"
                             />
@@ -169,7 +168,9 @@ export default function Projects() {
                                 alt=""
                                 width={900}
                                 height={560}
-                                loading="eager"
+                                // Warming the carousel is not worth competing with
+                                // the fonts and the first paint for bandwidth.
+                                loading="lazy"
                                 sizes="(max-width: 1023px) 100vw, 46vw"
                             />
                         ))}

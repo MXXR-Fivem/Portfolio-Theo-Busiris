@@ -17,12 +17,14 @@
   --identity-border-strong: rgba(43, 46, 42, 0.14);
   --identity-text: #2b2e2a;
   --identity-text-soft: #4c5049;
-  --identity-text-muted: #7a7e74;
+  /* Darkened to clear WCAG AA (4.5:1) on the beige for small labels. */
+  --identity-text-muted: #5f6257;
 
   /* One accent only. The pale sage is for fills and 3D details; the ink
-     variant is the same hue pushed down to a readable contrast on beige. */
+     variant is the same hue pushed down to a readable contrast on beige and
+     on the pale accent fill. */
   --identity-accent: #9caf88;
-  --identity-accent-ink: #5f7350;
+  --identity-accent-ink: #4a5b3d;
   --identity-accent-quiet: rgba(156, 175, 136, 0.16);
   --identity-accent-line: rgba(156, 175, 136, 0.42);
 

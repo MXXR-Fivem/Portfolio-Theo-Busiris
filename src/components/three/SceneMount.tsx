@@ -18,6 +18,10 @@ type SceneMountProps = {
 /**
  * Waits until the page is done loading and the main thread is free, so a
  * canvas above the fold never competes with first paint.
+ *
+ * On small screens it waits for a gesture on top of that. There the 3D is a
+ * watermark behind the text, and paying for WebGL before the reader has even
+ * moved is the wrong trade: they get the static art until they scroll.
  */
 function useIdleAfterLoad() {
     const [isIdle, setIsIdle] = useState(false);
@@ -25,6 +29,19 @@ function useIdleAfterLoad() {
     useEffect(() => {
         let idleHandle: number | null = null;
         let timeout: number | null = null;
+        const wantsGesture = !window.matchMedia("(min-width: 1024px)").matches;
+        const gestures = ["pointerdown", "touchstart", "wheel", "keydown", "scroll"] as const;
+
+        function releaseGestures() {
+            gestures.forEach((gesture) =>
+                window.removeEventListener(gesture, onGesture)
+            );
+        }
+
+        function onGesture() {
+            releaseGestures();
+            scheduleIdle();
+        }
 
         function scheduleIdle() {
             const idleWindow = window as Window & {
@@ -42,14 +59,26 @@ function useIdleAfterLoad() {
             timeout = window.setTimeout(() => setIsIdle(true), 200);
         }
 
+        function start() {
+            if (!wantsGesture) {
+                scheduleIdle();
+                return;
+            }
+
+            gestures.forEach((gesture) =>
+                window.addEventListener(gesture, onGesture, { once: true, passive: true })
+            );
+        }
+
         if (document.readyState === "complete") {
-            scheduleIdle();
+            start();
         } else {
-            window.addEventListener("load", scheduleIdle, { once: true });
+            window.addEventListener("load", start, { once: true });
         }
 
         return () => {
-            window.removeEventListener("load", scheduleIdle);
+            window.removeEventListener("load", start);
+            releaseGestures();
 
             const idleWindow = window as Window & {
                 cancelIdleCallback?: (handle: number) => void;
@@ -79,10 +108,12 @@ export default function SceneMount({
     sectionRef,
     className,
 }: SceneMountProps) {
-    const capability = useDeviceCapability();
     const prefersReducedMotion = usePrefersReducedMotion();
     const isInViewport = useInViewport(sectionRef);
     const isIdle = useIdleAfterLoad();
+    const capability = useDeviceCapability(
+        isIdle && isInViewport && !prefersReducedMotion
+    );
     const [isRevealed, setIsRevealed] = useState(false);
     const revealFrame = useRef<number | null>(null);
 
