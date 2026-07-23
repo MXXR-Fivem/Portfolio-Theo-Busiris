@@ -71,7 +71,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en" className="scroll-smooth">
+        <html lang="en">
             <body className={`${montserrat.variable} ${sourceCodePro.variable}`}>
                 {children}
             </body>

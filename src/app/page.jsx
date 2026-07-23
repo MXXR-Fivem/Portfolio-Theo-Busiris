@@ -9,14 +9,14 @@ import Skills from "@/components/home/Skills";
 import Testimonials from "@/components/home/Testimonials";
 import Ambitions from "@/components/home/Ambitions";
 import Contact from "@/components/home/Contact";
-import SectionScrollController from "@/components/home/SectionScrollController";
+import SmoothScroll from "@/components/SmoothScroll";
 
 export default function Home() {
     return (
         <>
-            <div className="site-backdrop relative min-h-screen overflow-hidden text-white">
+            <div className="site-backdrop relative min-h-screen overflow-x-clip text-white">
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:72px_72px] opacity-20" />
-                <SectionScrollController />
+                <SmoothScroll />
                 <Navbar />
                 <main className="relative z-10">
                     <Hero />
