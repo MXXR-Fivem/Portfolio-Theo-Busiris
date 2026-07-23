@@ -1,6 +1,7 @@
 import { HiOutlineCommandLine, HiOutlineRocketLaunch } from "react-icons/hi2";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import SectionIntro from "@/components/home/SectionIntro";
+import AboutCats from "@/components/home/AboutCats";
 import { aboutHighlights, quickFacts } from "@/data/site";
 
 const icons = [HiOutlineCommandLine, MdOutlineDashboardCustomize, HiOutlineRocketLaunch];
@@ -73,6 +74,8 @@ export default function About() {
                     </div>
                 </div>
             </div>
+
+            <AboutCats />
         </section>
     );
 }
