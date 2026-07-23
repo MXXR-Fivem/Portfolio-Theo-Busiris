@@ -25,6 +25,8 @@ type StageProps = {
     animated?: boolean;
     progress?: ScrollProgress;
     fog?: [number, number];
+    /** Scenes that light themselves (the day/night desk) opt out of the rig. */
+    lights?: boolean;
     shadow?: ShadowSettings | false;
     className?: string;
 };
@@ -69,6 +71,7 @@ export default function Stage({
     animated = false,
     progress,
     fog = [8, 26],
+    lights = true,
     shadow = {},
     className,
 }: StageProps) {
@@ -105,16 +108,20 @@ export default function Stage({
             {progress ? <ProgressInvalidator progress={progress} /> : null}
 
             {/* Warm key, sage bounce. Never a neutral showroom rig. */}
-            <ambientLight intensity={0.85} color="#fdf6e8" />
-            <hemisphereLight
-                args={["#f3ead8", "#b6c4a4", 0.7]}
-                position={[0, 6, 0]}
-            />
-            <directionalLight
-                position={[4, 7, 5]}
-                intensity={1.15}
-                color="#ffe7bd"
-            />
+            {lights ? (
+                <>
+                    <ambientLight intensity={0.85} color="#fdf6e8" />
+                    <hemisphereLight
+                        args={["#f3ead8", "#b6c4a4", 0.7]}
+                        position={[0, 6, 0]}
+                    />
+                    <directionalLight
+                        position={[4, 7, 5]}
+                        intensity={1.15}
+                        color="#ffe7bd"
+                    />
+                </>
+            ) : null}
 
             {children}
 
