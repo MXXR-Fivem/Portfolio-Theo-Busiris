@@ -5,11 +5,28 @@ import { useFrame, useThree } from "@react-three/fiber";
 import Stage from "@/components/three/Stage";
 import Cat from "@/components/three/about/Cat";
 import type { CatHandle } from "@/components/three/about/Cat";
+import { lerp, smoothstep } from "@/components/three/anim";
 import type { DeviceCapability } from "@/hooks/useDeviceCapability";
 
-/** Metres crossed per second, and the leg-cycle rate that matches it. */
-const SPEED = 1.1;
-const STEP_RATE = 3.2;
+const CYCLE = 7;
+/** Leg cycles per world unit travelled, so the gait speeds up with the cat. */
+const STEP_PER_UNIT = 0.5;
+const TAU = Math.PI * 2;
+
+/**
+ * The first 30% of the crossing is a walk; then they break into a run and the
+ * grey cat chases the white one down, closing the gap.
+ */
+function traverse(tt: number) {
+    const walkPath = 0.3;
+    const walkTime = 0.55;
+
+    if (tt < walkTime) {
+        return (tt / walkTime) * walkPath;
+    }
+
+    return walkPath + ((tt - walkTime) / (1 - walkTime)) * (1 - walkPath);
+}
 
 function Walk() {
     const leader = useRef<CatHandle>(null);
@@ -17,26 +34,28 @@ function Walk() {
     const viewport = useThree((state) => state.viewport);
 
     useFrame((state) => {
-        const time = state.clock.elapsedTime;
-        const phase = time * STEP_RATE * Math.PI * 2;
+        const span = viewport.width + 4;
+        const edge = viewport.width / 2 + 2;
 
-        // They walk rightward for ever, wrapping off the right edge back to the
-        // left, so the loop never resets with a jump.
-        const span = viewport.width + 3.2;
-        const edge = viewport.width / 2 + 1.6;
-        const advance = (time * SPEED) % span;
+        const tt = (state.clock.elapsedTime / CYCLE) % 1;
+        const d = traverse(tt);
+        const whiteX = -edge + d * span;
+
+        // The white leaves first (big gap, so the grey is not hidden behind it),
+        // then the grey closes in as they run.
+        const gap = lerp(2.4, 0.95, smoothstep(0.3, 0.72, d));
+        const greyX = whiteX - gap;
 
         leader.current?.applyPose({
-            x: -edge + advance,
+            x: whiteX,
             z: 0.1,
-            phase,
+            phase: whiteX * STEP_PER_UNIT * TAU,
         });
 
-        // The second cat trails a body behind and out of step.
         follower.current?.applyPose({
-            x: -edge + ((advance + span - 1.3) % span),
-            z: -0.5,
-            phase: phase + Math.PI * 0.6,
+            x: greyX,
+            z: -0.45,
+            phase: greyX * STEP_PER_UNIT * TAU + Math.PI * 0.5,
         });
     });
 
