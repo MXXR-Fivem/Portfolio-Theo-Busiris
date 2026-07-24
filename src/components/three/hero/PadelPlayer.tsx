@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import type { Group } from "three";
+import type { Group, Mesh, Vector3 } from "three";
 import Hand from "@/components/three/Hand";
 import { CLAY, INK, SAGE_DEEP, SAND, geometries, toonMaterial } from "@/components/three/toon";
 
@@ -32,6 +32,8 @@ export type PadelPose = {
 
 export type PadelPlayerHandle = {
     applyPose: (pose: PadelPose) => void;
+    /** World position of the racket face, so the ball can meet it exactly. */
+    getRacketWorld: (out: Vector3) => void;
 };
 
 export const restingPose: PadelPose = {
@@ -67,8 +69,13 @@ const PadelPlayer = forwardRef<PadelPlayerHandle>(function PadelPlayer(_props, r
     const freeShoulder = useRef<Group>(null);
     const frontLeg = useRef<Group>(null);
     const backLeg = useRef<Group>(null);
+    const racket = useRef<Mesh>(null);
 
     useImperativeHandle(ref, () => ({
+        getRacketWorld(out: Vector3) {
+            root.current?.updateWorldMatrix(true, true);
+            racket.current?.getWorldPosition(out);
+        },
         applyPose(pose: PadelPose) {
             if (!root.current || !hips.current || !torso.current) {
                 return;
@@ -83,13 +90,14 @@ const PadelPlayer = forwardRef<PadelPlayerHandle>(function PadelPlayer(_props, r
             torso.current.rotation.y = -pose.swing * 0.3;
 
             if (hitShoulder.current) {
-                // 0 -> arm down, 1 -> straight up and slightly behind the head.
+                // 0 -> arm down, 1 -> straight up (not over-rotated behind).
                 hitShoulder.current.rotation.x = -pose.swing * Math.PI * 1.02;
                 hitShoulder.current.rotation.z = 0.2 - pose.swing * 0.3;
             }
 
             if (hitElbow.current) {
-                hitElbow.current.rotation.x = pose.elbow * 1.5;
+                // Positive folds the forearm back, cocking the racket behind the head.
+                hitElbow.current.rotation.x = pose.elbow * 1.7;
             }
 
             if (freeShoulder.current) {
@@ -212,6 +220,7 @@ const PadelPlayer = forwardRef<PadelPlayerHandle>(function PadelPlayer(_props, r
                                 scale={[0.055, 0.2, 0.055]}
                             />
                             <mesh
+                                ref={racket}
                                 geometry={geometries.sphere}
                                 material={racketFace}
                                 position={[0, -0.68, 0]}

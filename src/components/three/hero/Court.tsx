@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import * as THREE from "three";
-import { INK, SAND, geometries, toonMaterial } from "@/components/three/toon";
+import { geometries, toonMaterial } from "@/components/three/toon";
 
 const NET_WIDTH = 5.6;
 const NET_HEIGHT = 0.92;
@@ -46,9 +46,8 @@ function useNetTexture() {
     }, []);
 }
 
-const postMaterial = toonMaterial(INK);
+const postMaterial = toonMaterial("#5b5f57");
 const bandMaterial = toonMaterial("#fbfaf6");
-const lineMaterial = toonMaterial(SAND);
 
 export default function Court() {
     const netTexture = useNetTexture();
@@ -73,26 +72,22 @@ export default function Court() {
                 scale={[NET_WIDTH, 0.07, 0.05]}
             />
 
+            {/* A post at each end of the net, with a small foot. */}
             {[-1, 1].map((side) => (
-                <mesh
-                    key={side}
-                    geometry={geometries.cylinder}
-                    material={postMaterial}
-                    position={[(side * NET_WIDTH) / 2, (NET_HEIGHT + 0.06) / 2, 0]}
-                    scale={[0.07, NET_HEIGHT + 0.06, 0.07]}
-                />
-            ))}
-
-            {/* Two service lines, just enough to say "court" without a floor. */}
-            {[-2.6, 2.2].map((z) => (
-                <mesh
-                    key={z}
-                    geometry={geometries.plane}
-                    material={lineMaterial}
-                    position={[0, 0.01, z]}
-                    rotation={[-Math.PI / 2, 0, 0]}
-                    scale={[NET_WIDTH * 0.86, 0.05, 1]}
-                />
+                <group key={side} position={[(side * NET_WIDTH) / 2, 0, 0]}>
+                    <mesh
+                        geometry={geometries.cylinder}
+                        material={postMaterial}
+                        position={[0, (NET_HEIGHT + 0.12) / 2, 0]}
+                        scale={[0.11, NET_HEIGHT + 0.12, 0.11]}
+                    />
+                    <mesh
+                        geometry={geometries.cylinder}
+                        material={postMaterial}
+                        position={[0, 0.02, 0]}
+                        scale={[0.24, 0.05, 0.24]}
+                    />
+                </group>
             ))}
         </group>
     );
