@@ -139,7 +139,7 @@ export default function Hero() {
                     {/* Full-bleed so the smashed ball can leave the page, not just a
                         boxed scene. Mobile keeps it faint behind the words; desktop
                         gives it the whole right half up to the viewport corner. */}
-                    <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.22] lg:left-auto lg:right-[-8%] lg:top-[-12%] lg:bottom-[-12%] lg:w-[64%] lg:opacity-100">
+                    <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.22] lg:left-auto lg:right-[-10%] lg:top-[-10%] lg:bottom-0 lg:w-[66%] lg:opacity-100">
                         <SceneMount
                             sectionRef={sectionRef}
                             fallback={<PadelStill />}

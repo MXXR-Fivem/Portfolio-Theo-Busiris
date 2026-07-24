@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import type { Group, Mesh } from "three";
 import Stage from "@/components/three/Stage";
@@ -8,7 +8,7 @@ import Court from "@/components/three/hero/Court";
 import PadelPlayer, { restingPose } from "@/components/three/hero/PadelPlayer";
 import type { PadelPlayerHandle, PadelPose } from "@/components/three/hero/PadelPlayer";
 import { damp, lerp, track } from "@/components/three/anim";
-import { geometries, toonMaterial } from "@/components/three/toon";
+import { geometries, padelBallTexture, toonMaterial } from "@/components/three/toon";
 import type { ScrollProgress } from "@/hooks/useSectionProgress";
 import type { DeviceCapability } from "@/hooks/useDeviceCapability";
 
@@ -21,71 +21,72 @@ const PLAYER_Z = -2.2;
 const player = {
     lift: [
         [0, 0],
-        [0.26, 0],
-        [0.36, 0.28],
-        [0.46, 0.9],
-        [0.54, 0.82],
+        [0.28, 0],
+        [0.38, 0.3],
+        [0.48, 0.9],
+        [0.56, 0.8],
         [0.72, 0],
         [1, 0],
     ],
     crouch: [
         [0, 0.35],
-        [0.24, 0.85],
-        [0.36, 0.2],
+        [0.26, 0.85],
+        [0.38, 0.2],
         [0.5, 0.05],
         [0.66, 0.25],
         [0.8, 0.8],
         [0.92, 0.42],
         [1, 0.35],
     ],
-    // The arm winds up high and back, then chops forward and down; contact is on
-    // that forward-down swing, not at the apex.
+    // Racket stays low while the lob drops in, then the arm takes it up and
+    // behind the head and chops back down; contact is on the way down, once the
+    // racket has come back past head height.
     swing: [
         [0, 0.05],
-        [0.22, 0.28],
-        [0.4, 1],
-        [0.5, 0.55],
-        [0.58, 0.18],
-        [0.7, 0.1],
+        [0.34, 0.1],
+        [0.44, 1],
+        [0.52, 0.6],
+        [0.6, 0.2],
+        [0.72, 0.1],
         [1, 0.05],
     ],
-    // Elbow cocked during the wind-up, snapping open through contact.
+    // Elbow cocked at the top (racket behind the head), snapping open into the hit.
     elbow: [
         [0, 0.3],
-        [0.3, 0.6],
-        [0.4, 0.95],
-        [0.5, 0.4],
-        [0.58, 0.1],
-        [0.66, 0.35],
+        [0.34, 0.4],
+        [0.44, 0.9],
+        [0.52, 0.35],
+        [0.6, 0.1],
+        [0.68, 0.35],
         [1, 0.3],
     ],
     // Leans back to load, then drives forward through the hit.
     lean: [
         [0, 0.16],
-        [0.34, -0.12],
-        [0.44, -0.06],
-        [0.52, 0.2],
+        [0.36, -0.12],
+        [0.46, -0.02],
+        [0.54, 0.2],
         [0.66, 0.15],
         [1, 0.16],
     ],
     guard: [
         [0, 0.2],
-        [0.36, 0.8],
+        [0.38, 0.8],
         [0.5, 0.7],
         [0.62, 0.25],
         [1, 0.2],
     ],
     stride: [
         [0, 0.12],
-        [0.4, 0.55],
+        [0.42, 0.55],
         [0.52, 0.35],
         [0.7, 0.15],
         [1, 0.12],
     ],
     turn: [
         [0, 0.16],
-        [0.42, 0.06],
-        [0.52, -0.12],
+        [0.44, 0.06],
+        [0.52, -0.1],
         [0.7, 0.06],
         [1, 0.16],
     ],
@@ -99,44 +100,43 @@ const player = {
 const ball = {
     x: [
         [0, -0.2],
-        [0.5, 0.05],
-        [0.6, 0.25],
-        // Kicks off up and to the right, streaking toward the page corner.
-        [0.7, 0.95],
-        [0.82, 2.1],
-        [1, 3.8],
+        [0.52, 0.05],
+        [0.62, 0.35],
+        // Kicks off and flies out hard to the right, off the page.
+        [0.72, 1.5],
+        [0.84, 4],
+        [1, 8],
     ],
     y: [
-        [0, 4.6],
-        [0.32, 3.5],
-        // Contact, high and in front, on the forward-down swing.
-        [0.5, 2.4],
-        // Driven near enough straight down into the floor.
-        [0.6, 0.14],
-        // Bounces and climbs hard off the top-right of the page.
-        [0.66, 0.7],
-        [0.74, 2.4],
-        [0.82, 4.6],
-        [0.9, 6.6],
-        [1, 9.2],
+        [0, 4.8],
+        [0.34, 3.6],
+        // Contact, high and in front, once the racket is back down at head height.
+        [0.52, 2.5],
+        // Driven near straight down and dwelling on the floor so the bounce reads.
+        [0.6, 0.1],
+        [0.64, 0.1],
+        // Kicks off the ground, climbing gently as it leaves to the right.
+        [0.7, 0.7],
+        [0.8, 1.5],
+        [0.9, 2.4],
+        [1, 3.6],
     ],
     z: [
         // Comes in from the near court over the net...
         [0, 2.6],
-        [0.32, 0.6],
+        [0.34, 0.6],
         // ...contact just in front of the player...
-        [0.5, -1.4],
-        // ...smashed down into the near-court floor behind the net...
-        [0.6, 1.2],
-        [0.66, 1.0],
-        // ...then flies out, drifting toward the camera so it grows as it goes.
-        [0.74, 1.8],
-        [0.82, 2.8],
-        [1, 4.2],
+        [0.52, -1.3],
+        // ...smashed down onto the floor just behind the net, where it is visible...
+        [0.6, 0.5],
+        [0.64, 0.5],
+        // ...then away to the right, holding depth so it stays big and visible.
+        [0.72, 0.8],
+        [0.84, 1.2],
+        [1, 1.8],
     ],
 } satisfies Record<string, [number, number][]>;
 
-const ballMaterial = toonMaterial("#dbe4c9");
 
 function poseAt(time: number): PadelPose {
     return {
@@ -178,6 +178,15 @@ function PadelAction({ progress }: { progress: ScrollProgress }) {
     const ballRef = useRef<Mesh>(null);
     const groupRef = useRef<Group>(null);
     const invalidate = useThree((state) => state.invalidate);
+
+    // Built here (not at module scope) so the canvas texture is only created in
+    // the browser, never during a server prerender.
+    const ballMaterial = useMemo(() => {
+        const material = toonMaterial("#9bb36e").clone();
+        material.color.set("#ffffff");
+        material.map = padelBallTexture();
+        return material;
+    }, []);
 
     const motion = useRef({ lastProgress: 0, gesture: 0, recover: 0 });
 
@@ -249,13 +258,13 @@ export default function PadelScene({
     return (
         <Stage
             // Three-quarter view from the player's left so the incoming lob and
-            // the smash both read. Aimed a little high so the player sits low in
-            // the tall canvas, leaving the upper corner clear for the ball's exit.
-            camera={{ position: [-3, 2.2, 5.9], fov: 30 }}
-            lookAt={[0, 2.05, -1.3]}
+            // the smash both read. Pulled back and aimed lower so the near-court
+            // bounce sits in frame and the ball can be tracked off to the right.
+            camera={{ position: [-3.2, 2.3, 7], fov: 30 }}
+            lookAt={[0.2, 1.55, -0.8]}
             capability={capability}
             progress={progress}
-            fog={[9, 17]}
+            fog={[10, 18]}
             shadow={{ position: [0, 0, -1], scale: 9, opacity: 0.3, blur: 2.6 }}
         >
             <PadelAction progress={progress} />

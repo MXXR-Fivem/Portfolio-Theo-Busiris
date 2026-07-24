@@ -2,6 +2,7 @@
 
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import type { Group } from "three";
+import Hand from "@/components/three/Hand";
 import { CLAY, INK, SAGE_DEEP, SAND, geometries, toonMaterial } from "@/components/three/toon";
 
 /**
@@ -19,7 +20,7 @@ export type PadelPose = {
     lean: number;
     /** Knee bend, 0 standing to 1 fully loaded. */
     crouch: number;
-    /** Hitting shoulder, 0 arm down to 1 fully overhead. */
+    /** Hitting shoulder, 0 arm down to 1 fully overhead and back. */
     swing: number;
     /** Elbow fold on the hitting arm. */
     elbow: number;
@@ -79,12 +80,11 @@ const PadelPlayer = forwardRef<PadelPlayerHandle>(function PadelPlayer(_props, r
             // Crouching lowers the hips and the jump lifts the whole root.
             hips.current.position.y = HIP_HEIGHT - pose.crouch * 0.22;
             torso.current.rotation.x = pose.lean;
-            torso.current.rotation.y = -pose.swing * 0.35;
+            torso.current.rotation.y = -pose.swing * 0.3;
 
             if (hitShoulder.current) {
-                // 0 -> arm down, 1 -> straight overhead and slightly back.
-                hitShoulder.current.rotation.x = -pose.swing * Math.PI * 0.92;
-                // Positive Z swings this arm away from the body, never across it.
+                // 0 -> arm down, 1 -> straight up and slightly behind the head.
+                hitShoulder.current.rotation.x = -pose.swing * Math.PI * 1.02;
                 hitShoulder.current.rotation.z = 0.2 - pose.swing * 0.3;
             }
 
@@ -191,27 +191,31 @@ const PadelPlayer = forwardRef<PadelPlayerHandle>(function PadelPlayer(_props, r
                         <mesh
                             geometry={geometries.capsule}
                             material={skin}
-                            position={[0, -0.17, 0]}
-                            scale={[0.15, 0.2, 0.15]}
+                            position={[0, -0.19, 0]}
+                            scale={[0.15, 0.22, 0.15]}
                         />
-                        <group ref={hitElbow} position={[0, -0.34, 0]}>
+                        <group ref={hitElbow} position={[0, -0.38, 0]}>
                             <mesh
                                 geometry={geometries.capsule}
                                 material={skin}
-                                position={[0, -0.16, 0]}
-                                scale={[0.13, 0.19, 0.13]}
+                                position={[0, -0.17, 0]}
+                                scale={[0.13, 0.2, 0.13]}
                             />
+                            {/* Hand gripping the handle */}
+                            <group position={[0, -0.36, 0.02]} rotation={[Math.PI / 2, 0, 0]} scale={0.85}>
+                                <Hand material={skin} side={1} />
+                            </group>
                             <mesh
                                 geometry={geometries.cylinder}
                                 material={racketGrip}
-                                position={[0, -0.38, 0]}
-                                scale={[0.06, 0.18, 0.06]}
+                                position={[0, -0.42, 0]}
+                                scale={[0.055, 0.2, 0.055]}
                             />
                             <mesh
                                 geometry={geometries.sphere}
                                 material={racketFace}
-                                position={[0, -0.62, 0]}
-                                scale={[0.34, 0.42, 0.07]}
+                                position={[0, -0.68, 0]}
+                                scale={[0.36, 0.46, 0.07]}
                             />
                         </group>
                     </group>
@@ -229,6 +233,10 @@ const PadelPlayer = forwardRef<PadelPlayerHandle>(function PadelPlayer(_props, r
                             position={[0, -0.46, 0]}
                             scale={[0.13, 0.19, 0.13]}
                         />
+                        {/* Free hand */}
+                        <group position={[0, -0.64, 0]} rotation={[Math.PI / 2, 0, 0]} scale={0.85}>
+                            <Hand material={skin} side={-1} />
+                        </group>
                     </group>
                 </group>
             </group>
