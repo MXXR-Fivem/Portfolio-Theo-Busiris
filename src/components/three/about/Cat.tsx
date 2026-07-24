@@ -20,6 +20,14 @@ type CatProps = {
     belly: string;
     /** Small differences keep the pair from reading as a copy-paste. */
     scale?: number;
+    /** Tail colour, when it differs from the coat (the white cat's grey tail). */
+    tail?: string;
+    /** A short tail is a single segment instead of a curved two-piece one. */
+    shortTail?: boolean;
+    /** Lighter banding painted over the back, for the tabby. */
+    stripes?: string;
+    /** Dark patch on one side of the head; +1 is the camera-facing side. */
+    headPatch?: { color: string; side: 1 | -1 };
 };
 
 /** Standing height of the body group; the walk bob is added on top of it. */
@@ -30,12 +38,12 @@ const eye = toonMaterial("#2b2e2a");
 
 /** A stylised cat, sized in the same units as the rest of the scenes. */
 const Cat = forwardRef<CatHandle, CatProps>(function Cat(
-    { coat, belly, scale = 1 },
+    { coat, belly, scale = 1, tail, shortTail = false, stripes, headPatch },
     ref
 ) {
     const root = useRef<Group>(null);
     const body = useRef<Group>(null);
-    const tail = useRef<Group>(null);
+    const tailGroup = useRef<Group>(null);
     const legs = [
         useRef<Group>(null),
         useRef<Group>(null),
@@ -45,6 +53,15 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
 
     const coatMaterial = useMemo(() => toonMaterial(coat), [coat]);
     const bellyMaterial = useMemo(() => toonMaterial(belly), [belly]);
+    const tailMaterial = useMemo(() => toonMaterial(tail ?? coat), [tail, coat]);
+    const stripeMaterial = useMemo(
+        () => (stripes ? toonMaterial(stripes) : null),
+        [stripes]
+    );
+    const patchMaterial = useMemo(
+        () => (headPatch ? toonMaterial(headPatch.color) : null),
+        [headPatch]
+    );
 
     useImperativeHandle(ref, () => ({
         applyPose(pose: CatPose) {
@@ -67,12 +84,25 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
             body.current.position.y = BODY_HEIGHT + Math.abs(Math.sin(pose.phase)) * 0.025;
             body.current.rotation.z = swing * 0.03;
 
-            if (tail.current) {
-                tail.current.rotation.z = 0.5 + Math.sin(pose.phase * 0.5) * 0.18;
-                tail.current.rotation.y = Math.sin(pose.phase * 0.33) * 0.25;
+            if (tailGroup.current) {
+                tailGroup.current.rotation.z = 0.5 + Math.sin(pose.phase * 0.5) * 0.18;
+                tailGroup.current.rotation.y = Math.sin(pose.phase * 0.33) * 0.25;
             }
         },
     }));
+
+    // Tabby bands wrapped across the back at intervals along the body.
+    const stripeBands = stripeMaterial
+        ? [-0.2, -0.08, 0.04, 0.16].map((x) => (
+              <mesh
+                  key={`stripe-${x}`}
+                  geometry={geometries.box}
+                  material={stripeMaterial}
+                  position={[x, 0.02, 0]}
+                  scale={[0.045, 0.345, 0.345]}
+              />
+          ))
+        : null;
 
     return (
         <group ref={root} scale={scale}>
@@ -83,12 +113,20 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
                     rotation={[0, 0, Math.PI / 2]}
                     scale={[0.32, 0.34, 0.32]}
                 />
+                {stripeBands}
                 <mesh
                     geometry={geometries.capsule}
                     material={bellyMaterial}
                     position={[0, -0.07, 0]}
                     rotation={[0, 0, Math.PI / 2]}
                     scale={[0.22, 0.28, 0.26]}
+                />
+                {/* Bib under the neck, toward the head end. */}
+                <mesh
+                    geometry={geometries.sphere}
+                    material={bellyMaterial}
+                    position={[0.28, -0.02, 0]}
+                    scale={[0.18, 0.16, 0.2]}
                 />
 
                 {/* Head */}
@@ -98,6 +136,14 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
                         material={coatMaterial}
                         scale={[0.34, 0.33, 0.33]}
                     />
+                    {patchMaterial && headPatch ? (
+                        <mesh
+                            geometry={geometries.sphere}
+                            material={patchMaterial}
+                            position={[0.05, -0.01, headPatch.side * 0.2]}
+                            scale={[0.24, 0.26, 0.2]}
+                        />
+                    ) : null}
                     <mesh
                         geometry={geometries.sphere}
                         material={bellyMaterial}
@@ -130,22 +176,24 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
                     ))}
                 </group>
 
-                {/* Tail, two segments so it reads as a curve */}
-                <group ref={tail} position={[-0.36, 0.06, 0]}>
+                {/* Tail: one stub for a short tail, otherwise a curved two-piece. */}
+                <group ref={tailGroup} position={[-0.36, 0.06, 0]}>
                     <mesh
                         geometry={geometries.capsule}
-                        material={coatMaterial}
-                        position={[-0.1, 0.1, 0]}
+                        material={tailMaterial}
+                        position={[-0.08, 0.08, 0]}
                         rotation={[0, 0, Math.PI / 3]}
-                        scale={[0.08, 0.18, 0.08]}
+                        scale={[0.08, shortTail ? 0.14 : 0.18, 0.08]}
                     />
-                    <mesh
-                        geometry={geometries.capsule}
-                        material={coatMaterial}
-                        position={[-0.2, 0.3, 0]}
-                        rotation={[0, 0, Math.PI / 8]}
-                        scale={[0.07, 0.16, 0.07]}
-                    />
+                    {shortTail ? null : (
+                        <mesh
+                            geometry={geometries.capsule}
+                            material={tailMaterial}
+                            position={[-0.2, 0.3, 0]}
+                            rotation={[0, 0, Math.PI / 8]}
+                            scale={[0.07, 0.16, 0.07]}
+                        />
+                    )}
                 </group>
             </group>
 

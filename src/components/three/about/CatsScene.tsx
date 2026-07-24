@@ -41,8 +41,23 @@ function Walk({ progress }: { progress: ScrollProgress }) {
 
     return (
         <group>
-            <Cat ref={leader} coat="#b8a68d" belly="#efe7d8" />
-            <Cat ref={follower} coat="#6f7566" belly="#cfd4c2" scale={0.88} />
+            {/* White cat with a dark-grey tail and a dark patch on its right. */}
+            <Cat
+                ref={leader}
+                coat="#f1eee4"
+                belly="#ffffff"
+                tail="#4a4d45"
+                headPatch={{ color: "#4a4d45", side: 1 }}
+            />
+            {/* Dark tabby: lighter-grey banding, beige bib, short single tail. */}
+            <Cat
+                ref={follower}
+                coat="#565b50"
+                belly="#c9c0a6"
+                stripes="#868c7e"
+                shortTail
+                scale={0.88}
+            />
         </group>
     );
 }
