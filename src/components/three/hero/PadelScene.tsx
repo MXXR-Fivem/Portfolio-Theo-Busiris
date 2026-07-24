@@ -21,67 +21,71 @@ const PLAYER_Z = -2.2;
 const player = {
     lift: [
         [0, 0],
-        [0.3, 0],
-        [0.37, 0.18],
-        [0.5, 0.92],
-        [0.58, 0.86],
-        [0.74, 0],
+        [0.26, 0],
+        [0.36, 0.28],
+        [0.46, 0.9],
+        [0.54, 0.82],
+        [0.72, 0],
         [1, 0],
     ],
     crouch: [
         [0, 0.35],
-        [0.28, 0.9],
-        [0.4, 0.1],
-        [0.52, 0],
-        [0.7, 0.2],
+        [0.24, 0.85],
+        [0.36, 0.2],
+        [0.5, 0.05],
+        [0.66, 0.25],
         [0.8, 0.8],
         [0.92, 0.42],
         [1, 0.35],
     ],
+    // The arm winds up high and back, then chops forward and down; contact is on
+    // that forward-down swing, not at the apex.
     swing: [
         [0, 0.05],
-        [0.24, 0.22],
-        [0.44, 1],
-        [0.5, 0.96],
-        [0.58, 0.14],
-        [0.72, 0.1],
+        [0.22, 0.28],
+        [0.4, 1],
+        [0.5, 0.55],
+        [0.58, 0.18],
+        [0.7, 0.1],
         [1, 0.05],
     ],
+    // Elbow cocked during the wind-up, snapping open through contact.
     elbow: [
         [0, 0.3],
-        [0.3, 0.95],
-        [0.44, 0.72],
-        [0.51, 0.06],
-        [0.62, 0.35],
+        [0.3, 0.6],
+        [0.4, 0.95],
+        [0.5, 0.4],
+        [0.58, 0.1],
+        [0.66, 0.35],
         [1, 0.3],
     ],
+    // Leans back to load, then drives forward through the hit.
     lean: [
         [0, 0.16],
-        [0.3, 0.04],
-        [0.46, -0.14],
-        // A light follow-through, not a full fold, so he keeps facing the camera.
-        [0.57, 0.16],
-        [0.72, 0.14],
+        [0.34, -0.12],
+        [0.44, -0.06],
+        [0.52, 0.2],
+        [0.66, 0.15],
         [1, 0.16],
     ],
     guard: [
         [0, 0.2],
         [0.36, 0.8],
-        [0.5, 0.88],
+        [0.5, 0.7],
         [0.62, 0.25],
         [1, 0.2],
     ],
     stride: [
         [0, 0.12],
-        [0.37, 0.55],
+        [0.4, 0.55],
         [0.52, 0.35],
         [0.7, 0.15],
         [1, 0.12],
     ],
     turn: [
         [0, 0.16],
-        [0.4, 0.06],
-        [0.52, -0.16],
+        [0.42, 0.06],
+        [0.52, -0.12],
         [0.7, 0.06],
         [1, 0.16],
     ],
@@ -95,36 +99,40 @@ const player = {
 const ball = {
     x: [
         [0, -0.2],
-        [0.46, 0],
-        [0.6, 0.24],
-        [0.8, 0.7],
-        [1, 1.5],
+        [0.5, 0.05],
+        [0.6, 0.25],
+        // Kicks off up and to the right, streaking toward the page corner.
+        [0.7, 0.95],
+        [0.82, 2.1],
+        [1, 3.8],
     ],
     y: [
         [0, 4.6],
-        [0.3, 3.4],
-        [0.46, 2.5],
+        [0.32, 3.5],
+        // Contact, high and in front, on the forward-down swing.
+        [0.5, 2.4],
+        // Driven near enough straight down into the floor.
         [0.6, 0.14],
+        // Bounces and climbs hard off the top-right of the page.
         [0.66, 0.7],
-        [0.72, 1.7],
-        [0.8, 3.2],
-        [0.9, 5.2],
-        [1, 7],
+        [0.74, 2.4],
+        [0.82, 4.6],
+        [0.9, 6.6],
+        [1, 9.2],
     ],
     z: [
         // Comes in from the near court over the net...
         [0, 2.6],
-        [0.3, 0.5],
+        [0.32, 0.6],
         // ...contact just in front of the player...
-        [0.46, -1.7],
-        // ...smashed down into the near-court floor...
-        [0.6, 1.4],
-        [0.66, 1.05],
-        // ...rises across the frame, then rockets past the camera (z ~ 5.7).
-        [0.72, 2.2],
-        [0.8, 4.4],
-        [0.9, 8],
-        [1, 14],
+        [0.5, -1.4],
+        // ...smashed down into the near-court floor behind the net...
+        [0.6, 1.2],
+        [0.66, 1.0],
+        // ...then flies out, drifting toward the camera so it grows as it goes.
+        [0.74, 1.8],
+        [0.82, 2.8],
+        [1, 4.2],
     ],
 } satisfies Record<string, [number, number][]>;
 
@@ -205,9 +213,9 @@ function PadelAction({ progress }: { progress: ScrollProgress }) {
                 track(time, ball.z)
             );
             // The ball has no resting pose, so it shrinks out during recovery.
-            // It also grows a touch on the way out to sell the speed at the camera.
+            // It grows on the way out so the exit reads as leaving the page.
             const fade = 1 - state.recover;
-            const rush = 1 + Math.max(0, (time - 0.66) / 0.34) * 0.5;
+            const rush = 1 + Math.max(0, (time - 0.6) / 0.4) * 1.4;
             ballRef.current.scale.setScalar(0.14 * fade * rush);
         }
 
@@ -241,12 +249,13 @@ export default function PadelScene({
     return (
         <Stage
             // Three-quarter view from the player's left so the incoming lob and
-            // the smash both read, rather than a flat side-on shot.
-            camera={{ position: [-3, 2.05, 5.7], fov: 27 }}
-            lookAt={[0.1, 1.5, -1.3]}
+            // the smash both read. Aimed a little high so the player sits low in
+            // the tall canvas, leaving the upper corner clear for the ball's exit.
+            camera={{ position: [-3, 2.2, 5.9], fov: 30 }}
+            lookAt={[0, 2.05, -1.3]}
             capability={capability}
             progress={progress}
-            fog={[8.5, 16]}
+            fog={[9, 17]}
             shadow={{ position: [0, 0, -1], scale: 9, opacity: 0.3, blur: 2.6 }}
         >
             <PadelAction progress={progress} />

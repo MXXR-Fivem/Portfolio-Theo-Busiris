@@ -29,8 +29,8 @@ export default function Hero() {
             className="pinned-section relative h-[200vh] lg:h-[260vh]"
         >
             <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
-                <div className="section-shell relative grid w-full items-center gap-6 pt-14 lg:grid-cols-[0.98fr_1.02fr] lg:gap-12 lg:pt-16">
-                    <div className="relative z-10 mx-auto w-full max-w-[34rem] space-y-6 text-left md:max-w-[36rem] lg:mx-0 lg:max-w-none lg:space-y-8">
+                <div className="section-shell relative flex w-full items-center pt-14 lg:pt-16">
+                    <div className="relative z-10 mx-auto w-full max-w-[34rem] space-y-6 text-left md:max-w-[36rem] lg:mx-0 lg:max-w-[38rem] lg:space-y-8">
                         <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center lg:gap-3">
                             <span className="section-label">Available for internships and product work</span>
                             <span className="quiet-pill text-[0.65rem] uppercase tracking-[0.18em] lg:tracking-[0.24em]">
@@ -136,8 +136,10 @@ export default function Hero() {
                         </div>
                     </div>
 
-                    {/* Mobile: the scene sits behind the words. Desktop: it owns the right column. */}
-                    <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.22] lg:relative lg:inset-auto lg:z-auto lg:h-[66vh] lg:opacity-100">
+                    {/* Full-bleed so the smashed ball can leave the page, not just a
+                        boxed scene. Mobile keeps it faint behind the words; desktop
+                        gives it the whole right half up to the viewport corner. */}
+                    <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.22] lg:left-auto lg:right-[-8%] lg:top-[-12%] lg:bottom-[-12%] lg:w-[64%] lg:opacity-100">
                         <SceneMount
                             sectionRef={sectionRef}
                             fallback={<PadelStill />}
