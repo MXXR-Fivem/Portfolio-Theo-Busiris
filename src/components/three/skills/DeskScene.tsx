@@ -309,7 +309,7 @@ function Workstation() {
             <ambientLight ref={ambient} />
             <directionalLight ref={sun} castShadow={false} />
             <pointLight ref={glow} position={[0.2, 1.5, -0.1]} color="#bcd9ff" distance={5} />
-            <pointLight ref={lamp} position={[-0.78, 1.2, 0.12]} color="#ffcf8f" distance={3.4} />
+            <pointLight ref={lamp} position={[-0.6, 1.02, 0.1]} color="#ffcf8f" distance={3.2} />
 
             <SunRays material={rayMaterial} texture={rayTexture} groupRef={rays} />
             <Desk screenMaterial={screenMaterial} lampMaterial={lampMaterial} />

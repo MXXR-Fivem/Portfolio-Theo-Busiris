@@ -1,7 +1,7 @@
 "use client";
 
 import type { MeshToonMaterial } from "three";
-import { INK, SAND, geometries, toonMaterial } from "@/components/three/toon";
+import { INK, geometries, toonMaterial } from "@/components/three/toon";
 
 const top = toonMaterial("#e8dfcc");
 const legMat = toonMaterial("#c2b49a");
@@ -10,7 +10,6 @@ const keyBase = toonMaterial("#3a3d38");
 const keyCap = toonMaterial("#d8d2c4");
 const mouseMat = toonMaterial("#2f322e");
 const mug = toonMaterial("#9caf88");
-const paper = toonMaterial(SAND);
 const seatMat = toonMaterial("#4b4f46");
 const metal = toonMaterial("#6b6f68");
 
@@ -91,23 +90,24 @@ function Chair() {
 
 const lampBody = toonMaterial("#3f4a44");
 
-/** A desk lamp on the left; its shade glows once the scene turns to night. */
+/** A desk lamp on the left; the shade points down over the desk and its bulb
+ *  glows once the scene turns to night. */
 function DeskLamp({ shadeMaterial }: { shadeMaterial: MeshToonMaterial }) {
     return (
-        <group position={[-1.02, DESK_Y + 0.04, 0.08]}>
-            <mesh geometry={geometries.cylinder} material={lampBody} position={[0, 0.02, 0]} scale={[0.2, 0.04, 0.2]} />
-            <mesh geometry={geometries.cylinder} material={lampBody} position={[0, 0.24, 0]} scale={[0.045, 0.44, 0.045]} />
+        <group position={[-1.02, DESK_Y + 0.04, 0.1]}>
+            <mesh geometry={geometries.cylinder} material={lampBody} position={[0, 0.02, 0]} scale={[0.18, 0.04, 0.18]} />
+            <mesh geometry={geometries.cylinder} material={lampBody} position={[0, 0.27, 0]} scale={[0.04, 0.5, 0.04]} />
+            {/* Arm reaching over the desk toward the keyboard. */}
             <mesh
                 geometry={geometries.cylinder}
                 material={lampBody}
-                position={[0.11, 0.44, 0]}
-                rotation={[0, 0, -0.9]}
-                scale={[0.04, 0.34, 0.04]}
+                position={[0.21, 0.53, 0]}
+                rotation={[0, 0, -1.4]}
+                scale={[0.035, 0.44, 0.035]}
             />
-            <group position={[0.24, 0.5, 0]} rotation={[0, 0, -1.9]}>
-                <mesh geometry={geometries.cone} material={lampBody} scale={[0.2, 0.22, 0.2]} />
-                <mesh geometry={geometries.sphere} material={shadeMaterial} position={[0, -0.08, 0]} scale={0.14} />
-            </group>
+            {/* Shade opening downward, bulb at the opening. */}
+            <mesh geometry={geometries.cone} material={lampBody} position={[0.42, 0.45, 0]} scale={[0.24, 0.24, 0.24]} />
+            <mesh geometry={geometries.sphere} material={shadeMaterial} position={[0.42, 0.35, 0]} scale={[0.14, 0.09, 0.14]} />
         </group>
     );
 }
@@ -177,14 +177,6 @@ export default function Desk({
                 position={[0.92, DESK_Y + 0.11, 0.12]}
                 scale={[0.14, 0.19, 0.14]}
             />
-            <mesh
-                geometry={geometries.box}
-                material={paper}
-                position={[-0.62, DESK_Y + 0.05, 0.3]}
-                rotation={[0, 0.22, 0]}
-                scale={[0.34, 0.03, 0.26]}
-            />
-
             <DeskLamp shadeMaterial={lampMaterial} />
             <Chair />
         </group>
