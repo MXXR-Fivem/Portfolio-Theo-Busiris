@@ -3,20 +3,21 @@
 import Link from "next/link";
 import type { MouseEvent } from "react";
 import { navItems, profile } from "@/data/site";
-import { scrollToSelector } from "@/lib/smoothScroll";
 
 function scrollToAnchor(event: MouseEvent<HTMLAnchorElement>, href: string) {
     if (!href.startsWith("#")) {
         return;
     }
 
-    if (!document.querySelector(href)) {
+    const target = document.querySelector<HTMLElement>(href);
+
+    if (!target) {
         return;
     }
 
     event.preventDefault();
     window.history.pushState(null, "", href);
-    scrollToSelector(href);
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 export default function Navbar() {

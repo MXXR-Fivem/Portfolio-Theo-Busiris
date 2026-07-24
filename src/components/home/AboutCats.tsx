@@ -4,30 +4,22 @@ import { useRef } from "react";
 import dynamic from "next/dynamic";
 import SceneMount from "@/components/three/SceneMount";
 import CatsStill from "@/components/three/about/CatsStill";
-import useSectionProgress from "@/hooks/useSectionProgress";
 
 const CatsScene = dynamic(() => import("@/components/three/about/CatsScene"), {
     ssr: false,
 });
 
 /**
- * Kept as its own client island so the About section stays a server component:
- * the band measures its own crossing of the viewport as the walk progress.
+ * Its own client island so the About section stays a server component. The two
+ * cats walk on a loop of their own; the band only decides when to mount them.
  */
 export default function AboutCats() {
     const bandRef = useRef<HTMLDivElement>(null);
-    const progress = useSectionProgress(bandRef);
 
     return (
-        <div ref={bandRef} className="pointer-events-none h-[18vh] w-full lg:h-[24vh]">
-            <SceneMount
-                sectionRef={bandRef}
-                fallback={<CatsStill />}
-                className="h-full"
-            >
-                {(capability) => (
-                    <CatsScene progress={progress} capability={capability} />
-                )}
+        <div ref={bandRef} className="pointer-events-none mt-1 h-[12vh] w-full lg:mt-2 lg:h-[15vh]">
+            <SceneMount sectionRef={bandRef} fallback={<CatsStill />} className="h-full">
+                {(capability) => <CatsScene capability={capability} />}
             </SceneMount>
         </div>
     );

@@ -9,13 +9,13 @@ import Skills from "@/components/home/Skills";
 import Testimonials from "@/components/home/Testimonials";
 import Ambitions from "@/components/home/Ambitions";
 import Contact from "@/components/home/Contact";
-import SmoothScroll from "@/components/SmoothScroll";
+import SectionScrollController from "@/components/home/SectionScrollController";
 
 export default function Home() {
     return (
         <>
             <div className="site-backdrop relative min-h-screen overflow-x-clip text-[var(--color-ink)]">
-                <SmoothScroll />
+                <SectionScrollController />
                 <Navbar />
                 <main className="relative z-10">
                     <Hero />

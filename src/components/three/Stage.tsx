@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { ReactNode } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { AdaptiveDpr, ContactShadows, PerformanceMonitor } from "@react-three/drei";
-import type { ScrollProgress } from "@/hooks/useSectionProgress";
 import type { DeviceCapability } from "@/hooks/useDeviceCapability";
 import { PAPER, shadowTexture } from "@/components/three/toon";
 
@@ -21,24 +20,14 @@ type StageProps = {
     /** Aim point; the default camera would otherwise stare at the origin. */
     lookAt?: [number, number, number];
     capability: DeviceCapability;
-    /** Scroll-driven scenes redraw on demand; looping ones need every frame. */
+    /** Looping scenes render every frame; a still scene could set this false. */
     animated?: boolean;
-    progress?: ScrollProgress;
     fog?: [number, number];
     /** Scenes that light themselves (the day/night desk) opt out of the rig. */
     lights?: boolean;
     shadow?: ShadowSettings | false;
     className?: string;
 };
-
-/** Turns scroll movement into exactly one requested frame. */
-function ProgressInvalidator({ progress }: { progress: ScrollProgress }) {
-    const invalidate = useThree((state) => state.invalidate);
-
-    useEffect(() => progress.subscribe(invalidate), [progress, invalidate]);
-
-    return null;
-}
 
 /**
  * A blurred disc instead of drei's ContactShadows on weaker devices:
@@ -68,8 +57,7 @@ export default function Stage({
     camera,
     lookAt,
     capability,
-    animated = false,
-    progress,
+    animated = true,
     fog = [8, 26],
     lights = true,
     shadow = {},
@@ -104,8 +92,6 @@ export default function Stage({
             <PerformanceMonitor onDecline={() => setDpr(1)}>
                 <AdaptiveDpr />
             </PerformanceMonitor>
-
-            {progress ? <ProgressInvalidator progress={progress} /> : null}
 
             {/* Warm key, sage bounce. Never a neutral showroom rig. */}
             {lights ? (

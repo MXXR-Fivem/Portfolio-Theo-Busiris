@@ -10,7 +10,6 @@ import { HiOutlineArrowDownTray, HiOutlinePlayCircle } from "react-icons/hi2";
 import Interview from "@/components/Interview";
 import SceneMount from "@/components/three/SceneMount";
 import PadelStill from "@/components/three/hero/PadelStill";
-import useSectionProgress from "@/hooks/useSectionProgress";
 import { profile } from "@/data/site";
 
 const PadelScene = dynamic(() => import("@/components/three/hero/PadelScene"), {
@@ -20,17 +19,11 @@ const PadelScene = dynamic(() => import("@/components/three/hero/PadelScene"), {
 export default function Hero() {
     const [showInterview, setShowInterview] = useState(false);
     const sectionRef = useRef<HTMLElement>(null);
-    const progress = useSectionProgress(sectionRef);
 
     return (
-        <section
-            ref={sectionRef}
-            id="top"
-            className="pinned-section relative h-[200vh] lg:h-[260vh]"
-        >
-            <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
-                <div className="section-shell relative flex w-full items-center pt-14 lg:pt-16">
-                    <div className="relative z-10 mx-auto w-full max-w-[34rem] space-y-6 text-left md:max-w-[36rem] lg:mx-0 lg:max-w-[38rem] lg:space-y-8">
+        <section ref={sectionRef} id="top" className="relative overflow-hidden">
+            <div className="section-shell relative flex w-full items-center">
+                <div className="relative z-10 mx-auto w-full max-w-[34rem] space-y-5 text-left md:max-w-[36rem] lg:mx-0 lg:max-w-[38rem] lg:space-y-7">
                         <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center lg:gap-3">
                             <span className="section-label">Available for internships and product work</span>
                             <span className="quiet-pill text-[0.65rem] uppercase tracking-[0.18em] lg:tracking-[0.24em]">
@@ -135,22 +128,20 @@ export default function Hero() {
                             </Link>
                         </div>
                     </div>
+            </div>
 
-                    {/* Full-bleed so the smashed ball can leave the page, not just a
-                        boxed scene. Mobile keeps it faint behind the words; desktop
-                        gives it the whole right half up to the viewport corner. */}
-                    <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.22] lg:left-auto lg:right-[-10%] lg:top-[-10%] lg:bottom-0 lg:w-[66%] lg:opacity-100">
-                        <SceneMount
-                            sectionRef={sectionRef}
-                            fallback={<PadelStill />}
-                            className="h-full"
-                        >
-                            {(capability) => (
-                                <PadelScene progress={progress} capability={capability} />
-                            )}
-                        </SceneMount>
-                    </div>
-                </div>
+            {/* Full-bleed so the smashed ball can leave the page, not just a boxed
+                scene. Mobile keeps it faint behind the words; desktop gives it the
+                whole right half out to the viewport edge. Sits directly under the
+                section so it spans to the real right edge, not the shell's. */}
+            <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.22] lg:left-auto lg:right-0 lg:-top-[6%] lg:-bottom-[6%] lg:w-[62%] lg:opacity-100">
+                <SceneMount
+                    sectionRef={sectionRef}
+                    fallback={<PadelStill />}
+                    className="h-full"
+                >
+                    {(capability) => <PadelScene capability={capability} />}
+                </SceneMount>
             </div>
 
             {showInterview && <Interview onClick={() => setShowInterview(false)} />}

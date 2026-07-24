@@ -9,8 +9,8 @@ const icons = [HiOutlineCommandLine, MdOutlineDashboardCustomize, HiOutlineRocke
 export default function About() {
     return (
         <section id="about" className="section-shell">
-            <div className="section-panel grid gap-3 p-3.5 sm:p-[1.1rem] md:grid-cols-[0.95fr_1.05fr] lg:grid-cols-[0.5fr_0.5fr] lg:gap-5 lg:p-10">
-                <div className="space-y-3 lg:space-y-5">
+            <div className="section-panel grid gap-3 p-3.5 sm:p-[1.1rem] md:grid-cols-[0.95fr_1.05fr] lg:grid-cols-[0.5fr_0.5fr] lg:gap-4 lg:p-7">
+                <div className="space-y-3 lg:space-y-4">
                     <SectionIntro
                         eyebrow="About"
                         title="I am already building with real constraints, not waiting for permission to start."
@@ -47,28 +47,28 @@ export default function About() {
                     })}
                 </div>
 
-                <div className="grid gap-2 md:col-span-2 md:grid-cols-3 lg:gap-4">
+                <div className="grid gap-2 md:col-span-2 md:grid-cols-3 lg:gap-3">
                     {aboutHighlights.slice(2).map((paragraph) => (
                         <div
                             key={paragraph}
-                            className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 lg:p-5"
+                            className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 lg:p-4"
                         >
-                            <p className="text-xs leading-5 text-[var(--color-ink-soft)] lg:text-base lg:leading-6">{paragraph}</p>
+                            <p className="text-xs leading-5 text-[var(--color-ink-soft)] lg:text-sm lg:leading-6">{paragraph}</p>
                         </div>
                     ))}
-                    <div className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--identity-accent-quiet)] p-3.5 lg:p-5">
+                    <div className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--identity-accent-quiet)] p-3.5 lg:p-4">
                         <p className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-[var(--color-accent-ink)] lg:text-xs lg:tracking-[0.24em]">
                             Current direction
                         </p>
-                        <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink)] lg:mt-3 lg:text-base lg:leading-6">
+                        <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink)] lg:mt-2 lg:text-sm lg:leading-6">
                             Fullstack projects with cleaner architecture, stronger mobile flows and backend choices that can support real users.
                         </p>
                     </div>
-                    <div className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 lg:p-5">
+                    <div className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 lg:p-4">
                         <p className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-[var(--color-accent-ink)] lg:text-xs lg:tracking-[0.24em]">
                             Working style
                         </p>
-                        <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink)] lg:mt-3 lg:text-base lg:leading-6">
+                        <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink)] lg:mt-2 lg:text-sm lg:leading-6">
                             Build, test with constraints, listen to feedback, then iterate on the parts that actually move the product forward.
                         </p>
                     </div>
