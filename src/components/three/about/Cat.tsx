@@ -91,17 +91,20 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
         },
     }));
 
-    // Tabby bands wrapped across the back at intervals along the body.
+    // Tabby bands: thin tiles pressed flat onto each flank, so they read as
+    // painted stripes rather than a cage of bars around the body.
     const stripeBands = stripeMaterial
-        ? [-0.2, -0.08, 0.04, 0.16].map((x) => (
-              <mesh
-                  key={`stripe-${x}`}
-                  geometry={geometries.box}
-                  material={stripeMaterial}
-                  position={[x, 0.02, 0]}
-                  scale={[0.045, 0.345, 0.345]}
-              />
-          ))
+        ? [-0.19, -0.08, 0.03, 0.14].flatMap((x) =>
+              [1, -1].map((sz) => (
+                  <mesh
+                      key={`stripe-${x}-${sz}`}
+                      geometry={geometries.box}
+                      material={stripeMaterial}
+                      position={[x, -0.02, sz * 0.125]}
+                      scale={[0.05, 0.22, 0.08]}
+                  />
+              ))
+          )
         : null;
 
     return (
@@ -137,11 +140,13 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
                         scale={[0.34, 0.33, 0.33]}
                     />
                     {patchMaterial && headPatch ? (
+                        // Sunk into the head so only a flat patch shows on the
+                        // cheek, not a ball stuck to the side.
                         <mesh
                             geometry={geometries.sphere}
                             material={patchMaterial}
-                            position={[0.05, -0.01, headPatch.side * 0.2]}
-                            scale={[0.24, 0.26, 0.2]}
+                            position={[0.05, 0.01, headPatch.side * 0.09]}
+                            scale={[0.24, 0.26, 0.14]}
                         />
                     ) : null}
                     <mesh
