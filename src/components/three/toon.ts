@@ -70,6 +70,69 @@ export const geometries = {
     plane: new THREE.PlaneGeometry(1, 1),
 };
 
+let racketAlphaMap: THREE.CanvasTexture | null = null;
+
+/** Grid of holes cut into the racket face, like a real padel bat. */
+export function padelRacketAlpha() {
+    if (racketAlphaMap) {
+        return racketAlphaMap;
+    }
+
+    const size = 64;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+
+    const context = canvas.getContext("2d");
+
+    if (context) {
+        context.fillStyle = "#ffffff";
+        context.fillRect(0, 0, size, size);
+        context.fillStyle = "#000000";
+
+        const step = 11;
+        for (let y = step; y < size - 2; y += step) {
+            const offset = (Math.round(y / step) % 2) * (step / 2);
+            for (let x = step / 2 + offset; x < size - 2; x += step) {
+                context.beginPath();
+                context.arc(x, y, 2.4, 0, Math.PI * 2);
+                context.fill();
+            }
+        }
+    }
+
+    racketAlphaMap = new THREE.CanvasTexture(canvas);
+
+    return racketAlphaMap;
+}
+
+/** A coat texture with a flat patch capping the crown, painted (no geometry). */
+export function catCrownTexture(coat: string, patch: string) {
+    const width = 64;
+    const height = 64;
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+
+    if (context) {
+        context.fillStyle = coat;
+        context.fillRect(0, 0, width, height);
+
+        // The top rows of the texture map to the crown; a cap large enough to
+        // read from the side, softly faded at its lower edge.
+        const gradient = context.createLinearGradient(0, 0, 0, height * 0.38);
+        gradient.addColorStop(0, patch);
+        gradient.addColorStop(0.62, patch);
+        gradient.addColorStop(1, coat);
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, width, height * 0.38);
+    }
+
+    return new THREE.CanvasTexture(canvas);
+}
+
 /**
  * Tabby banding painted straight into the coat, so the stripes are flush with
  * the body instead of raised geometry. Bands run along the texture height,

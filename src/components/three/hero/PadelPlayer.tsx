@@ -1,9 +1,10 @@
 "use client";
 
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
+import { DoubleSide } from "three";
 import type { Group, Mesh, Vector3 } from "three";
 import Hand from "@/components/three/Hand";
-import { CLAY, INK, SAGE_DEEP, SAND, geometries, toonMaterial } from "@/components/three/toon";
+import { CLAY, INK, SAGE_DEEP, SAND, geometries, padelRacketAlpha, toonMaterial } from "@/components/three/toon";
 
 /**
  * Everything the scene is allowed to say about the player. Swapping these
@@ -54,7 +55,6 @@ const hair = toonMaterial(INK);
 const shirt = toonMaterial("#fbfaf6");
 const shorts = toonMaterial(SAGE_DEEP);
 const shoes = toonMaterial(INK);
-const racketFace = toonMaterial(SAND);
 const racketGrip = toonMaterial(INK);
 
 const HIP_HEIGHT = 0.95;
@@ -70,6 +70,16 @@ const PadelPlayer = forwardRef<PadelPlayerHandle>(function PadelPlayer(_props, r
     const frontLeg = useRef<Group>(null);
     const backLeg = useRef<Group>(null);
     const racket = useRef<Mesh>(null);
+
+    // The perforated racket face: sand with a grid of holes cut through it.
+    const racketFace = useMemo(() => {
+        const material = toonMaterial(SAND).clone();
+        material.alphaMap = padelRacketAlpha();
+        material.transparent = true;
+        material.alphaTest = 0.5;
+        material.side = DoubleSide;
+        return material;
+    }, []);
 
     useImperativeHandle(ref, () => ({
         getRacketWorld(out: Vector3) {
@@ -218,14 +228,15 @@ const PadelPlayer = forwardRef<PadelPlayerHandle>(function PadelPlayer(_props, r
                                 geometry={geometries.cylinder}
                                 material={racketGrip}
                                 position={[0, -0.42, 0]}
-                                scale={[0.055, 0.2, 0.055]}
+                                scale={[0.06, 0.2, 0.06]}
                             />
+                            {/* Thicker, perforated racket face (holes cut through). */}
                             <mesh
                                 ref={racket}
                                 geometry={geometries.sphere}
                                 material={racketFace}
                                 position={[0, -0.68, 0]}
-                                scale={[0.36, 0.46, 0.07]}
+                                scale={[0.42, 0.54, 0.15]}
                             />
                         </group>
                     </group>
