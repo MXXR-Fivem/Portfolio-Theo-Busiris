@@ -13,7 +13,7 @@ import { geometries, toonMaterial } from "@/components/three/toon";
 import type { DeviceCapability } from "@/hooks/useDeviceCapability";
 
 /** Seconds for one full day-and-night, looped seamlessly (night == night). */
-const PERIOD = 20;
+const PERIOD = 13;
 
 /**
  * The whole story is in the light. The cycle is a closed loop: deep night at
@@ -112,6 +112,25 @@ const screenEmissive: [number, number][] = [
     [0.8, 0.5],
     [0.92, 0.9],
     [1, 1.05],
+];
+
+// The desk lamp: dark by day, warm and glowing through the night.
+const lampGlow: [number, number][] = [
+    [0, 1.1],
+    [0.14, 0.15],
+    [0.5, 0],
+    [0.82, 0.3],
+    [0.92, 0.95],
+    [1, 1.1],
+];
+
+const lampLightIntensity: [number, number][] = [
+    [0, 1.7],
+    [0.14, 0.15],
+    [0.5, 0],
+    [0.84, 0.5],
+    [0.92, 1.4],
+    [1, 1.7],
 ];
 
 const sunX: [number, number][] = [
@@ -213,6 +232,7 @@ function Workstation() {
     const sun = useRef<DirectionalLight>(null);
     const ambient = useRef<AmbientLight>(null);
     const glow = useRef<PointLight>(null);
+    const lamp = useRef<PointLight>(null);
     const rays = useRef<THREE.Group>(null);
 
     const scratch = useMemo(() => new THREE.Color(), []);
@@ -220,6 +240,12 @@ function Workstation() {
     const screenMaterial = useMemo(() => {
         const material = toonMaterial("#cdd9de").clone();
         material.emissive = new THREE.Color("#a9cbe8");
+        return material;
+    }, []);
+
+    const lampMaterial = useMemo(() => {
+        const material = toonMaterial("#d8c79c").clone();
+        material.emissive = new THREE.Color("#ffcf87");
         return material;
     }, []);
 
@@ -262,6 +288,11 @@ function Workstation() {
         }
 
         screenMaterial.emissiveIntensity = track(current, screenEmissive);
+        lampMaterial.emissiveIntensity = track(current, lampGlow);
+
+        if (lamp.current) {
+            lamp.current.intensity = track(current, lampLightIntensity);
+        }
 
         rayMaterial.opacity = track(current, rayIntensity);
         sampleColor(RAY_WARM, current, scratch);
@@ -278,9 +309,10 @@ function Workstation() {
             <ambientLight ref={ambient} />
             <directionalLight ref={sun} castShadow={false} />
             <pointLight ref={glow} position={[0.2, 1.5, -0.1]} color="#bcd9ff" distance={5} />
+            <pointLight ref={lamp} position={[-0.78, 1.2, 0.12]} color="#ffcf8f" distance={3.4} />
 
             <SunRays material={rayMaterial} texture={rayTexture} groupRef={rays} />
-            <Desk screenMaterial={screenMaterial} />
+            <Desk screenMaterial={screenMaterial} lampMaterial={lampMaterial} />
             <DeskPerson ref={person} />
         </group>
     );

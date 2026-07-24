@@ -89,8 +89,37 @@ function Chair() {
     );
 }
 
-/** Desk, dual monitors, keyboard, mouse, props and chair. */
-export default function Desk({ screenMaterial }: { screenMaterial: MeshToonMaterial }) {
+const lampBody = toonMaterial("#3f4a44");
+
+/** A desk lamp on the left; its shade glows once the scene turns to night. */
+function DeskLamp({ shadeMaterial }: { shadeMaterial: MeshToonMaterial }) {
+    return (
+        <group position={[-1.02, DESK_Y + 0.04, 0.08]}>
+            <mesh geometry={geometries.cylinder} material={lampBody} position={[0, 0.02, 0]} scale={[0.2, 0.04, 0.2]} />
+            <mesh geometry={geometries.cylinder} material={lampBody} position={[0, 0.24, 0]} scale={[0.045, 0.44, 0.045]} />
+            <mesh
+                geometry={geometries.cylinder}
+                material={lampBody}
+                position={[0.11, 0.44, 0]}
+                rotation={[0, 0, -0.9]}
+                scale={[0.04, 0.34, 0.04]}
+            />
+            <group position={[0.24, 0.5, 0]} rotation={[0, 0, -1.9]}>
+                <mesh geometry={geometries.cone} material={lampBody} scale={[0.2, 0.22, 0.2]} />
+                <mesh geometry={geometries.sphere} material={shadeMaterial} position={[0, -0.08, 0]} scale={0.14} />
+            </group>
+        </group>
+    );
+}
+
+/** Desk, dual monitors, keyboard, mouse, props, lamp and chair. */
+export default function Desk({
+    screenMaterial,
+    lampMaterial,
+}: {
+    screenMaterial: MeshToonMaterial;
+    lampMaterial: MeshToonMaterial;
+}) {
     return (
         <group>
             <mesh geometry={geometries.box} material={top} position={[0, DESK_Y, 0]} scale={[2.7, 0.07, 1.3]} />
@@ -151,11 +180,12 @@ export default function Desk({ screenMaterial }: { screenMaterial: MeshToonMater
             <mesh
                 geometry={geometries.box}
                 material={paper}
-                position={[-0.92, DESK_Y + 0.05, 0.18]}
+                position={[-0.62, DESK_Y + 0.05, 0.3]}
                 rotation={[0, 0.22, 0]}
-                scale={[0.4, 0.03, 0.3]}
+                scale={[0.34, 0.03, 0.26]}
             />
 
+            <DeskLamp shadeMaterial={lampMaterial} />
             <Chair />
         </group>
     );
