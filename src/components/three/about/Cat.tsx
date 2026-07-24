@@ -2,7 +2,7 @@
 
 import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
 import type { Group } from "three";
-import { geometries, toonMaterial } from "@/components/three/toon";
+import { geometries, stripeTexture, toonMaterial } from "@/components/three/toon";
 
 export type CatPose = {
     x: number;
@@ -26,8 +26,8 @@ type CatProps = {
     shortTail?: boolean;
     /** Lighter banding painted over the back, for the tabby. */
     stripes?: string;
-    /** Dark patch on one side of the head; +1 is the camera-facing side. */
-    headPatch?: { color: string; side: 1 | -1 };
+    /** A small patch on top of the head, between the ears. */
+    crownPatch?: string;
 };
 
 /** Standing height of the body group; the walk bob is added on top of it. */
@@ -38,7 +38,7 @@ const eye = toonMaterial("#2b2e2a");
 
 /** A stylised cat, sized in the same units as the rest of the scenes. */
 const Cat = forwardRef<CatHandle, CatProps>(function Cat(
-    { coat, belly, scale = 1, tail, shortTail = false, stripes, headPatch },
+    { coat, belly, scale = 1, tail, shortTail = false, stripes, crownPatch },
     ref
 ) {
     const root = useRef<Group>(null);
@@ -54,14 +54,24 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
     const coatMaterial = useMemo(() => toonMaterial(coat), [coat]);
     const bellyMaterial = useMemo(() => toonMaterial(belly), [belly]);
     const tailMaterial = useMemo(() => toonMaterial(tail ?? coat), [tail, coat]);
-    const stripeMaterial = useMemo(
-        () => (stripes ? toonMaterial(stripes) : null),
-        [stripes]
-    );
     const patchMaterial = useMemo(
-        () => (headPatch ? toonMaterial(headPatch.color) : null),
-        [headPatch]
+        () => (crownPatch ? toonMaterial(crownPatch) : null),
+        [crownPatch]
     );
+
+    // The tabby's flank stripes are painted into the coat via a texture, so they
+    // stay flush instead of standing out as raised bands.
+    const bodyMaterial = useMemo(() => {
+        if (!stripes) {
+            return coatMaterial;
+        }
+
+        const material = toonMaterial(coat).clone();
+        material.color.set("#ffffff");
+        material.map = stripeTexture(coat, stripes);
+
+        return material;
+    }, [stripes, coat, coatMaterial]);
 
     useImperativeHandle(ref, () => ({
         applyPose(pose: CatPose) {
@@ -91,32 +101,15 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
         },
     }));
 
-    // Tabby bands: thin tiles pressed flat onto each flank, so they read as
-    // painted stripes rather than a cage of bars around the body.
-    const stripeBands = stripeMaterial
-        ? [-0.19, -0.08, 0.03, 0.14].flatMap((x) =>
-              [1, -1].map((sz) => (
-                  <mesh
-                      key={`stripe-${x}-${sz}`}
-                      geometry={geometries.box}
-                      material={stripeMaterial}
-                      position={[x, -0.02, sz * 0.125]}
-                      scale={[0.05, 0.22, 0.08]}
-                  />
-              ))
-          )
-        : null;
-
     return (
         <group ref={root} scale={scale}>
             <group ref={body} position={[0, BODY_HEIGHT, 0]}>
                 <mesh
                     geometry={geometries.capsule}
-                    material={coatMaterial}
+                    material={bodyMaterial}
                     rotation={[0, 0, Math.PI / 2]}
                     scale={[0.32, 0.34, 0.32]}
                 />
-                {stripeBands}
                 <mesh
                     geometry={geometries.capsule}
                     material={bellyMaterial}
@@ -139,14 +132,14 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
                         material={coatMaterial}
                         scale={[0.34, 0.33, 0.33]}
                     />
-                    {patchMaterial && headPatch ? (
-                        // Sunk into the head so only a flat patch shows on the
-                        // cheek, not a ball stuck to the side.
+                    {patchMaterial ? (
+                        // A small patch on the crown, between the ears, sunk in so
+                        // it reads as a marking rather than a bump.
                         <mesh
                             geometry={geometries.sphere}
                             material={patchMaterial}
-                            position={[0.05, 0.01, headPatch.side * 0.09]}
-                            scale={[0.24, 0.26, 0.14]}
+                            position={[0, 0.16, 0]}
+                            scale={[0.22, 0.12, 0.2]}
                         />
                     ) : null}
                     <mesh

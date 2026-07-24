@@ -70,6 +70,79 @@ export const geometries = {
     plane: new THREE.PlaneGeometry(1, 1),
 };
 
+/**
+ * Tabby banding painted straight into the coat, so the stripes are flush with
+ * the body instead of raised geometry. Bands run along the texture height,
+ * which maps around the flanks of the horizontal body capsule.
+ */
+export function stripeTexture(base: string, stripe: string) {
+    const width = 8;
+    const height = 64;
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+
+    if (context) {
+        context.fillStyle = base;
+        context.fillRect(0, 0, width, height);
+        context.fillStyle = stripe;
+
+        for (let i = 0; i < 5; i += 1) {
+            context.fillRect(0, 4 + i * 12, width, 6);
+        }
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.minFilter = THREE.NearestFilter;
+    texture.magFilter = THREE.NearestFilter;
+
+    return texture;
+}
+
+let ballMap: THREE.CanvasTexture | null = null;
+
+/** A muted padel green with the two white seams. */
+export function padelBallTexture() {
+    if (ballMap) {
+        return ballMap;
+    }
+
+    const width = 128;
+    const height = 64;
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+
+    if (context) {
+        context.fillStyle = "#9bb36e";
+        context.fillRect(0, 0, width, height);
+
+        context.strokeStyle = "#f4f6ee";
+        context.lineWidth = 5;
+        context.lineCap = "round";
+
+        // Two interlocking seams, half a period apart.
+        for (const phase of [0, Math.PI]) {
+            context.beginPath();
+            for (let x = 0; x <= width; x += 2) {
+                const y = height / 2 + Math.sin((x / width) * Math.PI * 2 + phase) * (height * 0.28);
+                x === 0 ? context.moveTo(x, y) : context.lineTo(x, y);
+            }
+            context.stroke();
+        }
+    }
+
+    ballMap = new THREE.CanvasTexture(canvas);
+
+    return ballMap;
+}
+
 let shadowMap: THREE.CanvasTexture | null = null;
 
 /** Radial falloff used as a one-draw stand-in for real contact shadows. */
