@@ -8,26 +8,13 @@ import type { CatHandle } from "@/components/three/about/Cat";
 import { lerp, smoothstep } from "@/components/three/anim";
 import type { DeviceCapability } from "@/hooks/useDeviceCapability";
 
-const CYCLE = 7;
-/** Leg cycles per world unit travelled, so the gait speeds up with the cat. */
-const STEP_PER_UNIT = 0.5;
+/** Seconds to cross once. */
+const CYCLE = 4;
+/** Leg cycles per world unit travelled, so the fast run reads as a run. */
+const STEP_PER_UNIT = 0.62;
 const TAU = Math.PI * 2;
 
-/**
- * The first 30% of the crossing is a walk; then they break into a run and the
- * grey cat chases the white one down, closing the gap.
- */
-function traverse(tt: number) {
-    const walkPath = 0.3;
-    const walkTime = 0.55;
-
-    if (tt < walkTime) {
-        return (tt / walkTime) * walkPath;
-    }
-
-    return walkPath + ((tt - walkTime) / (1 - walkTime)) * (1 - walkPath);
-}
-
+/** Both cats run the whole way; the grey chases the white and closes the gap. */
 function Walk() {
     const leader = useRef<CatHandle>(null);
     const follower = useRef<CatHandle>(null);
@@ -37,13 +24,12 @@ function Walk() {
         const span = viewport.width + 4;
         const edge = viewport.width / 2 + 2;
 
-        const tt = (state.clock.elapsedTime / CYCLE) % 1;
-        const d = traverse(tt);
+        const d = (state.clock.elapsedTime / CYCLE) % 1;
         const whiteX = -edge + d * span;
 
         // The white leaves first (big gap, so the grey is not hidden behind it),
-        // then the grey closes in as they run.
-        const gap = lerp(2.4, 0.95, smoothstep(0.3, 0.72, d));
+        // then the grey closes in as the chase goes on.
+        const gap = lerp(2.4, 0.95, smoothstep(0.05, 0.6, d));
         const greyX = whiteX - gap;
 
         leader.current?.applyPose({

@@ -2,7 +2,7 @@
 
 import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
 import type { Group } from "three";
-import { geometries, stripeTexture, toonMaterial } from "@/components/three/toon";
+import { catCrownTexture, geometries, stripeTexture, toonMaterial } from "@/components/three/toon";
 
 export type CatPose = {
     x: number;
@@ -54,10 +54,18 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
     const coatMaterial = useMemo(() => toonMaterial(coat), [coat]);
     const bellyMaterial = useMemo(() => toonMaterial(belly), [belly]);
     const tailMaterial = useMemo(() => toonMaterial(tail ?? coat), [tail, coat]);
-    const patchMaterial = useMemo(
-        () => (crownPatch ? toonMaterial(crownPatch) : null),
-        [crownPatch]
-    );
+
+    // The crown patch is painted into the head texture, so it has no thickness.
+    const headMaterial = useMemo(() => {
+        if (!crownPatch) {
+            return coatMaterial;
+        }
+
+        const material = toonMaterial(coat).clone();
+        material.color.set("#ffffff");
+        material.map = catCrownTexture(coat, crownPatch);
+        return material;
+    }, [crownPatch, coat, coatMaterial]);
 
     // The tabby's flank stripes are painted into the coat via a texture, so they
     // stay flush instead of standing out as raised bands.
@@ -125,23 +133,13 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
                     scale={[0.18, 0.16, 0.2]}
                 />
 
-                {/* Head */}
+                {/* Head; the crown patch is baked into headMaterial, no geometry. */}
                 <group position={[0.4, 0.2, 0]}>
                     <mesh
                         geometry={geometries.sphere}
-                        material={coatMaterial}
+                        material={headMaterial}
                         scale={[0.34, 0.33, 0.33]}
                     />
-                    {patchMaterial ? (
-                        // A flat disc lying on the crown between the ears, barely
-                        // proud of the surface so it reads as a marking, not a bump.
-                        <mesh
-                            geometry={geometries.cylinder}
-                            material={patchMaterial}
-                            position={[0, 0.145, 0]}
-                            scale={[0.2, 0.06, 0.19]}
-                        />
-                    ) : null}
                     <mesh
                         geometry={geometries.sphere}
                         material={bellyMaterial}
