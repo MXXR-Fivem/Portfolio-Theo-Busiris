@@ -90,14 +90,15 @@ const PadelPlayer = forwardRef<PadelPlayerHandle>(function PadelPlayer(_props, r
             torso.current.rotation.y = -pose.swing * 0.3;
 
             if (hitShoulder.current) {
-                // 0 -> arm down, 1 -> straight up (not over-rotated behind).
-                hitShoulder.current.rotation.x = -pose.swing * Math.PI * 1.02;
+                // 0 -> arm down, 1 -> straight up and a touch behind the head.
+                hitShoulder.current.rotation.x = -pose.swing * Math.PI * 1.08;
                 hitShoulder.current.rotation.z = 0.2 - pose.swing * 0.3;
             }
 
             if (hitElbow.current) {
-                // Positive folds the forearm back, cocking the racket behind the head.
-                hitElbow.current.rotation.x = pose.elbow * 1.7;
+                // Negative folds the forearm forward. Kept near 0 at the top so the
+                // arm reaches straight up, then folded to whip the racket through.
+                hitElbow.current.rotation.x = -pose.elbow * 1.7;
             }
 
             if (freeShoulder.current) {
