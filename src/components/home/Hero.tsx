@@ -29,20 +29,7 @@ export default function Hero() {
             className="pinned-section relative h-[200vh] lg:h-[260vh]"
         >
             <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden">
-                <div className="section-shell relative grid w-full items-center gap-6 pt-14 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12 lg:pt-16">
-                    {/* Mobile: the scene sits behind the words. Desktop: it owns the left column. */}
-                    <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.22] lg:relative lg:inset-auto lg:z-auto lg:h-[66vh] lg:opacity-100">
-                        <SceneMount
-                            sectionRef={sectionRef}
-                            fallback={<PadelStill />}
-                            className="h-full"
-                        >
-                            {(capability) => (
-                                <PadelScene progress={progress} capability={capability} />
-                            )}
-                        </SceneMount>
-                    </div>
-
+                <div className="section-shell relative grid w-full items-center gap-6 pt-14 lg:grid-cols-[0.98fr_1.02fr] lg:gap-12 lg:pt-16">
                     <div className="relative z-10 mx-auto w-full max-w-[34rem] space-y-6 text-left md:max-w-[36rem] lg:mx-0 lg:max-w-none lg:space-y-8">
                         <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center lg:gap-3">
                             <span className="section-label">Available for internships and product work</span>
@@ -147,6 +134,19 @@ export default function Hero() {
                                 {profile.email}
                             </Link>
                         </div>
+                    </div>
+
+                    {/* Mobile: the scene sits behind the words. Desktop: it owns the right column. */}
+                    <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.22] lg:relative lg:inset-auto lg:z-auto lg:h-[66vh] lg:opacity-100">
+                        <SceneMount
+                            sectionRef={sectionRef}
+                            fallback={<PadelStill />}
+                            className="h-full"
+                        >
+                            {(capability) => (
+                                <PadelScene progress={progress} capability={capability} />
+                            )}
+                        </SceneMount>
                     </div>
                 </div>
             </div>
