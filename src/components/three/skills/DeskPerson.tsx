@@ -18,12 +18,44 @@ export type DeskPersonHandle = {
 const skin = toonMaterial(CLAY);
 const hair = toonMaterial(INK);
 const top = toonMaterial("#7d9268");
-const chair = toonMaterial("#4b4f46");
 
 const SEAT_Y = 0.52;
-const HAND_Y = 0.86;
 
-/** Seen from above: the head, the shoulders and the hands doing the work. */
+/** A forearm resting on the desk with a hand on the keyboard. */
+function Arm({
+    side,
+    handRef,
+}: {
+    side: 1 | -1;
+    handRef: React.RefObject<Group | null>;
+}) {
+    return (
+        <group>
+            {/* Upper arm: short link from the shoulder to the elbow. */}
+            <mesh
+                geometry={geometries.capsule}
+                material={top}
+                position={[side * 0.26, 0.12, -0.17]}
+                rotation={[Math.PI / 2, 0, 0]}
+                scale={[0.1, 0.14, 0.1]}
+            />
+            {/* Forearm: lies forward along the desk toward the keyboard. */}
+            <mesh
+                geometry={geometries.capsule}
+                material={skin}
+                position={[side * 0.23, 0.1, -0.44]}
+                rotation={[Math.PI / 2, 0, 0]}
+                scale={[0.09, 0.2, 0.09]}
+            />
+            {/* Hand: bobs while typing. */}
+            <group ref={handRef} position={[side * 0.22, 0.1, -0.64]}>
+                <mesh geometry={geometries.box} material={skin} scale={[0.15, 0.05, 0.18]} />
+            </group>
+        </group>
+    );
+}
+
+/** Seen from above: head, shoulders and the hands doing the work. */
 const DeskPerson = forwardRef<DeskPersonHandle>(function DeskPerson(_props, ref) {
     const torso = useRef<Group>(null);
     const leftHand = useRef<Group>(null);
@@ -36,36 +68,27 @@ const DeskPerson = forwardRef<DeskPersonHandle>(function DeskPerson(_props, ref)
                 torso.current.position.y = SEAT_Y + Math.sin(pose.sway * 1.3) * 0.006;
             }
 
-            // Hands alternate, with a short travel so it reads as typing
-            // rather than as drumming.
+            // Hands alternate with a short travel, so it reads as typing rather
+            // than drumming, and the offset keeps the two out of phase.
             if (leftHand.current) {
-                leftHand.current.position.y =
-                    HAND_Y + Math.max(0, Math.sin(pose.phase)) * 0.035;
+                leftHand.current.position.y = 0.1 + Math.max(0, Math.sin(pose.phase)) * 0.03;
             }
 
             if (rightHand.current) {
                 rightHand.current.position.y =
-                    HAND_Y + Math.max(0, Math.sin(pose.phase * 1.15 + 1.9)) * 0.035;
+                    0.1 + Math.max(0, Math.sin(pose.phase * 1.15 + 1.9)) * 0.03;
             }
         },
     }));
 
     return (
-        <group position={[0, 0, 0.95]}>
-            {/* Chair back, just enough to read as a seat from above */}
-            <mesh
-                geometry={geometries.box}
-                material={chair}
-                position={[0, 0.62, 0.34]}
-                scale={[0.62, 0.5, 0.08]}
-            />
-
+        <group position={[0, 0.16, 0.95]}>
             <group ref={torso} position={[0, SEAT_Y, 0]}>
                 <mesh
                     geometry={geometries.capsule}
                     material={top}
                     position={[0, 0.16, 0]}
-                    scale={[0.62, 0.26, 0.44]}
+                    scale={[0.64, 0.28, 0.46]}
                 />
                 <mesh
                     geometry={geometries.cylinder}
@@ -85,25 +108,12 @@ const DeskPerson = forwardRef<DeskPersonHandle>(function DeskPerson(_props, ref)
                     position={[0, 0.53, -0.06]}
                     scale={[0.38, 0.37, 0.38]}
                 />
-
-                {/* Forearms angled in towards the keyboard */}
-                {[-1, 1].map((side) => (
-                    <mesh
-                        key={`arm-${side}`}
-                        geometry={geometries.capsule}
-                        material={skin}
-                        position={[side * 0.23, 0.2, -0.36]}
-                        rotation={[1.45, 0, side * 0.14]}
-                        scale={[0.14, 0.32, 0.14]}
-                    />
-                ))}
             </group>
 
-            <group ref={leftHand} position={[-0.22, HAND_Y, -0.76]}>
-                <mesh geometry={geometries.box} material={skin} scale={[0.17, 0.06, 0.2]} />
-            </group>
-            <group ref={rightHand} position={[0.22, HAND_Y, -0.76]}>
-                <mesh geometry={geometries.box} material={skin} scale={[0.17, 0.06, 0.2]} />
+            {/* Shoulders sit at the torso top; the arms reach out from there. */}
+            <group position={[0, SEAT_Y + 0.16, 0]}>
+                <Arm side={-1} handRef={leftHand} />
+                <Arm side={1} handRef={rightHand} />
             </group>
         </group>
     );
