@@ -24,7 +24,7 @@ function Monitor({ screenMaterial }: { screenMaterial: MeshToonMaterial }) {
                 geometry={geometries.box}
                 material={shell}
                 position={[0, 0.05, 0]}
-                scale={[0.34, 0.03, 0.22]}
+                scale={[0.3, 0.03, 0.2]}
             />
             <mesh
                 geometry={geometries.box}
@@ -32,13 +32,13 @@ function Monitor({ screenMaterial }: { screenMaterial: MeshToonMaterial }) {
                 position={[0, 0.22, -0.02]}
                 scale={[0.07, 0.3, 0.07]}
             />
-            <group position={[0, 0.62, 0.02]} rotation={[-0.22, 0, 0]}>
-                <mesh geometry={geometries.box} material={shell} scale={[1.42, 0.82, 0.05]} />
+            <group position={[0, 0.58, 0.02]} rotation={[-0.22, 0, 0]}>
+                <mesh geometry={geometries.box} material={shell} scale={[0.94, 0.6, 0.05]} />
                 <mesh
                     geometry={geometries.plane}
                     material={screenMaterial}
                     position={[0, 0, 0.03]}
-                    scale={[1.32, 0.72, 1]}
+                    scale={[0.86, 0.52, 1]}
                 />
             </group>
         </group>
@@ -111,11 +111,11 @@ export default function Desk({ screenMaterial }: { screenMaterial: MeshToonMater
             ))}
 
             {/* Centre monitor, straight on. */}
-            <group position={[0, DESK_Y + 0.04, -0.42]}>
+            <group position={[-0.18, DESK_Y + 0.04, -0.44]}>
                 <Monitor screenMaterial={screenMaterial} />
             </group>
-            {/* Second monitor to the right, angled in toward the sitter. */}
-            <group position={[0.92, DESK_Y + 0.04, -0.34]} rotation={[0, -0.5, 0]}>
+            {/* Second monitor clear to the right, angled in toward the sitter. */}
+            <group position={[0.82, DESK_Y + 0.04, -0.4]} rotation={[0, -0.55, 0]}>
                 <Monitor screenMaterial={screenMaterial} />
             </group>
 

@@ -23,19 +23,20 @@ const DAYLIGHT: [number, string][] = [
     [0, "#ffe2b8"],
     [0.22, "#fff3df"],
     [0.4, "#fffaf0"],
-    [0.6, "#ffcf8c"],
-    [0.78, "#ff8038"],
-    [0.9, "#3b4c7d"],
-    [1, "#1e2748"],
+    [0.6, "#ffce93"],
+    // A softer amber dusk instead of a hard red.
+    [0.78, "#f0a862"],
+    [0.9, "#41527f"],
+    [1, "#26325a"],
 ];
 
 const AMBIENT: [number, string][] = [
     [0, "#ffe9cf"],
     [0.4, "#fff8ee"],
     [0.6, "#ffdcb4"],
-    [0.78, "#e8905a"],
-    [0.9, "#40507e"],
-    [1, "#232c4e"],
+    [0.78, "#e0b088"],
+    [0.9, "#44547e"],
+    [1, "#2a3454"],
 ];
 
 const daylightIntensity: [number, number][] = [
@@ -60,19 +61,19 @@ const ambientIntensity: [number, number][] = [
 /** Warm shafts that appear as the sun climbs and are gone by dusk. */
 const rayIntensity: [number, number][] = [
     [0, 0],
-    [0.24, 0.32],
-    [0.42, 0.5],
-    [0.6, 0.4],
-    [0.74, 0.12],
+    [0.26, 0.22],
+    [0.42, 0.34],
+    [0.6, 0.26],
+    [0.74, 0.08],
     [0.82, 0],
     [1, 0],
 ];
 
 const RAY_WARM: [number, string][] = [
-    [0.2, "#fff2cf"],
-    [0.42, "#ffe4ad"],
-    [0.66, "#ffb56a"],
-    [0.8, "#ff9048"],
+    [0.2, "#fff4d6"],
+    [0.42, "#ffe7b6"],
+    [0.66, "#ffc27f"],
+    [0.8, "#ffab63"],
 ];
 
 const glowIntensity: [number, number][] = [
@@ -122,17 +123,63 @@ function sampleColor(stops: [number, string][], value: number, out: THREE.Color)
     return out.set(stops[stops.length - 1][1]);
 }
 
-/** A few slanted translucent planes standing in for volumetric light shafts. */
-function SunRays({ material }: { material: MeshBasicMaterial }) {
+/** A soft-edged vertical streak, so a ray plane fades out instead of ending
+ *  in a hard bar. */
+function createRayTexture() {
+    const width = 32;
+    const height = 128;
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+
+    if (context) {
+        const image = context.createImageData(width, height);
+
+        for (let y = 0; y < height; y += 1) {
+            // Bright at the top, gone by the bottom.
+            const vertical = Math.pow(1 - y / height, 1.4);
+
+            for (let x = 0; x < width; x += 1) {
+                const dx = (x - width / 2) / (width / 2);
+                // Gaussian across the width for soft side edges.
+                const horizontal = Math.exp(-(dx * dx) * 6);
+                const value = Math.round(255 * vertical * horizontal);
+                const index = (y * width + x) * 4;
+
+                image.data[index] = 255;
+                image.data[index + 1] = 255;
+                image.data[index + 2] = 255;
+                image.data[index + 3] = value;
+            }
+        }
+
+        context.putImageData(image, 0, 0);
+    }
+
+    return new THREE.CanvasTexture(canvas);
+}
+
+/** Thin, parallel light shafts slanting onto the desk. */
+function SunRays({
+    material,
+    texture,
+}: {
+    material: MeshBasicMaterial;
+    texture: THREE.Texture;
+}) {
+    material.map = texture;
+
     return (
-        <group position={[0.5, 1.7, -0.1]} rotation={[0, 0, -0.5]}>
-            {[-0.55, -0.18, 0.2, 0.6].map((x, index) => (
+        <group position={[0.4, 1.8, 0]} rotation={[0, 0, -0.42]}>
+            {[-0.7, -0.5, -0.28, -0.06, 0.18, 0.42, 0.66].map((x, index) => (
                 <mesh
                     key={x}
                     geometry={geometries.plane}
                     material={material}
-                    position={[x, 0, index * 0.12]}
-                    scale={[0.16 + index * 0.02, 3.4, 1]}
+                    position={[x, 0, (index - 3) * 0.05]}
+                    scale={[0.12, 3.6, 1]}
                 />
             ))}
         </group>
@@ -154,6 +201,7 @@ function Workstation({ progress }: { progress: ScrollProgress }) {
         return material;
     }, []);
 
+    const rayTexture = useMemo(() => createRayTexture(), []);
     const rayMaterial = useMemo(
         () =>
             new THREE.MeshBasicMaterial({
@@ -205,7 +253,7 @@ function Workstation({ progress }: { progress: ScrollProgress }) {
             <directionalLight ref={sun} castShadow={false} />
             <pointLight ref={glow} position={[0, 1.5, -0.1]} color="#bcd9ff" distance={5} />
 
-            <SunRays material={rayMaterial} />
+            <SunRays material={rayMaterial} texture={rayTexture} />
             <Desk screenMaterial={screenMaterial} />
             <DeskPerson ref={person} />
         </group>
