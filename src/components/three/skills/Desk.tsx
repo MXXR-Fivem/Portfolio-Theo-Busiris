@@ -110,12 +110,12 @@ export default function Desk({ screenMaterial }: { screenMaterial: MeshToonMater
                 />
             ))}
 
-            {/* Centre monitor, straight on. */}
-            <group position={[-0.18, DESK_Y + 0.04, -0.44]}>
+            {/* Left monitor, straight on. */}
+            <group position={[-0.47, DESK_Y + 0.04, -0.44]}>
                 <Monitor screenMaterial={screenMaterial} />
             </group>
-            {/* Second monitor clear to the right, angled in toward the sitter. */}
-            <group position={[0.82, DESK_Y + 0.04, -0.4]} rotation={[0, -0.55, 0]}>
+            {/* Right monitor angled in, inner edges nearly touching the left one. */}
+            <group position={[0.47, DESK_Y + 0.04, -0.42]} rotation={[0, -0.5, 0]}>
                 <Monitor screenMaterial={screenMaterial} />
             </group>
 

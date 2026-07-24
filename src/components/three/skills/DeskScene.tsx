@@ -76,6 +76,22 @@ const RAY_WARM: [number, string][] = [
     [0.8, "#ffab63"],
 ];
 
+// As the sun crosses, the shafts lean from one side, up through vertical, then
+// over to the other side before the light goes.
+const rayTilt: [number, number][] = [
+    [0, 0.6],
+    [0.4, 0],
+    [0.78, -0.6],
+    [1, -0.6],
+];
+
+const rayShift: [number, number][] = [
+    [0, -0.7],
+    [0.4, 0.3],
+    [0.78, 1.3],
+    [1, 1.3],
+];
+
 const glowIntensity: [number, number][] = [
     [0, 0.12],
     [0.55, 0.35],
@@ -161,18 +177,20 @@ function createRayTexture() {
     return new THREE.CanvasTexture(canvas);
 }
 
-/** Thin, parallel light shafts slanting onto the desk. */
+/** Thin, parallel light shafts; the group is swept over the day by the scene. */
 function SunRays({
     material,
     texture,
+    groupRef,
 }: {
     material: MeshBasicMaterial;
     texture: THREE.Texture;
+    groupRef: React.RefObject<THREE.Group | null>;
 }) {
     material.map = texture;
 
     return (
-        <group position={[0.4, 1.8, 0]} rotation={[0, 0, -0.42]}>
+        <group ref={groupRef} position={[0, 1.8, 0]}>
             {[-0.7, -0.5, -0.28, -0.06, 0.18, 0.42, 0.66].map((x, index) => (
                 <mesh
                     key={x}
@@ -191,6 +209,7 @@ function Workstation({ progress }: { progress: ScrollProgress }) {
     const sun = useRef<DirectionalLight>(null);
     const ambient = useRef<AmbientLight>(null);
     const glow = useRef<PointLight>(null);
+    const rays = useRef<THREE.Group>(null);
 
     const scratch = useMemo(() => new THREE.Color(), []);
 
@@ -245,6 +264,11 @@ function Workstation({ progress }: { progress: ScrollProgress }) {
         rayMaterial.opacity = track(current, rayIntensity);
         sampleColor(RAY_WARM, current, scratch);
         rayMaterial.color.copy(scratch);
+
+        if (rays.current) {
+            rays.current.rotation.z = track(current, rayTilt);
+            rays.current.position.x = track(current, rayShift);
+        }
     });
 
     return (
@@ -253,7 +277,7 @@ function Workstation({ progress }: { progress: ScrollProgress }) {
             <directionalLight ref={sun} castShadow={false} />
             <pointLight ref={glow} position={[0, 1.5, -0.1]} color="#bcd9ff" distance={5} />
 
-            <SunRays material={rayMaterial} texture={rayTexture} />
+            <SunRays material={rayMaterial} texture={rayTexture} groupRef={rays} />
             <Desk screenMaterial={screenMaterial} />
             <DeskPerson ref={person} />
         </group>

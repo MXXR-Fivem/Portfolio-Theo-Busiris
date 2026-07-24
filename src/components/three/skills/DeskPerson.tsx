@@ -2,6 +2,7 @@
 
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import type { Group } from "three";
+import Hand from "@/components/three/Hand";
 import { CLAY, INK, geometries, toonMaterial } from "@/components/three/toon";
 
 export type DeskPose = {
@@ -47,9 +48,9 @@ function Arm({
                 rotation={[Math.PI / 2, 0, 0]}
                 scale={[0.09, 0.2, 0.09]}
             />
-            {/* Hand: bobs while typing. */}
-            <group ref={handRef} position={[side * 0.22, 0.1, -0.64]}>
-                <mesh geometry={geometries.box} material={skin} scale={[0.15, 0.05, 0.18]} />
+            {/* Five-fingered hand, fingers on the keys, bobbing while typing. */}
+            <group ref={handRef} position={[side * 0.22, 0.1, -0.6]}>
+                <Hand material={skin} side={side} />
             </group>
         </group>
     );
