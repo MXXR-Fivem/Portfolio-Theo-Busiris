@@ -133,13 +133,13 @@ const Cat = forwardRef<CatHandle, CatProps>(function Cat(
                         scale={[0.34, 0.33, 0.33]}
                     />
                     {patchMaterial ? (
-                        // A small patch on the crown, between the ears, sunk in so
-                        // it reads as a marking rather than a bump.
+                        // A flat disc lying on the crown between the ears, barely
+                        // proud of the surface so it reads as a marking, not a bump.
                         <mesh
-                            geometry={geometries.sphere}
+                            geometry={geometries.cylinder}
                             material={patchMaterial}
-                            position={[0, 0.16, 0]}
-                            scale={[0.22, 0.12, 0.2]}
+                            position={[0, 0.145, 0]}
+                            scale={[0.2, 0.06, 0.19]}
                         />
                     ) : null}
                     <mesh

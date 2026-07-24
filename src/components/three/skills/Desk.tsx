@@ -110,12 +110,12 @@ export default function Desk({ screenMaterial }: { screenMaterial: MeshToonMater
                 />
             ))}
 
-            {/* Left monitor, straight on. */}
-            <group position={[-0.47, DESK_Y + 0.04, -0.44]}>
+            {/* The dual pair sits toward the right of the desk, inner edges nearly
+                touching, the second one angled in toward the sitter. */}
+            <group position={[-0.12, DESK_Y + 0.04, -0.44]}>
                 <Monitor screenMaterial={screenMaterial} />
             </group>
-            {/* Right monitor angled in, inner edges nearly touching the left one. */}
-            <group position={[0.47, DESK_Y + 0.04, -0.42]} rotation={[0, -0.5, 0]}>
+            <group position={[0.82, DESK_Y + 0.04, -0.42]} rotation={[0, -0.5, 0]}>
                 <Monitor screenMaterial={screenMaterial} />
             </group>
 

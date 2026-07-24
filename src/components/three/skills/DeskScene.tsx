@@ -10,114 +10,122 @@ import DeskPerson from "@/components/three/skills/DeskPerson";
 import type { DeskPersonHandle } from "@/components/three/skills/DeskPerson";
 import { track } from "@/components/three/anim";
 import { geometries, toonMaterial } from "@/components/three/toon";
-import type { ScrollProgress } from "@/hooks/useSectionProgress";
 import type { DeviceCapability } from "@/hooks/useDeviceCapability";
 
+/** Seconds for one full day-and-night, looped seamlessly (night == night). */
+const PERIOD = 20;
+
 /**
- * The whole story is in the light: one day compressed into the section.
- * Pale morning, then the sun climbs and hits the desk at noon, warms to gold
- * in the afternoon, sinks to orange at dusk and to near-black at night, at
- * which point the two screens are the only thing still lighting the desk.
+ * The whole story is in the light. The cycle is a closed loop: deep night at
+ * both ends, dawn, a bright noon that lands on the desk, a golden afternoon, an
+ * amber (not red) dusk, and back to night where the two screens are the only
+ * thing still lighting the desk.
  */
 const DAYLIGHT: [number, string][] = [
-    [0, "#ffe2b8"],
-    [0.22, "#fff3df"],
-    [0.4, "#fffaf0"],
-    [0.6, "#ffce93"],
-    // A softer amber dusk instead of a hard red.
-    [0.78, "#f0a862"],
-    [0.9, "#41527f"],
-    [1, "#26325a"],
+    [0, "#33406e"],
+    [0.12, "#ffcf9a"],
+    [0.3, "#fff2df"],
+    [0.5, "#fffaf0"],
+    [0.68, "#ffd39a"],
+    [0.82, "#efb066"],
+    [0.92, "#5d6c9c"],
+    [1, "#33406e"],
 ];
 
 const AMBIENT: [number, string][] = [
-    [0, "#ffe9cf"],
-    [0.4, "#fff8ee"],
-    [0.6, "#ffdcb4"],
-    [0.78, "#e0b088"],
-    [0.9, "#44547e"],
-    [1, "#2a3454"],
+    [0, "#2f3a5e"],
+    [0.12, "#ffe6cf"],
+    [0.5, "#fff8ee"],
+    [0.68, "#ffdfbb"],
+    [0.82, "#e6c199"],
+    [0.92, "#4c5980"],
+    [1, "#2f3a5e"],
 ];
 
 const daylightIntensity: [number, number][] = [
-    [0, 0.7],
-    [0.22, 1.25],
-    [0.4, 1.6],
-    [0.6, 1.15],
-    [0.78, 0.7],
-    [0.9, 0.2],
-    [1, 0.08],
+    [0, 0.1],
+    [0.12, 0.7],
+    [0.3, 1.2],
+    [0.5, 1.6],
+    [0.68, 1.1],
+    [0.82, 0.62],
+    [0.92, 0.2],
+    [1, 0.1],
 ];
 
 const ambientIntensity: [number, number][] = [
-    [0, 0.72],
-    [0.4, 0.95],
-    [0.6, 0.72],
-    [0.78, 0.44],
-    [0.9, 0.24],
-    [1, 0.16],
+    [0, 0.2],
+    [0.12, 0.72],
+    [0.5, 0.95],
+    [0.68, 0.72],
+    [0.82, 0.46],
+    [0.92, 0.26],
+    [1, 0.2],
 ];
 
-/** Warm shafts that appear as the sun climbs and are gone by dusk. */
 const rayIntensity: [number, number][] = [
     [0, 0],
-    [0.26, 0.22],
-    [0.42, 0.34],
-    [0.6, 0.26],
-    [0.74, 0.08],
-    [0.82, 0],
+    [0.2, 0.18],
+    [0.42, 0.32],
+    [0.5, 0.32],
+    [0.66, 0.24],
+    [0.78, 0.06],
+    [0.86, 0],
     [1, 0],
 ];
 
 const RAY_WARM: [number, string][] = [
     [0.2, "#fff4d6"],
-    [0.42, "#ffe7b6"],
-    [0.66, "#ffc27f"],
-    [0.8, "#ffab63"],
+    [0.46, "#ffe7b6"],
+    [0.68, "#ffc888"],
+    [0.82, "#ffb771"],
 ];
 
-// As the sun crosses, the shafts lean from one side, up through vertical, then
-// over to the other side before the light goes.
+// The shafts lean from one side, up through vertical, then to the other side.
 const rayTilt: [number, number][] = [
-    [0, 0.6],
-    [0.4, 0],
-    [0.78, -0.6],
+    [0.1, 0.6],
+    [0.5, 0],
+    [0.85, -0.6],
     [1, -0.6],
 ];
 
 const rayShift: [number, number][] = [
-    [0, -0.7],
-    [0.4, 0.3],
-    [0.78, 1.3],
+    [0.1, -0.7],
+    [0.5, 0.3],
+    [0.85, 1.3],
     [1, 1.3],
 ];
 
 const glowIntensity: [number, number][] = [
-    [0, 0.12],
-    [0.55, 0.35],
-    [0.78, 1],
-    [1, 2.2],
+    [0, 2.1],
+    [0.16, 0.55],
+    [0.5, 0.2],
+    [0.8, 0.6],
+    [0.9, 1.4],
+    [1, 2.1],
 ];
 
 const screenEmissive: [number, number][] = [
-    [0, 0.05],
-    [0.55, 0.2],
-    [0.82, 0.8],
-    [1, 1.1],
+    [0, 1.05],
+    [0.16, 0.35],
+    [0.5, 0.1],
+    [0.8, 0.5],
+    [0.92, 0.9],
+    [1, 1.05],
 ];
 
-/** The sun crosses the desk left to right and dips toward the horizon. */
 const sunX: [number, number][] = [
-    [0, -5.5],
-    [1, 5.5],
+    [0, -6],
+    [0.5, 0],
+    [0.9, 6],
+    [1, -6],
 ];
 
 const sunY: [number, number][] = [
-    [0, 1.8],
-    [0.4, 5.4],
-    [0.6, 3],
-    [0.78, 1.4],
-    [1, 2.6],
+    [0, 1.4],
+    [0.5, 5.4],
+    [0.9, 1.4],
+    [1, 1.4],
 ];
 
 function sampleColor(stops: [number, string][], value: number, out: THREE.Color) {
@@ -139,8 +147,7 @@ function sampleColor(stops: [number, string][], value: number, out: THREE.Color)
     return out.set(stops[stops.length - 1][1]);
 }
 
-/** A soft-edged vertical streak, so a ray plane fades out instead of ending
- *  in a hard bar. */
+/** A soft-edged vertical streak, so a ray plane fades out instead of a hard bar. */
 function createRayTexture() {
     const width = 32;
     const height = 128;
@@ -154,12 +161,10 @@ function createRayTexture() {
         const image = context.createImageData(width, height);
 
         for (let y = 0; y < height; y += 1) {
-            // Bright at the top, gone by the bottom.
             const vertical = Math.pow(1 - y / height, 1.4);
 
             for (let x = 0; x < width; x += 1) {
                 const dx = (x - width / 2) / (width / 2);
-                // Gaussian across the width for soft side edges.
                 const horizontal = Math.exp(-(dx * dx) * 6);
                 const value = Math.round(255 * vertical * horizontal);
                 const index = (y * width + x) * 4;
@@ -177,7 +182,6 @@ function createRayTexture() {
     return new THREE.CanvasTexture(canvas);
 }
 
-/** Thin, parallel light shafts; the group is swept over the day by the scene. */
 function SunRays({
     material,
     texture,
@@ -204,7 +208,7 @@ function SunRays({
     );
 }
 
-function Workstation({ progress }: { progress: ScrollProgress }) {
+function Workstation() {
     const person = useRef<DeskPersonHandle>(null);
     const sun = useRef<DirectionalLight>(null);
     const ambient = useRef<AmbientLight>(null);
@@ -213,7 +217,6 @@ function Workstation({ progress }: { progress: ScrollProgress }) {
 
     const scratch = useMemo(() => new THREE.Color(), []);
 
-    // Both screens share this material so the scene lights them together.
     const screenMaterial = useMemo(() => {
         const material = toonMaterial("#cdd9de").clone();
         material.emissive = new THREE.Color("#a9cbe8");
@@ -235,11 +238,10 @@ function Workstation({ progress }: { progress: ScrollProgress }) {
     );
 
     useFrame((state) => {
-        const current = progress.current;
+        // Offset so the section is first seen in daytime, not at midnight.
+        const current = (state.clock.elapsedTime / PERIOD + 0.22) % 1;
         const time = state.clock.elapsedTime;
 
-        // Typing runs on the clock, not the scroll: it never stops, whatever
-        // hour the light says it is.
         person.current?.applyPose({ phase: time * 7.5, sway: time * 0.8 });
 
         if (sun.current) {
@@ -275,7 +277,7 @@ function Workstation({ progress }: { progress: ScrollProgress }) {
         <group position={[0, -0.75, 0]}>
             <ambientLight ref={ambient} />
             <directionalLight ref={sun} castShadow={false} />
-            <pointLight ref={glow} position={[0, 1.5, -0.1]} color="#bcd9ff" distance={5} />
+            <pointLight ref={glow} position={[0.2, 1.5, -0.1]} color="#bcd9ff" distance={5} />
 
             <SunRays material={rayMaterial} texture={rayTexture} groupRef={rays} />
             <Desk screenMaterial={screenMaterial} />
@@ -284,25 +286,18 @@ function Workstation({ progress }: { progress: ScrollProgress }) {
     );
 }
 
-export default function DeskScene({
-    progress,
-    capability,
-}: {
-    progress: ScrollProgress;
-    capability: DeviceCapability;
-}) {
+export default function DeskScene({ capability }: { capability: DeviceCapability }) {
     return (
         <Stage
             camera={{ position: [0, 4.4, 4.3], fov: 28 }}
             lookAt={[0, 0.3, 0.05]}
             capability={capability}
-            progress={progress}
             animated
             lights={false}
             fog={[6.5, 13]}
             shadow={{ position: [0, -0.75, 0.2], scale: 6, opacity: 0.24, blur: 3 }}
         >
-            <Workstation progress={progress} />
+            <Workstation />
         </Stage>
     );
 }
