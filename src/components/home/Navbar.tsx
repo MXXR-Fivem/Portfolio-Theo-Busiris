@@ -30,7 +30,7 @@ export default function Navbar() {
     }
 
     return (
-        <div className="fixed left-0 top-0 z-50 w-full px-4 pt-3 sm:px-6 sm:pt-4 lg:px-8">
+        <div className="fixed left-0 top-0 z-50 w-full pt-3 sm:pt-4">
             <header className="section-shell">
                 <div className="flex items-center justify-between rounded-[var(--identity-radius-panel)] border border-[var(--color-line)] bg-[var(--color-card)] px-4 py-3.5 shadow-[var(--shadow-nav)] sm:px-6 sm:py-4">
                     <Link
@@ -41,9 +41,9 @@ export default function Navbar() {
                         {/* <span className="inline-flex h-10 w-10 items-center justify-center rounded-[0.75rem] bg-[var(--identity-accent-primary)] text-sm font-semibold text-[var(--color-surface)]">
                             TB
                         </span> */}
-                        <div className="hidden sm:block">
+                        <div>
                             <p className="text-sm font-medium text-[var(--color-ink)]">{profile.name}</p>
-                            <p className="text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-text-soft)]">
+                            <p className="hidden text-[0.68rem] uppercase tracking-[0.18em] text-[var(--color-text-soft)] sm:block">
                                 Fullstack · Co-founder @ Vibaura & Gosper
                             </p>
                         </div>

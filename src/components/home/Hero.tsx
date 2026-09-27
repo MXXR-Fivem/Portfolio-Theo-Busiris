@@ -36,7 +36,7 @@ export default function Hero() {
                     positioned off the section, not off this column, so it stays
                     where it is. Below lg the court sits under it instead, so the
                     column packs tight to leave the scene room. */}
-                <div className="relative z-10 mx-auto w-full max-w-[34rem] space-y-2.5 text-left md:max-w-[36rem] md:space-y-4 lg:mx-0 lg:max-w-[38rem] lg:-translate-y-[5%] lg:space-y-7">
+                <div className="relative z-10 mx-auto w-full max-w-[34rem] space-y-3.5 text-left md:max-w-[36rem] md:space-y-4 lg:mx-0 lg:max-w-[38rem] lg:-translate-y-[5%] lg:space-y-7">
                         {/* One row: the company badge rides with the labels
                             rather than costing the hero a whole line of height. */}
                         <div className="flex flex-wrap items-center gap-1.5 lg:gap-2.5">
@@ -93,7 +93,7 @@ export default function Hero() {
                             })}
                         </div>
 
-                        <div className="space-y-2 md:space-y-3 lg:space-y-6">
+                        <div className="space-y-3 md:space-y-3 lg:space-y-6">
                             <div className="flex items-center gap-3 md:gap-4 lg:gap-5">
                                 <div className="relative h-11 w-11 overflow-hidden rounded-[var(--identity-radius-card)] bg-[var(--identity-bg-muted)] md:h-14 md:w-14 lg:h-[4.5rem] lg:w-[4.5rem]">
                                     <Image
@@ -203,8 +203,14 @@ export default function Hero() {
                 not the shell's. */}
             <div className="pointer-events-none relative z-0 max-h-[85vw] min-h-0 flex-[4_1_0%] lg:absolute lg:max-h-none lg:flex-none lg:inset-auto lg:right-0 lg:-top-[6%] lg:-bottom-[6%] lg:w-[62%]">
                 {/* Pinned rather than h-full: on tablets the section only has a
-                    min height, which a percentage height cannot resolve against. */}
-                <div className="absolute inset-0">
+                    min height, which a percentage height cannot resolve against.
+                    Below lg, the stage is grown past its own box and pulled up
+                    by the same amount, so the top ~35% of the shot — empty sky
+                    above the player in this camera framing — lands off-screen
+                    instead of reading as wasted white space. Cascades into the
+                    still (sized off this box already) and the canvas (R3F
+                    measures whatever height it is actually given). */}
+                <div className="absolute left-0 right-0 max-lg:-top-[62%] max-lg:h-[185%] lg:inset-0">
                     <SceneMount
                         sectionRef={sectionRef}
                         fallback={<PadelStill />}

@@ -118,7 +118,7 @@ textarea {
     min-height: var(--section-height);
     flex-direction: column;
     justify-content: center;
-    padding-block: clamp(5.5rem, 6vh, 6.5rem) clamp(1.25rem, 3vh, 2rem);
+    padding-block: clamp(7rem, 8vh, 8rem) clamp(1.25rem, 3vh, 2rem);
     scroll-margin-top: 0;
     scroll-snap-align: start;
     scroll-snap-stop: always;
