@@ -88,7 +88,7 @@ export default function About() {
                 above it. One short introduction, a plain divided list for the
                 facts instead of a grid of cards, and the current focus folded
                 into a single line instead of its own tile. */}
-            <div className="hidden lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-16">
+            <div className="hidden lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
                 <div className="space-y-6">
                     <SectionIntro
                         eyebrow="About"
@@ -110,7 +110,7 @@ export default function About() {
                     </p>
                 </div>
 
-                <div className="divide-y divide-[var(--color-line)] border-t border-[var(--color-line)]">
+                <div className="divide-y divide-[var(--color-line)]">
                     {quickFacts.map((fact, index) => {
                         const Icon = icons[index];
 

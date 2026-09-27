@@ -113,7 +113,7 @@ export default function Stage({
         >
             <fog attach="fog" args={[PAPER, fog[0], fog[1]]} />
 
-            <PerformanceMonitor onDecline={() => setDpr(1)}>
+            <PerformanceMonitor onIncline={() => setDpr([1, 2])} onDecline={() => setDpr(1)}>
                 <AdaptiveDpr />
             </PerformanceMonitor>
 

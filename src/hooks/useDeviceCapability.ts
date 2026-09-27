@@ -21,14 +21,18 @@ function detect(): DeviceCapability {
 
     const navigatorWithMemory = navigator as Navigator & { deviceMemory?: number };
     const cores = navigator.hardwareConcurrency ?? 4;
-    const memory = navigatorWithMemory.deviceMemory ?? 4;
+    // Safari and Firefox don't expose deviceMemory at all: treat "unsupported"
+    // as "unknown" rather than defaulting it to a value that sits exactly on
+    // the low-tier threshold, or every visitor on those browsers gets
+    // downgraded regardless of how capable the machine actually is.
+    const memory = navigatorWithMemory.deviceMemory;
 
     // Old phones: WebGL exists but a toon scene at 60fps does not.
-    if (cores <= 2 || memory <= 1) {
+    if (cores <= 2 || (memory !== undefined && memory <= 1)) {
         return "none";
     }
 
-    if (cores <= 4 || memory <= 4) {
+    if (cores <= 4 || (memory !== undefined && memory <= 4)) {
         return "low";
     }
 

@@ -135,9 +135,8 @@ export default function Stats() {
                     {stats.map((item, index) => (
                         <div
                             key={item.label}
-                            className="relative flex min-h-[5.5rem] flex-col justify-start overflow-hidden md:justify-center rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 pt-[1.1rem] lg:min-h-[8.5rem] lg:p-5 lg:pt-6"
+                            className="relative flex min-h-[5.5rem] flex-col justify-start overflow-hidden md:justify-center rounded-[var(--identity-radius-card)] border border-[var(--color-line)] border-t-[var(--identity-accent-line)] bg-[var(--color-card-subtle)] p-3.5 pt-[1.1rem] lg:min-h-[8.5rem] lg:p-5 lg:pt-6"
                         >
-                            <div className="absolute inset-x-0 top-0 h-px bg-[var(--identity-accent-line)]" />
                             <p className="text-[0.62rem] uppercase tracking-[0.14em] text-[var(--color-text-soft)] lg:text-xs lg:tracking-[0.24em]">
                                 {item.label}
                             </p>
