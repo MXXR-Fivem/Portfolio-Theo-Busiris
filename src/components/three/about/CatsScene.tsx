@@ -259,6 +259,7 @@ export default function CatsScene({ capability }: { capability: DeviceCapability
             animated
             fog={[4, 8.5]}
             shadow={{ position: [0, 0, 0], scale: 4, opacity: 0.2, blur: 3 }}
+            forceContactShadow
         >
             <Walk />
         </Stage>

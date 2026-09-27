@@ -223,7 +223,13 @@ export default function Skills() {
                     the stack rather than starting in empty space; desktop gives
                     it the right column, untouched. The day/night runs on its
                     own loop. */}
-                <div className="pointer-events-none relative z-0 -mt-12 min-h-0 flex-1 lg:mt-0 lg:h-[62vh] lg:flex-none">
+                {/* On desktop, where the scene sits in its own column instead
+                    of bleeding behind the card stack, it gets the same
+                    rounded-card frame as every other panel — with the card
+                    background behind it, so the desk not quite reaching the
+                    frame's own corners reads as a deliberate mount, not a
+                    stray gap. */}
+                <div className="pointer-events-none relative z-0 -mt-12 min-h-0 flex-1 lg:mt-0 lg:h-[62vh] lg:flex-none lg:overflow-hidden lg:rounded-[var(--identity-radius-card)] lg:border lg:border-[var(--color-line)] lg:bg-[var(--color-card)]">
                     {/* Pinned rather than h-full: on tablets the section only has
                         a min height, which a percentage height cannot resolve
                         against, and the still would size itself off the width. */}

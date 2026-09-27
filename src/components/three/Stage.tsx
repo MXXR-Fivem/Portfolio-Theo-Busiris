@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import type { ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { AdaptiveDpr, ContactShadows, PerformanceMonitor } from "@react-three/drei";
@@ -27,6 +27,9 @@ type StageProps = {
     /** Scenes that light themselves (the day/night desk) opt out of the rig. */
     lights?: boolean;
     shadow?: ShadowSettings | false;
+    /** Contact shadows even on "low": for a scene where several things move
+     * at once, one shared static blob reads as a stain, not a shadow. */
+    forceContactShadow?: boolean;
     className?: string;
 };
 
@@ -85,16 +88,17 @@ export default function Stage({
     fog = [8, 26],
     lights = true,
     shadow = {},
+    forceContactShadow = false,
     className,
 }: StageProps) {
-    const [dpr, setDpr] = useState<number | [number, number]>([1, 2]);
     const isFull = capability === "full";
+    const useContactShadow = isFull || forceContactShadow;
 
     return (
         <Canvas
             className={className}
             camera={{ ...camera, near: 0.5, far: 40 }}
-            dpr={dpr}
+            dpr={[1, 2]}
             frameloop={animated ? "always" : "demand"}
             // Antialiasing is redundant once the renderer is above 1.5x, and
             // it is the first thing worth dropping on a phone.
@@ -113,7 +117,7 @@ export default function Stage({
         >
             <fog attach="fog" args={[PAPER, fog[0], fog[1]]} />
 
-            <PerformanceMonitor onIncline={() => setDpr([1, 2])} onDecline={() => setDpr(1)}>
+            <PerformanceMonitor>
                 <AdaptiveDpr />
             </PerformanceMonitor>
 
@@ -136,7 +140,7 @@ export default function Stage({
             {children}
             <ReadySignal />
 
-            {shadow === false ? null : isFull ? (
+            {shadow === false ? null : useContactShadow ? (
                 <ContactShadows
                     position={shadow.position ?? [0, 0, 0]}
                     scale={shadow.scale ?? 12}
