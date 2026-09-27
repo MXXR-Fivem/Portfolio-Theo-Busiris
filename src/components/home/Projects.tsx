@@ -21,7 +21,7 @@ function ProjectCard({ project }: { project: Project }) {
                 <div className="project-card-copy flex min-w-0 flex-col gap-2.5 lg:gap-4">
                     <div className="flex flex-wrap items-center gap-2 lg:gap-3">
                         <span
-                            className="inline-flex rounded-[var(--identity-radius-control)] bg-[var(--identity-accent-quiet)] px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-[var(--color-accent-ink)] lg:px-3 lg:text-[0.72rem] lg:tracking-[0.28em]"
+                            className="project-card-pill inline-flex rounded-[var(--identity-radius-control)] bg-[var(--identity-accent-quiet)] px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-[var(--color-accent-ink)] lg:px-3 lg:text-[0.72rem] lg:tracking-[0.28em]"
                         >
                             {project.featured ? "Featured project" : "Project"}
                         </span>
@@ -32,13 +32,13 @@ function ProjectCard({ project }: { project: Project }) {
                         <h3 className="text-xl font-semibold text-[var(--color-ink)] sm:text-2xl lg:text-3xl">
                             {project.title}
                         </h3>
-                        <p className="mt-1.5 text-xs leading-5 text-[var(--color-ink-soft)] sm:text-sm lg:mt-3 lg:text-base lg:leading-6">
+                        <p className="project-card-summary mt-1.5 text-xs leading-5 text-[var(--color-ink-soft)] sm:text-sm lg:mt-3 lg:text-base lg:leading-6">
                             {project.summary}
                         </p>
                     </div>
 
                     <div className="project-card-details grid gap-2.5 md:grid-cols-2 lg:gap-3">
-                        <div className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3 lg:p-3.5">
+                        <div className="project-card-objective rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3 lg:p-3.5">
                             <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-[var(--color-text-soft)] lg:text-xs lg:tracking-[0.28em]">
                                 Objective
                             </p>
@@ -56,7 +56,7 @@ function ProjectCard({ project }: { project: Project }) {
                         </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-1.5 lg:gap-2">
+                    <div className="project-card-stack flex flex-wrap gap-1.5 lg:gap-2">
                         {project.stack.map((item) => (
                             <span
                                 key={item}
@@ -145,7 +145,7 @@ export default function Projects() {
             <div className="projects-content space-y-3 lg:space-y-7">
                 <SectionIntro
                     eyebrow="Projects"
-                    title="A selection of products, experiments and systems that reflect how I like to build."
+                    title="Products, experiments and systems I have shipped."
                     description=""
                     align="center"
                 />

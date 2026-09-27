@@ -18,11 +18,22 @@ export type Project = {
     featured?: boolean;
 };
 
+export type LinkedProject = {
+    name: string;
+    /** Omitted when the project has no dedicated mark, only a screenshot. */
+    logo?: string;
+    logoWidth?: number;
+    logoHeight?: number;
+    /** True when the logo is a bare mark and the name has to be set beside it. */
+    showName?: boolean;
+    href: string;
+};
+
 export type SkillGroup = {
     title: string;
     description: string;
     items: string[];
-    projectLink?: string;
+    linkedProjects?: LinkedProject[];
     status?: "learning";
 };
 
@@ -30,11 +41,10 @@ export const profile = {
     name: "Théo Busiris",
     role: "Fullstack, mobile and backend developer",
     subtitle:
-        "Epitech Paris student building useful products, solid APIs and polished interfaces from real-world constraints.",
+        "Epitech Paris student and co-founder of Vibaura and Gosper, building products from real constraints.",
     heroTitle: "I build clean, useful and ready to ship digital products.",
-    // heroTitle: "I build digital products that are clean, useful and ready to ship.",
     heroDescription:
-        "I focus on turning concrete ideas into maintainable fullstack systems, mobile experiences and backend flows that feel reliable in production, not just in demos.",
+        "Fullstack, mobile and backend. Co-founder of Vibaura, a padel ranking platform, and of Gosper, an AI gateway for companies.",
     email: "contact@busiristheo.com",
     location: "Paris, France",
     github: "https://github.com/MXXR-Fivem",
@@ -46,53 +56,131 @@ export const profile = {
     ] satisfies HeroLink[],
 };
 
+export type Venture = {
+    name: string;
+    url?: string;
+    logo: string;
+    logoWidth: number;
+    logoHeight: number;
+    role: string;
+    /** True when the logo is a bare mark and the name has to be set beside it. */
+    showName?: boolean;
+};
+
+/** The companies, kept apart from the project cards so the hero can lead with them. */
+export const ventures: Venture[] = [
+    {
+        name: "Vibaura",
+        url: "https://vibaura.app",
+        logo: "/vibaura-wordmark.png",
+        logoWidth: 360,
+        logoHeight: 74,
+        role: "Co-founder & Tech Lead",
+    },
+    {
+        name: "Gosper",
+        url: "https://gosper.fr",
+        logo: "/gosper-mark.png",
+        logoWidth: 256,
+        logoHeight: 256,
+        role: "Co-founder & Tech Lead",
+        showName: true,
+    },
+];
+
 export const quickFacts = [
     {
         title: "Product-minded",
-        description: "I care about usefulness, clarity and why a feature should exist.",
+        description: "Usefulness first. Every feature has to earn its place.",
     },
     {
         title: "Fullstack range",
-        description: "Frontend, backend, mobile, data and deployment when a product needs the full chain.",
+        description: "Frontend, backend, mobile, data, deployment. The whole chain.",
     },
     {
         title: "Execution habits",
-        description: "I like clean delivery, reusable architecture and direct feedback loops.",
+        description: "Clean delivery, reusable architecture, short feedback loops.",
     },
 ];
 
 export const aboutHighlights = [
-    "I started building around code early and kept the same reflex since then: learn fast, ship something concrete, improve the weak parts, repeat.",
-    "At Epitech Paris, I am not only studying engineering principles. I already use them on projects that involve product thinking, API design, mobile UX, data work and deployment constraints.",
-    "I am particularly motivated by products that solve a clear problem, interfaces that stay clean under complexity, and backend foundations that remain stable when usage grows.",
+    "Same reflex since the start: learn fast, ship something concrete, fix the weak parts, repeat.",
+    "Epitech Paris on one side, a company on the other. At Vibaura I lead the tech: API contracts, the Flutter app, the deployment path.",
+    "What I chase: a clear problem, an interface that stays clean under complexity, a backend that holds when usage grows.",
 ];
 
 export const proofPoints = [
     {
         eyebrow: "FiveM store",
-        title: "Real customers, real support, real iterations",
+        title: "Real customers, real support",
         description:
-            "My Tebex-powered FiveM business gave me hands-on experience with delivery, support, feedback, repeat purchases and long-term maintenance.",
+            "A Tebex store taught me delivery, support, repeat buyers and long-term maintenance.",
     },
     {
         eyebrow: "Client trust",
-        title: "Feedback matters as much as shipping",
+        title: "Feedback counts as much as shipping",
         description:
-            "Customer reviews are pulled automatically and presented as proof that quality, responsiveness and follow-up are part of the work.",
+            "Reviews are pulled in automatically: quality and follow-up are part of the work.",
     },
 ];
 
 export const projects: Project[] = [
     {
+        slug: "vibaura",
+        title: "Vibaura",
+        tagline: "Co-founder and tech lead. Live at vibaura.app.",
+        summary:
+            "A padel platform: an Elo-style ranking, strictly validated match results, a social feed and partner-ready ranking widgets. Flutter app, Next.js site and back-office, NestJS API, all typed from one OpenAPI contract.",
+        problem:
+            "Padel has no trusted ranking. Scores live in group chats and no level is comparable.",
+        outcome:
+            "A shipped platform where I own the architecture, the contracts and the release path.",
+        stack: ["NestJS", "PostgreSQL", "Prisma", "Flutter", "Next.js", "OpenAPI", "Docker", "CI/CD"],
+        image: "/vibaura.png",
+        accent: "from-lime-300 via-emerald-400 to-green-500",
+        liveUrl: "https://vibaura.app",
+        featured: true,
+    },
+    {
+        slug: "gosper",
+        title: "Gosper",
+        tagline: "Co-founder and tech lead. An AI gateway companies can govern.",
+        summary:
+            "Every model behind one login: employees get a private chat to OpenAI, Anthropic, Google and Mistral, while the company keeps budgets, access and logs. Claude Code and Codex plug in unmodified.",
+        problem:
+            "Employees already use generative AI on personal accounts, outside any oversight. Banning it does not work.",
+        outcome:
+            "A multi-tenant platform that sees metadata, never the conversations: isolation enforced in PostgreSQL, spend caps that refuse a request before it reaches the provider, leak tests that block CI.",
+        stack: ["NestJS", "PostgreSQL", "Prisma", "Next.js", "Redis", "ts-rest", "Docker"],
+        image: "/gosper.png",
+        accent: "from-rose-300 via-fuchsia-400 to-purple-500",
+        liveUrl: "https://gosper.fr",
+        featured: true,
+    },
+    {
+        slug: "smartlinks-v2",
+        title: "Smartlinks V2 at Base for Music",
+        tagline: "Three-month internship. A whole feature, built from scratch.",
+        summary:
+            "The V2 of Base for Music's smartlinks, written entirely on my own from an empty repo: one public page per release where a listener picks Spotify, Deezer, Apple Music or YouTube, adds the track to their playlist or opens it on the platform.",
+        problem:
+            "A release lives on every streaming platform at once. Fans need a single link that takes them to their own service.",
+        outcome:
+            "One feature owned end to end: front, back and data, inside the company's Turborepo monorepo.",
+        stack: ["Next.js", "React", "Mantine", "NestJS", "Kysely", "PostgreSQL", "Turborepo"],
+        image: "/smartlinks-v2.jpg",
+        accent: "from-emerald-300 via-teal-400 to-cyan-500",
+        featured: true,
+    },
+    {
         slug: "fivem-store",
         title: "FiveM script store",
-        tagline: "Running a niche product business around Lua scripts.",
+        tagline: "A niche product business around Lua scripts.",
         summary:
-            "A Tebex-based store where I design, sell and maintain scripts used by FiveM communities, with ongoing support and distribution through Discord and content channels.",
+            "A Tebex store where I build, sell and support the scripts FiveM communities run, with distribution through Discord.",
         problem:
-            "Game server owners need reliable scripts, updates and direct technical support instead of one-shot downloads.",
-        outcome:
-            "Built a concrete business around product delivery, customer support and long-term script maintenance.",
+            "Server owners need reliable scripts, updates and direct support, not one-shot downloads.",
+        outcome: "A real business: delivery, customer support and long-term maintenance.",
         stack: ["Lua", "TypeScript", "SQL", "Tebex", "Discord"],
         image: "/mxxrshop.png",
         accent: "from-amber-300 via-orange-400 to-orange-500",
@@ -100,42 +188,16 @@ export const projects: Project[] = [
         featured: true,
     },
     {
-        slug: "padel-hub",
-        title: "Padel Hub",
-        tagline: "A mobile product designed around padel community.",
-        summary:
-            "A padel-first social and booking experience bringing together posts, direct messages, groups, coaching discovery and match organization in one product.",
-        problem:
-            "Padel players jump between fragmented tools to discover courts, organize sessions and stay connected to the community.",
-        outcome:
-            "Explored a more intentional mobile experience shaped around one sport, one audience and concrete social actions.",
-        stack: ["React Native", "Expo", "Docker", "Product Design"],
-        image: "/padel_hub.png",
-        accent: "from-lime-300 via-emerald-400 to-green-500",
-        liveUrl: "https://github.com/MXXR-Fivem/Padel-hub",
-        githubUrl: "https://github.com/MXXR-Fivem/Padel-hub",
-        featured: true,
-    },
-    {
         slug: "starz",
         title: "Starz.work",
-        tagline: "A web-based job aggregator for tech talents.",
+        tagline: "A job aggregator for tech talents.",
         summary:
-            "A fullstack job and internship aggregator designed to centralize offers, help candidates find relevant opportunities and support recruiters with candidate management, analytics and CV matching.",
+            "A fullstack job and internship aggregator with candidate, recruiter and admin spaces, dashboards and offer aggregation.",
         problem:
-            "Students and young developers often search across fragmented platforms, with limited visibility on offer relevance, salary, required skills...",
+            "Students search across scattered platforms with no read on relevance, salary or required skills.",
         outcome:
-            "Built a complete end-to-end platform with candidate, recruiter and admin spaces, offer aggregation, dashboards, CI/CD and an AI-powered CV-to-offer compatibility score.",
-        stack:
-        [
-            "React",
-            "Express",
-            "FastAPI",
-            "MySQL",
-            "Docker",
-            "Nginx",
-            "CI/CD",
-        ],
+            "An end-to-end platform with CI/CD and an AI CV-to-offer compatibility score.",
+        stack: ["React", "Express", "FastAPI", "MySQL", "Docker", "Nginx", "CI/CD"],
         image: "/Starz.jpg",
         accent: "from-violet-400 via-purple-500 to-fuchsia-600",
         liveUrl: "https://starz.work",
@@ -143,15 +205,29 @@ export const projects: Project[] = [
         featured: true,
     },
     {
+        slug: "padel-hub",
+        title: "Padel Hub",
+        tagline: "A mobile-first padel community app.",
+        summary:
+            "Posts, direct messages, groups, coach discovery and match organisation, in one padel-only product.",
+        problem:
+            "Players juggle several tools to find courts, organise sessions and stay in touch.",
+        outcome: "A sharper mobile experience built for one sport and one audience.",
+        stack: ["React Native", "Expo", "Docker", "Product Design"],
+        image: "/padel_hub.png",
+        accent: "from-lime-300 via-emerald-400 to-green-500",
+        liveUrl: "https://github.com/MXXR-Fivem/Padel-hub",
+        githubUrl: "https://github.com/MXXR-Fivem/Padel-hub",
+    },
+    {
         slug: "eco-go",
         title: "Eco-Go",
-        tagline: "Turning public climate data into a readable civic product.",
+        tagline: "Public climate data, made readable.",
         summary:
-            "Hackathon project comparing environmental action across French municipalities through a clearer and more accessible interface.",
+            "Hackathon project comparing environmental action across French municipalities.",
         problem:
-            "Public environmental datasets are often too dense for citizens who want understandable comparisons and actionable signals.",
-        outcome:
-            "Delivered a data-driven prototype combining product clarity, visualization and public-interest storytelling.",
+            "Open environmental datasets are too dense for citizens who just want a comparison.",
+        outcome: "A data prototype that turns public records into something people can read.",
         stack: ["React Native", "Expo", "Docker", "Public Data"],
         image: "/ecogo.png",
         accent: "from-emerald-300 via-green-400 to-teal-500",
@@ -163,13 +239,11 @@ export const projects: Project[] = [
     {
         slug: "tardis",
         title: "Tardis",
-        tagline: "Predicting and visualizing SNCF train delays.",
+        tagline: "Predicting SNCF train delays.",
         summary:
-            "A data product using exploratory analysis and modeling to surface delay patterns and expected train delays through an accessible interface.",
-        problem:
-            "Rail delay data is noisy and hard to interpret without analysis, modeling and clear visualization choices.",
-        outcome:
-            "Strengthened my workflow around ML experimentation, storytelling and turning notebooks into something visible for users.",
+            "Exploratory analysis and modelling of rail delays, surfaced through a readable interface.",
+        problem: "Delay data is noisy and says nothing without modelling and clear visuals.",
+        outcome: "Sharpened my ML workflow and turned notebooks into something users can open.",
         stack: ["Python", "Machine Learning", "Streamlit", "Data Analysis"],
         image: "/tardis.png",
         accent: "from-violet-400 via-indigo-500 to-blue-600",
@@ -179,13 +253,10 @@ export const projects: Project[] = [
     {
         slug: "nextbuy",
         title: "NextBuy",
-        tagline: "Finding business signals inside supermarket data.",
-        summary:
-            "A business analysis and ML project extracting trends, insights and optimization ideas from retail data.",
-        problem:
-            "Raw commercial data does not help decision-making until it is transformed into readable insight and priorities.",
-        outcome:
-            "Practiced linking analysis to product decisions, not only producing models for their own sake.",
+        tagline: "Business signals inside supermarket data.",
+        summary: "Analysis and ML on retail data, from raw rows to concrete priorities.",
+        problem: "Commercial data does not help a decision until it becomes readable insight.",
+        outcome: "Practised tying analysis to product calls, not models for their own sake.",
         stack: ["Python", "Data Analysis", "Machine Learning", "Streamlit"],
         image: "/nextbuy.png",
         accent: "from-fuchsia-400 via-pink-400 to-amber-300",
@@ -195,13 +266,12 @@ export const projects: Project[] = [
     {
         slug: "inspir",
         title: "Inspir social to-do app",
-        tagline: "A first serious fullstack product built end to end.",
+        tagline: "My first serious fullstack product.",
         summary:
-            "A social to-do application delivered in three weeks with a full web stack, a dedicated backend and containerized deployment.",
-        problem:
-            "Building a usable product quickly requires managing both feature scope and technical consistency across the stack.",
+            "A social to-do app shipped in three weeks: full web stack, dedicated backend, containerised deployment.",
+        problem: "Shipping fast means holding scope and technical consistency at the same time.",
         outcome:
-            "A strong first fullstack milestone that taught me how frontend, API, database and deployment decisions shape each other.",
+            "The milestone where frontend, API, database and deployment first read as one system.",
         stack: ["Next.js", "Express", "MySQL", "Docker"],
         image: "/inspir.png",
         accent: "from-cyan-400 via-blue-500 to-violet-500",
@@ -213,11 +283,9 @@ export const projects: Project[] = [
         title: "NLP book classification",
         tagline: "A lightweight NLP engine for literary datasets.",
         summary:
-            "A prototype CLI-oriented NLP workflow built on Project Gutenberg books to classify and structure literary content for editors and publishers.",
-        problem:
-            "Reading and sorting large book collections manually is slow, inconsistent and difficult to scale.",
-        outcome:
-            "Improved my foundations in NLP pipelines, text processing and building technical tools around real datasets.",
+            "A CLI-oriented NLP pipeline classifying Project Gutenberg books for editors and publishers.",
+        problem: "Sorting large book collections by hand is slow, inconsistent and unscalable.",
+        outcome: "Solid foundations in NLP pipelines and text tooling on a real dataset.",
         stack: ["Python", "NLP", "CLI", "Data Processing"],
         image: "/alice.png",
         accent: "from-rose-400 via-fuchsia-500 to-red-500",
@@ -226,68 +294,73 @@ export const projects: Project[] = [
     },
 ];
 
+/** Reused wherever a skill traces back to one of the two companies. */
+const VIBAURA_LINK: LinkedProject = {
+    name: "Vibaura",
+    logo: "/vibaura-wordmark.png",
+    logoWidth: 360,
+    logoHeight: 74,
+    href: "#projects",
+};
+const GOSPER_LINK: LinkedProject = {
+    name: "Gosper",
+    logo: "/gosper-mark.png",
+    logoWidth: 256,
+    logoHeight: 256,
+    showName: true,
+    href: "#projects",
+};
+
+/** The rest of the projects have no dedicated mark, just a name. */
+const link = (name: string): LinkedProject => ({ name, href: "#projects" });
+
 export const skillGroups: SkillGroup[] = [
     {
         title: "Frontend",
-        description: "Building interfaces that stay readable, responsive and aligned with product goals.",
+        description: "Interfaces that stay readable and aligned with the product.",
         items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "UI architecture"],
-        projectLink: "Inspir social to-do app",
+        linkedProjects: [VIBAURA_LINK, GOSPER_LINK, link("Smartlinks V2"), link("Starz.work"), link("Inspir")],
     },
     {
         title: "Backend",
-        description: "Designing APIs and server logic with maintainability and reliability in mind.",
-        items: ["Node.js", "Express", "REST APIs", "SQL modeling", "Business logic"],
-        projectLink: "FiveM script store",
+        description: "APIs and server logic built to stay maintainable.",
+        items: ["NestJS", "Node.js", "Express", "REST APIs", "SQL modeling"],
+        linkedProjects: [VIBAURA_LINK, GOSPER_LINK, link("Smartlinks V2"), link("Starz.work"), link("Inspir")],
     },
     {
         title: "Low-level languages",
-        description: "I am currently learning lower-level programming to strengthen my foundations around memory, performance and systems thinking.",
+        description: "Learning lower-level work: memory, performance, systems thinking.",
         items: ["C", "Rust"],
         status: "learning",
     },
     {
         title: "Mobile",
-        description: "Shipping product ideas to mobile with a strong focus on flow and usability.",
-        items: ["React Native", "Expo", "Mobile UX", "Component reuse"],
-        projectLink: "Padel Hub",
+        description: "Product ideas shipped to mobile, focused on flow and usability.",
+        items: ["Flutter", "React Native", "Expo", "Mobile UX"],
+        linkedProjects: [VIBAURA_LINK, link("Padel Hub"), link("Eco-Go")],
     },
     {
         title: "Databases",
-        description: "Structuring and querying application data without overcomplicating the stack.",
-        items: ["MySQL", "SQL", "Data modeling", "Query design"],
-        projectLink: "Inspir social to-do app",
+        description: "Structuring and querying app data without overcomplicating it.",
+        items: ["PostgreSQL", "MySQL", "Prisma", "Data modeling"],
+        linkedProjects: [VIBAURA_LINK, GOSPER_LINK, link("Smartlinks V2"), link("Starz.work"), link("Inspir")],
     },
     {
         title: "DevOps & deployment",
-        description: "Taking projects from local development to a cleaner shipping path.",
-        items: ["Docker", "Vercel", "Environment setup", "Basic VM deployment"],
-        projectLink: "Inspir social to-do app",
+        description: "From local development to a clean shipping path.",
+        items: ["Docker", "CI/CD", "Vercel", "VM deployment"],
+        linkedProjects: [VIBAURA_LINK, GOSPER_LINK, link("Starz.work"), link("Inspir")],
     },
     {
         title: "AI & data",
-        description: "Using analysis and ML when they help explain, predict or classify useful information.",
+        description: "Analysis and ML when they actually explain or predict something.",
         items: ["Python", "Machine Learning", "NLP", "Streamlit", "Data exploration"],
-        projectLink: "Tardis / NextBuy / NLP",
+        linkedProjects: [link("Tardis"), link("NextBuy"), link("NLP classification")],
     },
     {
         title: "Tools",
-        description: "Working efficiently with the tooling that keeps engineering delivery practical.",
+        description: "The tooling that keeps engineering delivery practical.",
         items: ["Git", "GitHub", "Figma", "Notion", "VS Code"],
-    },
-];
-
-export const ambitions = [
-    {
-        title: "Deeper backend architecture",
-        text: "I want to get stronger on scalable backend design, clearer domain modeling and production-grade architecture decisions.",
-    },
-    {
-        title: "Mobile products with stronger identity",
-        text: "I want to push further on mobile experiences that feel focused, useful and distinct instead of generic clones.",
-    },
-    {
-        title: "Cloud, AI and product execution",
-        text: "My goal is to connect cloud infrastructure, practical AI and entrepreneurship to build products that solve concrete problems.",
     },
 ];
 
@@ -297,5 +370,4 @@ export const navItems = [
     { label: "Projects", href: "#projects" },
     { label: "Skills", href: "#skills" },
     { label: "Reviews", href: "#reviews" },
-    // { label: "Contact", href: "#contact" },
 ];

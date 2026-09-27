@@ -52,8 +52,8 @@ export default function Contact() {
                 <div className="space-y-3 lg:space-y-6">
                     <SectionIntro
                         eyebrow="Contact"
-                        title="If the work looks relevant, let’s discuss the next product, mission or internship."
-                        description="The form stays connected to Formspree. Direct links to email, GitHub, LinkedIn and the CV remain available."
+                        title="If this looks relevant, let’s talk."
+                        description="Product, mission or internship. The form goes straight to my inbox."
                     />
 
                     <div className="grid gap-2 lg:gap-4">
@@ -73,26 +73,26 @@ export default function Contact() {
                             <HiOutlineArrowTopRightOnSquare className="text-[var(--color-text-soft)]" />
                         </Link>
 
-                        <div className="grid gap-2 sm:grid-cols-2 lg:gap-4">
+                        <div className="grid grid-cols-2 gap-2 lg:gap-4">
                             <Link
                                 href={profile.github}
                                 target="_blank"
-                                className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 transition hover:border-[var(--identity-border-strong)] lg:p-5"
+                                className="flex items-center gap-2 rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] px-3 py-2.5 transition hover:border-[var(--identity-border-strong)] sm:block sm:p-3.5 lg:p-5"
                             >
                                 <FaGithub className="text-base text-[var(--color-ink)] lg:text-xl" />
-                                <p className="mt-2 text-sm font-semibold text-[var(--color-ink)] lg:mt-4 lg:text-lg">GitHub</p>
-                                <p className="mt-1 text-xs text-[var(--color-text-soft)] lg:text-sm">
+                                <p className="text-sm font-semibold text-[var(--color-ink)] sm:mt-2 lg:mt-4 lg:text-lg">GitHub</p>
+                                <p className="mt-1 hidden text-xs text-[var(--color-text-soft)] sm:block lg:text-sm">
                                     Repositories and project history
                                 </p>
                             </Link>
                             <Link
                                 href={profile.linkedin}
                                 target="_blank"
-                                className="rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 transition hover:border-[var(--identity-border-strong)] lg:p-5"
+                                className="flex items-center gap-2 rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] px-3 py-2.5 transition hover:border-[var(--identity-border-strong)] sm:block sm:p-3.5 lg:p-5"
                             >
                                 <FaLinkedinIn className="text-base text-[var(--color-ink)] lg:text-xl" />
-                                <p className="mt-2 text-sm font-semibold text-[var(--color-ink)] lg:mt-4 lg:text-lg">LinkedIn</p>
-                                <p className="mt-1 text-xs text-[var(--color-text-soft)] lg:text-sm">
+                                <p className="text-sm font-semibold text-[var(--color-ink)] sm:mt-2 lg:mt-4 lg:text-lg">LinkedIn</p>
+                                <p className="mt-1 hidden text-xs text-[var(--color-text-soft)] sm:block lg:text-sm">
                                     Profile and professional background
                                 </p>
                             </Link>
@@ -113,7 +113,7 @@ export default function Contact() {
                     onSubmit={onSubmit}
                     className="flex h-full flex-col rounded-[var(--identity-radius-panel)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 lg:p-6"
                 >
-                    <div className="grid gap-2 sm:grid-cols-2 lg:gap-4">
+                    <div className="grid grid-cols-2 gap-2 lg:gap-4">
                         <label className="space-y-1 lg:space-y-2">
                             <span className="text-xs text-[var(--color-ink-soft)] lg:text-sm">First name</span>
                             <input
@@ -160,21 +160,21 @@ export default function Contact() {
                             value={formData.message}
                             onChange={onChange}
                             required
-                            rows={7}
-                            className="min-h-[6.5rem] w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-card)] px-3 py-2 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--identity-accent-line)] sm:min-h-[8rem] lg:min-h-[15rem] lg:rounded-3xl lg:px-4 lg:py-3 lg:text-base"
+                            rows={4}
+                            className="min-h-[5rem] w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-card)] px-3 py-2 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--identity-accent-line)] sm:min-h-[8rem] lg:min-h-[15rem] lg:rounded-3xl lg:px-4 lg:py-3 lg:text-base"
                         />
                     </label>
 
-                    <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between lg:mt-auto lg:gap-3">
+                    <div className="mt-3 flex flex-row items-center justify-between gap-2 lg:mt-auto lg:gap-3">
                         <button
                             type="submit"
                             disabled={state.submitting}
-                            className="soft-button-accent text-xs disabled:cursor-not-allowed disabled:opacity-60 lg:mt-2 lg:text-sm"
+                            className="soft-button-accent shrink-0 whitespace-nowrap text-xs disabled:cursor-not-allowed disabled:opacity-60 lg:mt-2 lg:text-sm"
                         >
                             {state.submitting ? "Sending..." : "Send message"}
                         </button>
 
-                        <div className="text-xs text-[var(--color-text-soft)] mt-2 lg:text-sm">
+                        <div className="text-xs text-[var(--color-text-soft)] lg:mt-2 lg:text-sm">
                             {state.succeeded
                                 ? "Message sent successfully."
                                 : state.errors

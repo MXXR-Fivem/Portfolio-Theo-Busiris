@@ -8,29 +8,51 @@ type Review = {
     id: string;
     text: string;
     author: string;
+    rating: number;
     link: string;
 };
 
-const FALLBACK_TESTIMONIALS: Review[] = [
-    {
-        id: "fallback-1",
-        text: "A very good script that works very well and is configurable to our liking. Very responsive support that knows how to help you.",
-        author: "MXXR shop customer",
-        link: "https://mxxr.tebex.io",
-    },
-    {
-        id: "fallback-2",
-        text: "He is very attentive to problems and tries to resolve them quickly. Very quick response to all our questions.",
-        author: "MXXR shop customer",
-        link: "https://mxxr.tebex.io",
-    },
-    {
-        id: "fallback-3",
-        text: "Quality scripts, responsive and competent support. Got a question? He answers quickly and kindly.",
-        author: "MXXR shop customer",
-        link: "https://mxxr.tebex.io",
-    },
-];
+const REVIEW_SOURCE = "https://mxxr.tebex.io";
+
+let backupPool: Review[] | null = null;
+
+/**
+ * Every review the store has, snapshotted into the repo. The live endpoint
+ * answers with a random handful; when it does not answer at all, the section
+ * draws from this instead, so it keeps rotating through real customers rather
+ * than freezing on three hardcoded lines.
+ *
+ * Loaded on demand. A hundred-odd reviews have no business in the bundle that
+ * every visitor downloads, when the live call almost always answers.
+ */
+async function loadBackup() {
+    if (!backupPool) {
+        const snapshot = (await import("@/data/reviews.json")).default;
+
+        backupPool = snapshot.map((entry) => ({ ...entry, link: REVIEW_SOURCE }));
+    }
+
+    return backupPool;
+}
+
+/** A fresh draw every time, so a failing API still changes the wall. */
+function sample(pool: Review[], count: number) {
+    const picked: Review[] = [];
+    const taken = new Set<number>();
+
+    while (picked.length < count && taken.size < pool.length) {
+        const index = Math.floor(Math.random() * pool.length);
+
+        if (taken.has(index)) {
+            continue;
+        }
+
+        taken.add(index);
+        picked.push(pool[index]);
+    }
+
+    return picked;
+}
 
 function truncateReviewText(text: string) {
     return text.length > 250 ? `${text.slice(0, 250).trimEnd()}...` : text;
@@ -83,6 +105,7 @@ function normalizeReview(review: any, index = 0): Review | null {
         ),
         text,
         author,
+        rating: Number(review.rating) || 5,
         link:
             pickString(
                 review.link,
@@ -167,15 +190,23 @@ export default function Testimonials() {
                     return;
                 }
 
-                setReviews(nextReviews.length ? nextReviews : FALLBACK_TESTIMONIALS);
+                if (!nextReviews.length) {
+                    // A 200 with nothing usable in it is a failure like any
+                    // other here; let the backup handle it.
+                    throw new Error("Reviews payload carried no usable review");
+                }
+
+                setReviews(nextReviews);
                 setActiveIndex(0);
                 setError(false);
             } catch {
+                const backup = await loadBackup();
+
                 if (!active) {
                     return;
                 }
 
-                setReviews(FALLBACK_TESTIMONIALS);
+                setReviews(sample(backup, 3));
                 setActiveIndex(0);
                 setError(true);
             } finally {
@@ -271,9 +302,17 @@ export default function Testimonials() {
                                     <div className="relative z-10">
                                         <div className="flex items-center justify-between">
                                             <FaQuoteLeft className="text-sm text-[var(--color-accent-ink)] lg:text-xl" />
+                                            {/* The rating the customer actually
+                                                left. Five stars on a four-star
+                                                review is a made-up number. */}
                                             <div className="flex items-center gap-1 text-[var(--color-accent-ink)]">
                                                 {Array.from({ length: 5 }).map((_, starIndex) => (
-                                                    <FaStar key={starIndex} className="text-[0.58rem] sm:text-[0.65rem] lg:text-xs" />
+                                                    <FaStar
+                                                        key={starIndex}
+                                                        className={`text-[0.58rem] sm:text-[0.65rem] lg:text-xs ${
+                                                            starIndex < review.rating ? "" : "opacity-25"
+                                                        }`}
+                                                    />
                                                 ))}
                                             </div>
                                         </div>

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { AdaptiveDpr, ContactShadows, PerformanceMonitor } from "@react-three/drei";
 import type { DeviceCapability } from "@/hooks/useDeviceCapability";
+import { SCENE_READY } from "@/components/three/sceneReady";
 import { PAPER, shadowTexture } from "@/components/three/toon";
 
 type ShadowSettings = {
@@ -50,6 +51,29 @@ function ShadowBlob({
             />
         </mesh>
     );
+}
+
+/**
+ * Tells the page when there is something on the canvas to look at. Runs ahead
+ * of the render pass, so the event goes out on the frame after the first one
+ * was drawn, not on the frame it is drawn in.
+ */
+function ReadySignal() {
+    const canvas = useThree((state) => state.gl.domElement);
+    const sent = useRef(false);
+
+    useFrame(() => {
+        if (sent.current) {
+            return;
+        }
+
+        sent.current = true;
+        requestAnimationFrame(() =>
+            canvas.dispatchEvent(new Event(SCENE_READY, { bubbles: true }))
+        );
+    });
+
+    return null;
 }
 
 export default function Stage({
@@ -110,6 +134,7 @@ export default function Stage({
             ) : null}
 
             {children}
+            <ReadySignal />
 
             {shadow === false ? null : isFull ? (
                 <ContactShadows

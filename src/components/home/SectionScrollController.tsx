@@ -2,8 +2,13 @@
 
 import { useEffect, useRef } from "react";
 
-const SCROLL_COOLDOWN_MS = 800;
-const SCROLL_ANIMATION_MS = 640;
+/**
+ * The cooldown has to outlast the glide, or the backstop below fires into a
+ * running animation. It should not outlast it by much either: every extra
+ * millisecond here is a scroll the reader made and the page ignored.
+ */
+const SCROLL_COOLDOWN_MS = 760;
+const SCROLL_ANIMATION_MS = 720;
 const MIN_WHEEL_DELTA = 36;
 const MIN_TOUCH_DELTA = 42;
 const WHEEL_GESTURE_RESET_MS = 140;
@@ -13,6 +18,35 @@ const LINE_DELTA_PX = 16;
 
 function isInteractiveTarget(target: EventTarget | null) {
     return target instanceof Element && Boolean(target.closest("input, textarea, select"));
+}
+
+/**
+ * True only for a field that has its own overflow to scroll, in the direction
+ * being scrolled.
+ *
+ * The wheel handler used to hand every form field a free pass, which meant that
+ * anywhere over the contact form (and its tall message box is most of that
+ * section) the page fell back to native scrolling and flew past several
+ * sections at once. A field that cannot scroll has nothing to hand it.
+ */
+function canScrollItself(target: EventTarget | null, deltaY: number) {
+    if (!(target instanceof Element)) {
+        return false;
+    }
+
+    const field = target.closest("textarea");
+
+    if (!field) {
+        return false;
+    }
+
+    const overflow = field.scrollHeight - field.clientHeight;
+
+    if (overflow <= 1) {
+        return false;
+    }
+
+    return deltaY > 0 ? field.scrollTop < overflow - 1 : field.scrollTop > 1;
 }
 
 function getSections() {
@@ -27,6 +61,18 @@ function measureViewportHeight() {
             document.documentElement.clientHeight
         )
     );
+}
+
+/**
+ * The visible height right now, with no padding toward whichever source reads
+ * largest. `clientHeight` in particular can report the layout viewport behind
+ * a currently-expanded address bar, not what is actually on screen; a fresh
+ * baseline built from that reads as taller than the page really is, and
+ * mobile Safari never gets the chance to correct it back down (the ratchet
+ * below only grows).
+ */
+function measureCurrentViewportHeight() {
+    return Math.round(window.visualViewport?.height ?? window.innerHeight);
 }
 
 function normalizeWheelDelta(event: WheelEvent) {
@@ -59,10 +105,16 @@ function getCurrentSectionIndex(sections: HTMLElement[]) {
     return closestIndex;
 }
 
-function easeInOutCubic(progress: number) {
+/**
+ * A quartic rather than a cubic: same shape, but it holds its speed longer
+ * through the middle and sheds it far more gently at the end, so the section
+ * arrives instead of stopping. The two halves are matched on purpose; a curve
+ * whose speed steps at the midpoint reads as a bump however smooth each half is.
+ */
+function easeInOutQuart(progress: number) {
     return progress < 0.5
-        ? 4 * progress * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+        ? 8 * progress * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 4) / 2;
 }
 
 export default function SectionScrollController() {
@@ -110,7 +162,13 @@ export default function SectionScrollController() {
                 Math.abs(measuredWidth - viewportWidthRef.current) > WIDTH_RESET_THRESHOLD;
 
             if (!stableViewportHeightRef.current || widthChanged || !mobileViewport.matches) {
-                stableViewportHeightRef.current = measuredHeight;
+                // A fresh baseline: the address bar's current state (often
+                // still expanded, right after a load or an orientation
+                // change) is real, so start from what is actually visible
+                // rather than from the padded, always-grows reading below.
+                stableViewportHeightRef.current = mobileViewport.matches
+                    ? measureCurrentViewportHeight()
+                    : measuredHeight;
                 viewportWidthRef.current = measuredWidth;
             } else {
                 stableViewportHeightRef.current = Math.max(
@@ -155,7 +213,7 @@ export default function SectionScrollController() {
 
             function animateScroll(now: number) {
                 const progress = Math.min((now - startedAt) / SCROLL_ANIMATION_MS, 1);
-                const easedProgress = easeInOutCubic(progress);
+                const easedProgress = easeInOutQuart(progress);
 
                 window.scrollTo({
                     top: startY + distance * easedProgress,
@@ -212,7 +270,7 @@ export default function SectionScrollController() {
         }
 
         function onWheel(event: WheelEvent) {
-            if (isInteractiveTarget(event.target)) {
+            if (canScrollItself(event.target, event.deltaY)) {
                 return;
             }
 

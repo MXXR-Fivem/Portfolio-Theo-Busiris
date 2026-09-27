@@ -7,7 +7,6 @@ import Stats from "@/components/home/Stats";
 import Projects from "@/components/home/Projects";
 import Skills from "@/components/home/Skills";
 import Testimonials from "@/components/home/Testimonials";
-import Ambitions from "@/components/home/Ambitions";
 import Contact from "@/components/home/Contact";
 import SectionScrollController from "@/components/home/SectionScrollController";
 
@@ -24,7 +23,6 @@ export default function Home() {
                     <Projects />
                     <Skills />
                     <Testimonials />
-                    <Ambitions />
                     <Contact />
                 </main>
             </div>

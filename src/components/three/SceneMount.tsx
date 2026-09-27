@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode, RefObject } from "react";
+import { SCENE_READY } from "@/components/three/sceneReady";
 import useInViewport from "@/hooks/useInViewport";
 import usePrefersReducedMotion from "@/hooks/usePrefersReducedMotion";
 import useDeviceCapability from "@/hooks/useDeviceCapability";
@@ -13,6 +14,12 @@ type SceneMountProps = {
     fallback: ReactNode;
     sectionRef: RefObject<HTMLElement | null>;
     className?: string;
+    /**
+     * The fallback is a frame of the scene itself, so the two swap in a single
+     * frame. A fade would lay one semi-transparent net over the other, and the
+     * stage would flash as it went through.
+     */
+    seamless?: boolean;
 };
 
 /**
@@ -107,6 +114,7 @@ export default function SceneMount({
     fallback,
     sectionRef,
     className,
+    seamless = false,
 }: SceneMountProps) {
     const prefersReducedMotion = usePrefersReducedMotion();
     const isInViewport = useInViewport(sectionRef);
@@ -115,7 +123,7 @@ export default function SceneMount({
         isIdle && isInViewport && !prefersReducedMotion
     );
     const [isRevealed, setIsRevealed] = useState(false);
-    const revealFrame = useRef<number | null>(null);
+    const stageRef = useRef<HTMLDivElement>(null);
 
     const canRender =
         capability !== "unknown" &&
@@ -124,19 +132,22 @@ export default function SceneMount({
         isInViewport &&
         isIdle;
 
+    // The scene chunk loads after this mounts. Revealing on a timer would fade
+    // the fallback out while the stage is still empty, so wait for the canvas
+    // to say it has drawn.
     useEffect(() => {
-        if (!canRender) {
+        const stage = stageRef.current;
+
+        if (!canRender || !stage) {
             setIsRevealed(false);
             return;
         }
 
-        revealFrame.current = requestAnimationFrame(() => setIsRevealed(true));
+        const reveal = () => setIsRevealed(true);
 
-        return () => {
-            if (revealFrame.current !== null) {
-                cancelAnimationFrame(revealFrame.current);
-            }
-        };
+        stage.addEventListener(SCENE_READY, reveal);
+
+        return () => stage.removeEventListener(SCENE_READY, reveal);
     }, [canRender]);
 
     return (
@@ -145,7 +156,7 @@ export default function SceneMount({
                 aria-hidden={canRender}
                 // Fades out faster than the canvas fades in, so the two
                 // never sit on top of each other as a double exposure.
-                className={`transition-opacity duration-300 ${
+                className={`h-full ${seamless ? "" : "transition-opacity duration-300"} ${
                     isRevealed ? "opacity-0" : "opacity-100"
                 }`}
             >
@@ -154,9 +165,10 @@ export default function SceneMount({
 
             {canRender ? (
                 <div
-                    className={`absolute inset-0 transition-opacity duration-700 delay-150 ${
-                        isRevealed ? "opacity-100" : "opacity-0"
-                    }`}
+                    ref={stageRef}
+                    className={`absolute inset-0 ${
+                        seamless ? "" : "transition-opacity delay-150 duration-700"
+                    } ${isRevealed ? "opacity-100" : "opacity-0"}`}
                 >
                     {children(capability)}
                 </div>

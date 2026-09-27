@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SectionIntro from "@/components/home/SectionIntro";
 import { proofPoints } from "@/data/site";
+import useCountUp from "@/hooks/useCountUp";
+import useInViewport from "@/hooks/useInViewport";
 
 type TebexStats = {
     totalSales: number;
@@ -42,6 +44,10 @@ function StatusPill({ state }: { state: StatsState }) {
 }
 
 export default function Stats() {
+    const section = useRef<HTMLElement>(null);
+    // Negative margin so the figures wait until the panel is properly on screen
+    // instead of counting up behind the fold.
+    const inViewport = useInViewport(section, { rootMargin: "-15% 0px" });
     const [state, setState] = useState<StatsState>({
         loading: true,
         error: false,
@@ -93,27 +99,32 @@ export default function Stats() {
         };
     }, []);
 
+    // Both figures run up from zero once the section arrives, a beat apart so
+    // the pair reads as two numbers landing rather than one block changing.
+    const customers = useCountUp(state.data?.totalCustomers, inViewport);
+    const sales = useCountUp(state.data?.totalSales, inViewport, 160);
+
     const stats = [
         {
             label: "Customers served",
-            value: formatNumber(state.data?.totalCustomers),
+            value: formatNumber(customers),
             helper: "Unique buyers from completed Tebex payments.",
         },
         {
             label: "Sales completed",
-            value: formatNumber(state.data?.totalSales),
+            value: formatNumber(sales),
             helper: "Live FiveM store sales volume.",
         },
     ];
 
     return (
-        <section id="proof" className="section-shell">
+        <section id="proof" ref={section} className="section-shell">
             <div className="section-panel grid gap-3 p-3.5 sm:p-[1.1rem] md:grid-cols-[1.05fr_0.75fr] lg:grid-cols-[0.5fr_0.5fr] lg:gap-8 lg:p-10">
                 <div className="space-y-3">
                     <SectionIntro
                         eyebrow="Proof"
-                        title="Concrete signals that I already work on products used by real people."
-                        description="Live business metrics and customer feedback from a real FiveM store, showing product delivery, support and iteration beyond school projects."
+                        title="Products that real people already pay for."
+                        description="Live metrics and customer feedback from my FiveM store: delivery, support and iteration, well past school projects."
                     />
                     <div className="pt-1">
                         <StatusPill state={state} />
@@ -124,7 +135,7 @@ export default function Stats() {
                     {stats.map((item, index) => (
                         <div
                             key={item.label}
-                            className="relative flex min-h-[5.5rem] flex-col justify-center overflow-hidden rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 pt-[1.1rem] lg:min-h-[8.5rem] lg:p-5 lg:pt-6"
+                            className="relative flex min-h-[5.5rem] flex-col justify-start overflow-hidden md:justify-center rounded-[var(--identity-radius-card)] border border-[var(--color-line)] bg-[var(--color-card-subtle)] p-3.5 pt-[1.1rem] lg:min-h-[8.5rem] lg:p-5 lg:pt-6"
                         >
                             <div className="absolute inset-x-0 top-0 h-px bg-[var(--identity-accent-line)]" />
                             <p className="text-[0.62rem] uppercase tracking-[0.14em] text-[var(--color-text-soft)] lg:text-xs lg:tracking-[0.24em]">
@@ -134,9 +145,7 @@ export default function Stats() {
                                 {item.value}
                             </p>
                             <p className="mt-1 text-xs leading-5 text-[var(--color-ink-soft)] lg:mt-3 lg:text-sm lg:leading-6">
-                                {state.error
-                                    ? "The API is preserved, but the data is temporarily unavailable."
-                                    : item.helper}
+                                {state.error ? "Data temporarily unavailable." : item.helper}
                             </p>
                         </div>
                     ))}

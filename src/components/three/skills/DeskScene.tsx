@@ -3,17 +3,26 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import type { AmbientLight, DirectionalLight, MeshBasicMaterial, PointLight } from "three";
+import type {
+    AmbientLight,
+    DirectionalLight,
+    MeshBasicMaterial,
+    Object3D,
+    PointLight,
+    SpotLight,
+} from "three";
 import Stage from "@/components/three/Stage";
 import Desk from "@/components/three/skills/Desk";
 import DeskPerson from "@/components/three/skills/DeskPerson";
 import type { DeskPersonHandle } from "@/components/three/skills/DeskPerson";
-import { track } from "@/components/three/anim";
+import { clamp, damp, noise, track } from "@/components/three/anim";
 import { geometries, toonMaterial } from "@/components/three/toon";
 import type { DeviceCapability } from "@/hooks/useDeviceCapability";
 
 /** Seconds for one full day-and-night, looped seamlessly (night == night). */
-const PERIOD = 13;
+const PERIOD = 10.8;
+/** Playback rate for everything on the desk: the light, the hands and the sway. */
+const SPEED = 1.44;
 
 /**
  * The whole story is in the light. The cycle is a closed loop: deep night at
@@ -227,12 +236,21 @@ function SunRays({
     );
 }
 
+/**
+ * Typing is never a metronome. Real work arrives in bursts with pauses between
+ * them, so the hands chase a rate that wanders on noise instead of running at
+ * a fixed one, and the phase is integrated from that rate rather than read off
+ * the clock: changing a rate on a raw clock jumps the hands mid-keystroke.
+ */
+const TYPING_PEAK = 13;
+
 function Workstation() {
     const person = useRef<DeskPersonHandle>(null);
     const sun = useRef<DirectionalLight>(null);
     const ambient = useRef<AmbientLight>(null);
     const glow = useRef<PointLight>(null);
-    const lamp = useRef<PointLight>(null);
+    const lamp = useRef<SpotLight>(null);
+    const lampTarget = useRef<Object3D>(null);
     const rays = useRef<THREE.Group>(null);
 
     const scratch = useMemo(() => new THREE.Color(), []);
@@ -249,6 +267,8 @@ function Workstation() {
         return material;
     }, []);
 
+    const typing = useRef({ phase: 0, rate: 0 });
+
     const rayTexture = useMemo(() => createRayTexture(), []);
     const rayMaterial = useMemo(
         () =>
@@ -263,12 +283,23 @@ function Workstation() {
         []
     );
 
-    useFrame((state) => {
+    useFrame((state, delta) => {
         // Offset so the section is first seen in daytime, not at midnight.
-        const current = (state.clock.elapsedTime / PERIOD + 0.22) % 1;
-        const time = state.clock.elapsedTime;
+        const time = state.clock.elapsedTime * SPEED;
+        const step = delta * SPEED;
+        const current = (time / PERIOD + 0.22) % 1;
 
-        person.current?.applyPose({ phase: time * 7.5, sway: time * 0.8 });
+        // Bursts and pauses. The rate is chased rather than jumped to, so a
+        // burst starts and dies over a second or so, the way hands do.
+        const wanted = Math.max(0, noise(time * 0.19) + 0.42) * TYPING_PEAK;
+        typing.current.rate = damp(typing.current.rate, wanted, 0.02, step);
+        typing.current.phase += typing.current.rate * step;
+
+        person.current?.applyPose({
+            phase: typing.current.phase,
+            sway: time * 0.8,
+            effort: clamp(typing.current.rate / TYPING_PEAK, 0, 1),
+        });
 
         if (sun.current) {
             sun.current.position.set(track(current, sunX), track(current, sunY), 2.6 - current * 1.4);
@@ -287,11 +318,21 @@ function Workstation() {
             glow.current.intensity = track(current, glowIntensity);
         }
 
-        screenMaterial.emissiveIntensity = track(current, screenEmissive);
+        // The panels lift a touch under a burst: a screen that never changes
+        // while the hands are moving reads as a photograph of a screen.
+        screenMaterial.emissiveIntensity =
+            track(current, screenEmissive) *
+            (1 + clamp(typing.current.rate / TYPING_PEAK, 0, 1) * 0.12);
         lampMaterial.emissiveIntensity = track(current, lampGlow);
 
         if (lamp.current) {
             lamp.current.intensity = track(current, lampLightIntensity);
+
+            // A spot only aims once its target is in the scene graph, which it
+            // is not on the first frame.
+            if (lampTarget.current && lamp.current.target !== lampTarget.current) {
+                lamp.current.target = lampTarget.current;
+            }
         }
 
         rayMaterial.opacity = track(current, rayIntensity);
@@ -308,8 +349,21 @@ function Workstation() {
         <group position={[0, -0.75, 0]}>
             <ambientLight ref={ambient} />
             <directionalLight ref={sun} castShadow={false} />
-            <pointLight ref={glow} position={[0.2, 1.5, -0.1]} color="#bcd9ff" distance={5} />
-            <pointLight ref={lamp} position={[-0.6, 1.02, 0.1]} color="#ffcf8f" distance={3.2} />
+            {/* Screen spill, sitting between the two panels. */}
+            <pointLight ref={glow} position={[0.32, 1.36, -0.3]} color="#bcd9ff" distance={5} />
+
+            {/* The desk lamp proper: a cone from the bulb in the back-left
+                corner, aimed at the middle of the desk, not a bare bulb. */}
+            <object3D ref={lampTarget} position={[-0.08, 0.79, 0.08]} />
+            <spotLight
+                ref={lamp}
+                position={[-0.63, 1.1, -0.26]}
+                color="#ffcf8f"
+                angle={0.8}
+                penumbra={0.75}
+                decay={1.4}
+                distance={3.6}
+            />
 
             <SunRays material={rayMaterial} texture={rayTexture} groupRef={rays} />
             <Desk screenMaterial={screenMaterial} lampMaterial={lampMaterial} />
@@ -321,7 +375,7 @@ function Workstation() {
 export default function DeskScene({ capability }: { capability: DeviceCapability }) {
     return (
         <Stage
-            camera={{ position: [0, 4.4, 4.3], fov: 28 }}
+            camera={{ position: [0, 5.22, 5.15], fov: 28 }}
             lookAt={[0, 0.3, 0.05]}
             capability={capability}
             animated
