@@ -1,9 +1,14 @@
 "use client";
 
 import type { MeshToonMaterial } from "three";
-import { INK, geometries, toonMaterial } from "@/components/three/toon";
+import { INK, edgeFadeTexture, geometries, toonMaterial } from "@/components/three/toon";
 
-const top = toonMaterial("#e8dfcc");
+// Cloned rather than the shared cache entry: this one carries an alphaMap so
+// the tabletop's own edge dissolves into the page instead of the canvas
+// cutting it off on a hard rectangle.
+const top = toonMaterial("#e8dfcc").clone();
+top.alphaMap = edgeFadeTexture();
+top.transparent = true;
 const legMat = toonMaterial("#c2b49a");
 const shell = toonMaterial(INK);
 const keyBase = toonMaterial("#3a3d38");

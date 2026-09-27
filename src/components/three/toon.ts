@@ -459,3 +459,47 @@ export function shadowTexture() {
 
     return shadowMap;
 }
+
+let edgeFadeMap: THREE.CanvasTexture | null = null;
+
+/**
+ * Grayscale radial falloff for an alphaMap: opaque through the middle,
+ * dissolving to nothing right at the rim. Meant for a ground/tabletop plane
+ * so it thins into the page instead of ending on a hard silhouette — CSS
+ * mask-image doesn't reach a WebGL canvas's own pixels, so the fade has to
+ * be baked into the material itself.
+ */
+export function edgeFadeTexture() {
+    if (edgeFadeMap) {
+        return edgeFadeMap;
+    }
+
+    const size = 256;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+
+    const context = canvas.getContext("2d");
+
+    if (context) {
+        const gradient = context.createRadialGradient(
+            size / 2,
+            size / 2,
+            0,
+            size / 2,
+            size / 2,
+            size / 2
+        );
+
+        gradient.addColorStop(0, "white");
+        gradient.addColorStop(0.86, "white");
+        gradient.addColorStop(1, "black");
+
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, size, size);
+    }
+
+    edgeFadeMap = new THREE.CanvasTexture(canvas);
+
+    return edgeFadeMap;
+}
