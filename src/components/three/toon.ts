@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { smoothstep } from "@/components/three/anim";
 
 /** The page background. Fog is set to this exact value so scenes fade out. */
 export const PAPER = "#f5f2ec";
@@ -459,48 +458,4 @@ export function shadowTexture() {
     shadowMap = new THREE.CanvasTexture(canvas);
 
     return shadowMap;
-}
-
-/**
- * Grayscale alphaMap that is opaque across the whole face and dissolves only
- * in a thin rim along each edge, `rimU` / `rimV` being that rim as a fraction
- * of the face's width / depth. Meant for a tabletop or ground plane so it
- * thins into the page instead of ending on a hard silhouette — CSS mask-image
- * doesn't reach a WebGL canvas's own pixels, so the fade has to be baked into
- * the material itself. Rectangular on purpose: a radial fade eats the corners
- * and leaves anything standing near them hovering over nothing.
- */
-export function edgeFadeTexture(rimU: number, rimV: number) {
-    const width = 512;
-    const height = 256;
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-
-    const context = canvas.getContext("2d");
-
-    if (context) {
-        const image = context.createImageData(width, height);
-
-        for (let y = 0; y < height; y += 1) {
-            const v = (y + 0.5) / height;
-            const alphaV = smoothstep(0, rimV, Math.min(v, 1 - v));
-
-            for (let x = 0; x < width; x += 1) {
-                const u = (x + 0.5) / width;
-                const alphaU = smoothstep(0, rimU, Math.min(u, 1 - u));
-                const value = Math.round(255 * alphaU * alphaV);
-                const index = (y * width + x) * 4;
-
-                image.data[index] = value;
-                image.data[index + 1] = value;
-                image.data[index + 2] = value;
-                image.data[index + 3] = 255;
-            }
-        }
-
-        context.putImageData(image, 0, 0);
-    }
-
-    return new THREE.CanvasTexture(canvas);
 }
