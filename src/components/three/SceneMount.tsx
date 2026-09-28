@@ -20,6 +20,11 @@ type SceneMountProps = {
      * stage would flash as it went through.
      */
     seamless?: boolean;
+    /**
+     * Called once the page is ready for a scene, so the scene's chunk can be
+     * fetched ahead of the moment it scrolls into view rather than after it.
+     */
+    preload?: () => void;
 };
 
 /**
@@ -115,6 +120,7 @@ export default function SceneMount({
     sectionRef,
     className,
     seamless = false,
+    preload,
 }: SceneMountProps) {
     const prefersReducedMotion = usePrefersReducedMotion();
     const isInViewport = useInViewport(sectionRef);
@@ -124,6 +130,12 @@ export default function SceneMount({
     );
     const [isRevealed, setIsRevealed] = useState(false);
     const stageRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (isIdle && !prefersReducedMotion) {
+            preload?.();
+        }
+    }, [isIdle, prefersReducedMotion, preload]);
 
     const canRender =
         capability !== "unknown" &&

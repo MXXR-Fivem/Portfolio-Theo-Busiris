@@ -6,9 +6,8 @@ import SceneMount from "@/components/three/SceneMount";
 import usePrefersReducedMotion from "@/hooks/usePrefersReducedMotion";
 import CatsStill from "@/components/three/about/CatsStill";
 
-const CatsScene = dynamic(() => import("@/components/three/about/CatsScene"), {
-    ssr: false,
-});
+const loadCatsScene = () => import("@/components/three/about/CatsScene");
+const CatsScene = dynamic(loadCatsScene, { ssr: false });
 
 /**
  * Its own client island so the About section stays a server component. The two
@@ -26,6 +25,10 @@ export default function AboutCats() {
                 // empty; the standing pair is only for those who never get them.
                 fallback={prefersReducedMotion ? <CatsStill /> : null}
                 className="h-full"
+                // Nothing sits under the canvas to cross-fade with, and the
+                // cats enter from off-screen, so a fade only delays them.
+                seamless
+                preload={loadCatsScene}
             >
                 {(capability) => <CatsScene capability={capability} />}
             </SceneMount>

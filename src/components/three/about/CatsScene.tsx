@@ -20,13 +20,23 @@ const GREY_STRIDE = 1.42;
 const TAU = Math.PI * 2;
 
 /**
- * Crossings per second, flat out. The gait is keyed to distance travelled, so
- * ground speed *is* stride rate, and this number is really a stride rate in
- * disguise: at this band's width it works out around three strides a second,
- * which is a cat at a brisk trot. Push it and the legs turn over faster than
- * any cat can move them, and four legs at a blur read as one blur.
+ * Ground speed flat out, in world units per second. The gait is keyed to
+ * distance travelled, so this number is really a stride rate in disguise: it
+ * works out around three strides a second, which is a cat at a brisk trot.
+ * Push it and the legs turn over faster than any cat can move them, and four
+ * legs at a blur read as one blur.
+ *
+ * It is in world units, not in crossings per second, on purpose: the band is a
+ * third as wide on a phone as on a desktop, and a pace fixed per crossing made
+ * the same cats amble at a third of the stride rate there.
  */
-const MAX_PACE = 0.11;
+const MAX_SPEED = 2.5;
+/**
+ * How far off-screen each end of the run starts, in world units. Kept just past
+ * a body's length rather than a wide margin, so less of the run-up is spent
+ * hidden before the pair is actually on screen.
+ */
+const OFFSCREEN = 1.1;
 /** How hard they close the remaining distance, before the cap bites. */
 const CLOSING = 2.2;
 /**
@@ -120,11 +130,24 @@ function Walk() {
     // crossing, so the jump back to the left edge between passes cannot land
     // the legs on a different phase than the one they left on.
     const strides = useRef({ white: 0, grey: 0, whiteX: 0, greyX: 0, started: false });
+    const booted = useRef(false);
 
     useFrame((state, delta) => {
         const time = state.clock.elapsedTime;
         const current = pass.current;
         const moving = chase.current;
+        const span = viewport.width + OFFSCREEN * 2;
+        const edge = viewport.width / 2 + OFFSCREEN;
+        const maxPace = MAX_SPEED / span;
+
+        // The first crossing starts already at a run: easing in from a
+        // standstill would spend the first second of the canvas showing
+        // nothing, since the start line is off-screen.
+        if (!booted.current) {
+            booted.current = true;
+            moving.pace = maxPace;
+            run.current = 1;
+        }
         const target =
             current.phase === "toStall"
                 ? current.stallAt
@@ -135,7 +158,7 @@ function Walk() {
                   : EXIT;
 
         const step = delta > 0.05 ? 0.05 : delta;
-        const wanted = clamp((target - moving.at) * CLOSING, -MAX_PACE, MAX_PACE);
+        const wanted = clamp((target - moving.at) * CLOSING, -maxPace, maxPace);
         // Damped rather than assigned, and slowly: a cat leans into a run over
         // the best part of a second, and starting at full speed on frame one is
         // exactly what made the entry read as a jump cut.
@@ -143,7 +166,7 @@ function Walk() {
         moving.at = clamp(moving.at + moving.pace * step, 0, EXIT);
 
         // Fast to break into a run, slower to come out of one.
-        const pace = clamp(Math.abs(moving.pace) / MAX_PACE, 0, 1);
+        const pace = clamp(Math.abs(moving.pace) / maxPace, 0, 1);
         run.current = damp(run.current, pace, pace > run.current ? 0.0002 : 0.02, delta);
 
         if (current.phase === "toStall") {
@@ -171,12 +194,6 @@ function Walk() {
         }
 
         const d = moving.at;
-        // How far off-screen each end of the run starts, in world units. Kept
-        // just past a body's length rather than a wide margin, so less of the
-        // run-up is spent hidden before the pair is actually on screen.
-        const OFFSCREEN = 1.1;
-        const span = viewport.width + OFFSCREEN * 2;
-        const edge = viewport.width / 2 + OFFSCREEN;
 
         // The leader is not on rails either: it surges and eases across the run
         // on a ripple small enough to stay strictly forward-moving. Its legs
