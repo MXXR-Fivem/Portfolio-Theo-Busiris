@@ -115,7 +115,7 @@ export default function About() {
                         const Icon = icons[index];
 
                         return (
-                            <div key={fact.title} className="flex items-start gap-4 py-5 first:pt-0">
+                            <div key={fact.title} className="flex items-start gap-4 py-5 first:pt-0 last:pb-0">
                                 <div className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-card-subtle)] text-base text-[var(--color-accent-ink)]">
                                     <Icon />
                                 </div>
