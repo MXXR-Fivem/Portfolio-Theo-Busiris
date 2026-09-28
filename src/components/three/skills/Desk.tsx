@@ -3,11 +3,16 @@
 import type { MeshToonMaterial } from "three";
 import { INK, edgeFadeTexture, geometries, toonMaterial } from "@/components/three/toon";
 
+const TOP_WIDTH = 2.7;
+const TOP_DEPTH = 1.3;
+/** How far in from each edge of the tabletop the dissolve reaches, in world units. */
+const TOP_RIM = 0.14;
+
 // Cloned rather than the shared cache entry: this one carries an alphaMap so
 // the tabletop's own edge dissolves into the page instead of the canvas
 // cutting it off on a hard rectangle.
 const top = toonMaterial("#e8dfcc").clone();
-top.alphaMap = edgeFadeTexture();
+top.alphaMap = edgeFadeTexture(TOP_RIM / TOP_WIDTH, TOP_RIM / TOP_DEPTH);
 top.transparent = true;
 const legMat = toonMaterial("#c2b49a");
 const shell = toonMaterial(INK);
@@ -163,7 +168,7 @@ export default function Desk({
 }) {
     return (
         <group>
-            <mesh geometry={geometries.box} material={top} position={[0, DESK_Y, 0]} scale={[2.7, 0.07, 1.3]} />
+            <mesh geometry={geometries.box} material={top} position={[0, DESK_Y, 0]} scale={[TOP_WIDTH, 0.07, TOP_DEPTH]} />
 
             {[
                 [-1.2, 0.52],
