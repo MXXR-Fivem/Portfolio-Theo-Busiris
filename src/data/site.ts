@@ -237,6 +237,22 @@ export const projects: Project[] = [
             "https://github.com/MXXR-Fivem/Hackathon-Data-Climate-TheShifters-Epitech",
     },
     {
+        slug: "kaiju",
+        title: "Kaiju — Crisis Manager",
+        tagline: "Real-time emergency coordination under strict constraints.",
+        summary:
+            "A crisis management platform for Tokyork: resource reservations, inter-district transfers under strict allocation rules, maritime routes, escalation levels, and live WebSocket alerts with a tactical HUD.",
+        problem:
+            "Emergency resource allocation cannot rely on client trust: retention thresholds, adjacency requirements, transits, and role permissions must be strictly enforced server-side.",
+        outcome:
+            "A high-reliability Rust backend with Actix Web, SQLite and SQLx, explicit HTTP error codes for every business violation, a native WebSocket event hub, Playwright E2E suites, and a live deployment.",
+        stack: ["Rust", "Actix Web", "SQLx", "SQLite", "Angular", "Leaflet", "WebSocket", "Docker"],
+        image: "/kaiju.png",
+        accent: "from-emerald-400 via-green-500 to-teal-600",
+        liveUrl: "https://kaiju.busiristheo.com",
+        githubUrl: "https://github.com/MXXR-Fivem/Kaiju",
+    },
+    {
         slug: "tardis",
         title: "Tardis",
         tagline: "Predicting SNCF train delays.",
@@ -325,12 +341,13 @@ export const skillGroups: SkillGroup[] = [
         title: "Backend",
         description: "APIs and server logic built to stay maintainable.",
         items: ["NestJS", "Node.js", "Express", "REST APIs", "SQL modeling"],
-        linkedProjects: [VIBAURA_LINK, GOSPER_LINK, link("Smartlinks V2"), link("Starz.work"), link("Inspir")],
+        linkedProjects: [VIBAURA_LINK, GOSPER_LINK, link("Kaiju"), link("Smartlinks V2"), link("Starz.work"), link("Inspir")],
     },
     {
         title: "Low-level languages",
         description: "Learning lower-level work: memory, performance, systems thinking.",
         items: ["C", "Rust"],
+        linkedProjects: [link("Kaiju")],
         status: "learning",
     },
     {
